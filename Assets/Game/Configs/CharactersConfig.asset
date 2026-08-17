@@ -1,0 +1,1041 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6d61dc6f868abad448885561bc82bf98, type: 3}
+  m_Name: CharactersConfig
+  m_EditorClassIdentifier: Assembly-CSharp::CharactersConfig
+  MaleTitles:
+  - "\u0421\u0438\u0440"
+  - "\u041B\u043E\u0440\u0434"
+  - "\u0411\u0430\u0440\u043E\u043D"
+  - "\u0411\u0440\u0430\u0442"
+  FemaleTitles:
+  - "\u041B\u0435\u0434\u0438"
+  - "\u0413\u043E\u0441\u043F\u043E\u0436\u0430"
+  - "\u0421\u0435\u0441\u0442\u0440\u0430"
+  MaleNames:
+  - "\u0410\u0439\u0432\u043E\u0440"
+  - "\u041E\u0434\u043E"
+  - "\u0413\u044D\u043B"
+  - "\u0420\u0435\u043D\u0430\u0440"
+  - "\u0411\u0435\u0440\u0442\u0440\u0430\u043D"
+  - "\u0425\u0430\u043B\u044C\u0434"
+  - "\u041A\u0443\u0442\u0431\u0435\u0440\u0442"
+  - "\u0412\u0430\u043B\u044C\u0434"
+  - "\u0410\u043D\u0441\u0435\u043B\u044C\u043C"
+  - "\u0422\u0438\u0431\u043E"
+  FemaleNames:
+  - "\u041C\u043E\u0440\u0430"
+  - "\u0418\u0434\u0435\u043B\u0438\u044F"
+  - "\u0421\u0430\u043D\u0447\u0430"
+  - "\u0420\u043E\u0432\u0435\u043D\u0430"
+  - "\u0411\u0435\u0440\u0442\u0430"
+  - "\u0410\u0434\u0435\u043B\u0438\u043D\u0430"
+  - "\u042E\u0442\u0430"
+  - "\u041C\u0435\u043B\u0438\u0441\u0435\u043D\u0442\u0430"
+  MaleEpithets:
+  - "\u0425\u0440\u043E\u043C\u043E\u0439"
+  - "\u0420\u044B\u0436\u0438\u0439"
+  - "\u0422\u0438\u0445\u0438\u0439"
+  - "\u0414\u043E\u043B\u0433\u043E\u0432\u044F\u0437\u044B\u0439"
+  - "\u041A\u0440\u0438\u0432\u043E\u0439"
+  - "\u041F\u0440\u0430\u0432\u0435\u0434\u043D\u044B\u0439"
+  - "\u041D\u0435\u0443\u0434\u0430\u0447\u043B\u0438\u0432\u044B\u0439"
+  - "\u0421\u044B\u0442\u044B\u0439"
+  FemaleEpithets:
+  - "\u0425\u0440\u043E\u043C\u0430\u044F"
+  - "\u0420\u044B\u0436\u0430\u044F"
+  - "\u0422\u0438\u0445\u0430\u044F"
+  - "\u0414\u043E\u043B\u0433\u043E\u0432\u044F\u0437\u0430\u044F"
+  - "\u041A\u0440\u0438\u0432\u0430\u044F"
+  - "\u041F\u0440\u0430\u0432\u0435\u0434\u043D\u0430\u044F"
+  - "\u041D\u0435\u0443\u0434\u0430\u0447\u043B\u0438\u0432\u0430\u044F"
+  - "\u0421\u044B\u0442\u0430\u044F"
+  Traits:
+  - Id: 0
+    Title: "\u0413\u043E\u0440\u0434\u044B\u0439"
+    TitleFemale: "\u0413\u043E\u0440\u0434\u0430\u044F"
+    Hint: "\u041D\u0435 \u043F\u0440\u043E\u0434\u0430\u0451\u0442\u0441\u044F. \u041F\u043E\u043C\u043D\u0438\u0442
+      \u043E\u0441\u043A\u043E\u0440\u0431\u043B\u0435\u043D\u0438\u044F."
+    Reactions:
+    - Verb: 0
+      Opinion: 15
+      Chance: 0
+      OnFail: 0
+      Note: "\u043B\u044E\u0431\u0438\u0442 \u043B\u0435\u0441\u0442\u044C"
+    - Verb: 1
+      Opinion: -30
+      Chance: 0
+      OnFail: 0
+      Note: "\u043D\u0435 \u043F\u0440\u043E\u0434\u0430\u0451\u0442\u0441\u044F"
+    - Verb: 2
+      Opinion: -25
+      Chance: 0
+      OnFail: 1
+      Note: "\u0432\u044B\u0437\u043E\u0432\u0435\u0442 \u043D\u0430 \u043F\u043E\u0435\u0434\u0438\u043D\u043E\u043A"
+    - Verb: 5
+      Opinion: -20
+      Chance: 0
+      OnFail: 1
+      Note: "\u0432\u044B\u0437\u043E\u0432\u0435\u0442 \u043D\u0430 \u043F\u043E\u0435\u0434\u0438\u043D\u043E\u043A"
+    SelfReactions:
+    - Verb: 2
+      Opinion: 5
+      Chance: 0
+      OnFail: 0
+      Note: "\u0442\u044B \u0443\u043C\u0435\u0435\u0448\u044C \u043F\u0443\u0433\u0430\u0442\u044C"
+    - Verb: 1
+      Opinion: -10
+      Chance: 0
+      OnFail: 0
+      Note: "\u0442\u0435\u0431\u0435 \u043F\u0440\u043E\u0442\u0438\u0432\u043D\u043E
+        \u043F\u043B\u0430\u0442\u0438\u0442\u044C"
+    GoldPerDay: 0
+    FoodPerDay: 0
+    CommonsOpinion: 0
+    OpinionDriftPerDay: 0
+    DailyRisk: 0
+    DailyRiskChance: 0
+    UnlockedVerbs: 
+  - Id: 1
+    Title: "\u0410\u043B\u0447\u043D\u044B\u0439"
+    TitleFemale: "\u0410\u043B\u0447\u043D\u0430\u044F"
+    Hint: "\u0412\u0441\u0451 \u0438\u043C\u0435\u0435\u0442 \u0446\u0435\u043D\u0443.
+      \u041E\u0441\u043E\u0431\u0435\u043D\u043D\u043E \u043E\u043D."
+    Reactions:
+    - Verb: 1
+      Opinion: 25
+      Chance: 0
+      OnFail: 0
+      Note: "\u0431\u0435\u0440\u0451\u0442 \u0438 \u043F\u0440\u043E\u0441\u0438\u0442
+        \u0435\u0449\u0451"
+    - Verb: 0
+      Opinion: -5
+      Chance: 0
+      OnFail: 0
+      Note: "\u0441\u043B\u043E\u0432\u0430\u043C\u0438 \u0441\u044B\u0442 \u043D\u0435
+        \u0431\u0443\u0434\u0435\u0442"
+    - Verb: 7
+      Opinion: -10
+      Chance: 0
+      OnFail: 4
+      Note: "\u043F\u043E\u0442\u0440\u0435\u0431\u0443\u0435\u0442 \u043F\u043B\u0430\u0442\u0443"
+    - Verb: 6
+      Opinion: 10
+      Chance: 0
+      OnFail: 0
+      Note: 
+    SelfReactions:
+    - Verb: 1
+      Opinion: 10
+      Chance: 0
+      OnFail: 0
+      Note: "\u0442\u044B \u0437\u043D\u0430\u0435\u0448\u044C \u043D\u0430\u0441\u0442\u043E\u044F\u0449\u0443\u044E
+        \u0446\u0435\u043D\u0443"
+    GoldPerDay: 2
+    FoodPerDay: 0
+    CommonsOpinion: 0
+    OpinionDriftPerDay: 0
+    DailyRisk: 0
+    DailyRiskChance: 0
+    UnlockedVerbs: 
+  - Id: 2
+    Title: "\u0425\u0438\u0442\u0440\u044B\u0439"
+    TitleFemale: "\u0425\u0438\u0442\u0440\u0430\u044F"
+    Hint: "\u0412\u0438\u0434\u0438\u0442 \u043B\u0435\u0441\u0442\u044C \u043D\u0430\u0441\u043A\u0432\u043E\u0437\u044C.
+      \u0414\u043E\u043D\u043E\u0441\u0438\u0442."
+    Reactions:
+    - Verb: 0
+      Opinion: -15
+      Chance: 0
+      OnFail: 0
+      Note: "\u0432\u0438\u0434\u0438\u0442 \u043D\u0430\u0441\u043A\u0432\u043E\u0437\u044C"
+    - Verb: 1
+      Opinion: 5
+      Chance: 0
+      OnFail: 11
+      Note: "\u0432\u043E\u0437\u044C\u043C\u0451\u0442 \u0438 \u0440\u0430\u0441\u0441\u043A\u0430\u0436\u0435\u0442"
+    - Verb: 2
+      Opinion: -5
+      Chance: 0
+      OnFail: 3
+      Note: "\u043F\u0443\u0441\u0442\u0438\u0442 \u0441\u043B\u0443\u0445"
+    - Verb: 5
+      Opinion: 5
+      Chance: 0
+      OnFail: 0
+      Note: "\u0443\u0432\u0430\u0436\u0430\u0435\u0442 \u043F\u0440\u044F\u043C\u043E\u0442\u0443"
+    SelfReactions:
+    - Verb: 0
+      Opinion: 5
+      Chance: 0
+      OnFail: 0
+      Note: 
+    - Verb: 5
+      Opinion: 5
+      Chance: 0
+      OnFail: 0
+      Note: 
+    GoldPerDay: 0
+    FoodPerDay: 0
+    CommonsOpinion: 0
+    OpinionDriftPerDay: 0
+    DailyRisk: 0
+    DailyRiskChance: 0
+    UnlockedVerbs: 
+  - Id: 3
+    Title: "\u041D\u0430\u0431\u043E\u0436\u043D\u044B\u0439"
+    TitleFemale: "\u041D\u0430\u0431\u043E\u0436\u043D\u0430\u044F"
+    Hint: "\u0421\u0443\u0434\u0438\u0442 \u0442\u0435\u0431\u044F. \u0412\u0441\u043B\u0443\u0445."
+    Reactions:
+    - Verb: 4
+      Opinion: 0
+      Chance: -25
+      OnFail: 2
+      Note: "\u043F\u0440\u043E\u0432\u0430\u043B = \u0441\u043A\u0430\u043D\u0434\u0430\u043B"
+    - Verb: 3
+      Opinion: -10
+      Chance: 0
+      OnFail: 0
+      Note: "\u043D\u0435 \u043F\u044C\u0451\u0442"
+    - Verb: 5
+      Opinion: -15
+      Chance: 0
+      OnFail: 8
+      Note: "\u043F\u043E\u043A\u0430\u0435\u0442\u0441\u044F \u043F\u0440\u0438\u043B\u044E\u0434\u043D\u043E"
+    - Verb: 0
+      Opinion: 5
+      Chance: 0
+      OnFail: 0
+      Note: 
+    SelfReactions:
+    - Verb: 4
+      Opinion: 0
+      Chance: -10
+      OnFail: 0
+      Note: "\u0442\u0435\u0431\u0435 \u0441\u0442\u044B\u0434\u043D\u043E"
+    GoldPerDay: 0
+    FoodPerDay: 0
+    CommonsOpinion: 10
+    OpinionDriftPerDay: 0
+    DailyRisk: 0
+    DailyRiskChance: 0
+    UnlockedVerbs: 
+  - Id: 4
+    Title: "\u0416\u0435\u0441\u0442\u043E\u043A\u0438\u0439"
+    TitleFemale: "\u0416\u0435\u0441\u0442\u043E\u043A\u0430\u044F"
+    Hint: "\u0423\u0432\u0430\u0436\u0430\u0435\u0442 \u0442\u043E\u043B\u044C\u043A\u043E
+      \u0441\u0438\u043B\u0443."
+    Reactions:
+    - Verb: 2
+      Opinion: 15
+      Chance: 0
+      OnFail: 0
+      Note: "\u043F\u043E\u043D\u0438\u043C\u0430\u0435\u0442 \u0442\u043E\u043B\u044C\u043A\u043E
+        \u044D\u0442\u043E"
+    - Verb: 0
+      Opinion: -10
+      Chance: 0
+      OnFail: 0
+      Note: "\u043F\u0440\u0435\u0437\u0438\u0440\u0430\u0435\u0442 \u043B\u0438\u0437\u043E\u0431\u043B\u044E\u0434\u043E\u0432"
+    - Verb: 5
+      Opinion: 5
+      Chance: 0
+      OnFail: 0
+      Note: 
+    - Verb: 7
+      Opinion: 10
+      Chance: 0
+      OnFail: 0
+      Note: "\u043B\u044E\u0431\u0438\u0442 \u0432\u043E\u0439\u043D\u0443"
+    SelfReactions:
+    - Verb: 2
+      Opinion: 10
+      Chance: 0
+      OnFail: 0
+      Note: "\u0442\u0435\u0431\u0435 \u0432\u0435\u0440\u044F\u0442"
+    GoldPerDay: 0
+    FoodPerDay: 0
+    CommonsOpinion: -10
+    OpinionDriftPerDay: 0
+    DailyRisk: 0
+    DailyRiskChance: 0
+    UnlockedVerbs: 
+  - Id: 5
+    Title: "\u0422\u0440\u0443\u0441\u043B\u0438\u0432\u044B\u0439"
+    TitleFemale: "\u0422\u0440\u0443\u0441\u043B\u0438\u0432\u0430\u044F"
+    Hint: "\u041F\u0440\u043E\u0433\u0438\u0431\u0430\u0435\u0442\u0441\u044F. \u0418
+      \u0441\u0431\u0435\u0433\u0430\u0435\u0442."
+    Reactions:
+    - Verb: 2
+      Opinion: 25
+      Chance: 0
+      OnFail: 0
+      Note: "\u0441\u0440\u0430\u0437\u0443 \u0441\u0434\u0430\u0441\u0442\u0441\u044F"
+    - Verb: 7
+      Opinion: -20
+      Chance: 0
+      OnFail: 5
+      Note: "\u0443\u0435\u0434\u0435\u0442 \u043E\u0442 \u0433\u0440\u0435\u0445\u0430"
+    - Verb: 5
+      Opinion: -10
+      Chance: 0
+      OnFail: 5
+      Note: "\u0443\u0435\u0434\u0435\u0442 \u043E\u0442 \u0433\u0440\u0435\u0445\u0430"
+    SelfReactions:
+    - Verb: 2
+      Opinion: -15
+      Chance: 0
+      OnFail: 0
+      Note: "\u0442\u0435\u0431\u0435 \u043D\u0435 \u0432\u0435\u0440\u044F\u0442"
+    - Verb: 7
+      Opinion: -5
+      Chance: 0
+      OnFail: 0
+      Note: 
+    GoldPerDay: 0
+    FoodPerDay: 0
+    CommonsOpinion: 0
+    OpinionDriftPerDay: 0
+    DailyRisk: 0
+    DailyRiskChance: 0
+    UnlockedVerbs: 
+  - Id: 6
+    Title: "\u041F\u043E\u0445\u043E\u0442\u043B\u0438\u0432\u044B\u0439"
+    TitleFemale: "\u041F\u043E\u0445\u043E\u0442\u043B\u0438\u0432\u0430\u044F"
+    Hint: "\u0421\u043E\u0433\u043B\u0430\u0441\u0435\u043D \u043F\u043E\u0447\u0442\u0438
+      \u043D\u0430 \u0432\u0441\u0451."
+    Reactions:
+    - Verb: 4
+      Opinion: 0
+      Chance: 30
+      OnFail: 0
+      Note: "\u043F\u043E\u0447\u0442\u0438 \u0441\u043E\u0433\u043B\u0430\u0441\u0435\u043D"
+    - Verb: 3
+      Opinion: 10
+      Chance: 0
+      OnFail: 0
+      Note: 
+    - Verb: 0
+      Opinion: 10
+      Chance: 0
+      OnFail: 0
+      Note: 
+    SelfReactions:
+    - Verb: 4
+      Opinion: 0
+      Chance: 15
+      OnFail: 0
+      Note: "\u0442\u044B \u0437\u043D\u0430\u0435\u0448\u044C, \u0447\u0442\u043E
+        \u0434\u0435\u043B\u0430\u0435\u0448\u044C"
+    GoldPerDay: 0
+    FoodPerDay: 0
+    CommonsOpinion: 0
+    OpinionDriftPerDay: 0
+    DailyRisk: 0
+    DailyRiskChance: 0
+    UnlockedVerbs: 04000000
+  - Id: 7
+    Title: "\u041F\u044C\u044F\u043D\u0438\u0446\u0430"
+    TitleFemale: "\u041F\u044C\u044F\u043D\u0438\u0446\u0430"
+    Hint: "\u041B\u0443\u0447\u0448\u0438\u0439 \u0434\u0440\u0443\u0433 \u0437\u0430
+      \u0441\u0442\u043E\u043B\u043E\u043C. \u0425\u0443\u0434\u0448\u0438\u0439
+      \u2014 \u043D\u0430\u0443\u0442\u0440\u043E."
+    Reactions:
+    - Verb: 3
+      Opinion: 25
+      Chance: 0
+      OnFail: 7
+      Note: "\u043D\u0430\u043F\u044C\u0451\u0442\u0441\u044F"
+    - Verb: 1
+      Opinion: 10
+      Chance: 0
+      OnFail: 0
+      Note: 
+    - Verb: 2
+      Opinion: -5
+      Chance: 0
+      OnFail: 0
+      Note: 
+    SelfReactions:
+    - Verb: 3
+      Opinion: 15
+      Chance: 0
+      OnFail: 29
+      Note: "\u0442\u044B \u0440\u0430\u0441\u0441\u043A\u0430\u0436\u0435\u0448\u044C
+        \u0432\u0441\u0451"
+    GoldPerDay: 0
+    FoodPerDay: 0
+    CommonsOpinion: 0
+    OpinionDriftPerDay: 0
+    DailyRisk: 9
+    DailyRiskChance: 4
+    UnlockedVerbs: 
+  - Id: 8
+    Title: "\u041E\u0434\u0435\u0440\u0436\u0438\u043C\u044B\u0439"
+    TitleFemale: "\u041E\u0434\u0435\u0440\u0436\u0438\u043C\u0430\u044F"
+    Hint: "\u0423 \u043D\u0435\u0433\u043E \u043E\u0434\u043D\u0430 \u043C\u044B\u0441\u043B\u044C.
+      \u0422\u044B \u0432 \u043D\u0435\u0439 \u043C\u0435\u0448\u0430\u0435\u0448\u044C."
+    Reactions:
+    - Verb: 6
+      Opinion: 30
+      Chance: 0
+      OnFail: 0
+      Note: "\u0442\u043E\u043B\u044C\u043A\u043E \u044D\u0442\u043E \u0438 \u0432\u0430\u0436\u043D\u043E"
+    - Verb: 0
+      Opinion: -10
+      Chance: 0
+      OnFail: 0
+      Note: "\u043D\u0435 \u0441\u043B\u044B\u0448\u0438\u0442"
+    - Verb: 1
+      Opinion: -10
+      Chance: 0
+      OnFail: 0
+      Note: "\u043D\u0435 \u0441\u043B\u044B\u0448\u0438\u0442"
+    - Verb: 5
+      Opinion: -25
+      Chance: 0
+      OnFail: 6
+      Note: "\u043D\u0430\u0447\u043D\u0451\u0442 \u0433\u043E\u0442\u043E\u0432\u0438\u0442\u044C
+        \u0443\u0431\u0438\u0439\u0441\u0442\u0432\u043E"
+    SelfReactions:
+    - Verb: 6
+      Opinion: 10
+      Chance: 0
+      OnFail: 0
+      Note: 
+    GoldPerDay: 0
+    FoodPerDay: 0
+    CommonsOpinion: 0
+    OpinionDriftPerDay: 0
+    DailyRisk: 28
+    DailyRiskChance: 3
+    UnlockedVerbs: 
+  - Id: 9
+    Title: "\u0427\u0435\u0441\u0442\u043D\u044B\u0439"
+    TitleFemale: "\u0427\u0435\u0441\u0442\u043D\u0430\u044F"
+    Hint: "\u041D\u0435 \u0432\u0440\u0451\u0442. \u0422\u0435\u0431\u0435 \u0442\u043E\u0436\u0435
+      \u043D\u0435 \u0434\u0430\u0441\u0442."
+    Reactions:
+    - Verb: 1
+      Opinion: -25
+      Chance: 0
+      OnFail: 11
+      Note: "\u0434\u043E\u043D\u0435\u0441\u0451\u0442 \u043E \u0432\u0437\u044F\u0442\u043A\u0435"
+    - Verb: 0
+      Opinion: -10
+      Chance: 0
+      OnFail: 0
+      Note: "\u043D\u0435 \u043B\u044E\u0431\u0438\u0442 \u043B\u0435\u0441\u0442\u0438"
+    - Verb: 2
+      Opinion: 5
+      Chance: 0
+      OnFail: 0
+      Note: "\u0446\u0435\u043D\u0438\u0442 \u043F\u0440\u044F\u043C\u043E\u0442\u0443"
+    - Verb: 7
+      Opinion: 15
+      Chance: 0
+      OnFail: 0
+      Note: "\u0441\u043B\u043E\u0432\u043E \u0434\u0435\u0440\u0436\u0438\u0442"
+    SelfReactions:
+    - Verb: 1
+      Opinion: -15
+      Chance: 0
+      OnFail: 0
+      Note: "\u0443 \u0442\u0435\u0431\u044F \u0434\u0440\u043E\u0436\u0430\u0442
+        \u0440\u0443\u043A\u0438"
+    - Verb: 0
+      Opinion: -10
+      Chance: 0
+      OnFail: 0
+      Note: "\u0437\u0432\u0443\u0447\u0438\u0442 \u0444\u0430\u043B\u044C\u0448\u0438\u0432\u043E"
+    - Verb: 7
+      Opinion: 10
+      Chance: 0
+      OnFail: 0
+      Note: "\u0442\u0435\u0431\u0435 \u0432\u0435\u0440\u044F\u0442"
+    GoldPerDay: 0
+    FoodPerDay: 0
+    CommonsOpinion: 10
+    OpinionDriftPerDay: 0
+    DailyRisk: 0
+    DailyRiskChance: 0
+    UnlockedVerbs: 
+  Verbs:
+  - Id: 0
+    Title: "\u041F\u043E\u043B\u044C\u0441\u0442\u0438\u0442\u044C"
+    Hint: "\u0411\u0435\u0441\u043F\u043B\u0430\u0442\u043D\u043E \u0438 \u043F\u043E\u0447\u0442\u0438
+      \u0432\u0441\u0435\u0433\u0434\u0430 \u0440\u0430\u0431\u043E\u0442\u0430\u0435\u0442"
+    BaseOpinion: 10
+    BaseChance: 100
+    GoldCost: 0
+    FoodCost: 0
+    OncePerLord: 0
+    RequiresTrait: 0
+    RequiredTrait: 0
+    RivalOpinion: 0
+    CommonsOpinion: 0
+    CourtOpinion: 0
+    OnFail: 0
+  - Id: 1
+    Title: "\u041F\u043E\u0434\u043A\u0443\u043F\u0438\u0442\u044C"
+    Hint: "\u0414\u0435\u043D\u044C\u0433\u0438 \u0440\u0435\u0448\u0430\u044E\u0442.
+      \u041D\u0435 \u0432\u0441\u0451"
+    BaseOpinion: 15
+    BaseChance: 100
+    GoldCost: 15
+    FoodCost: 0
+    OncePerLord: 0
+    RequiresTrait: 0
+    RequiredTrait: 0
+    RivalOpinion: 0
+    CommonsOpinion: 0
+    CourtOpinion: 0
+    OnFail: 0
+  - Id: 2
+    Title: "\u041F\u0440\u0438\u0433\u0440\u043E\u0437\u0438\u0442\u044C"
+    Hint: "\u0414\u0451\u0448\u0435\u0432\u043E. \u0414\u043E\u0440\u043E\u0433\u043E
+      \u043F\u043E\u0442\u043E\u043C"
+    BaseOpinion: -20
+    BaseChance: 100
+    GoldCost: 0
+    FoodCost: 0
+    OncePerLord: 0
+    RequiresTrait: 0
+    RequiredTrait: 0
+    RivalOpinion: 5
+    CommonsOpinion: 0
+    CourtOpinion: 0
+    OnFail: 0
+  - Id: 3
+    Title: "\u0412\u044B\u043F\u0438\u0442\u044C \u0432\u043C\u0435\u0441\u0442\u0435"
+    Hint: "\u0421\u044A\u0435\u0434\u0430\u0435\u0442 \u043F\u0440\u0438\u043F\u0430\u0441\u044B"
+    BaseOpinion: 5
+    BaseChance: 100
+    GoldCost: 0
+    FoodCost: 6
+    OncePerLord: 0
+    RequiresTrait: 0
+    RequiredTrait: 0
+    RivalOpinion: 0
+    CommonsOpinion: 0
+    CourtOpinion: 2
+    OnFail: 0
+  - Id: 4
+    Title: "\u0421\u043E\u0431\u043B\u0430\u0437\u043D\u0438\u0442\u044C"
+    Hint: "\u041F\u0440\u043E\u0432\u0430\u043B = \u0441\u043A\u0430\u043D\u0434\u0430\u043B
+      \u043D\u0430 \u0432\u0435\u0441\u044C \u0434\u0432\u043E\u0440"
+    BaseOpinion: 30
+    BaseChance: 45
+    GoldCost: 0
+    FoodCost: 0
+    OncePerLord: 0
+    RequiresTrait: 0
+    RequiredTrait: 0
+    RivalOpinion: 0
+    CommonsOpinion: 0
+    CourtOpinion: 0
+    OnFail: 2
+  - Id: 5
+    Title: "\u041F\u043E\u0441\u043B\u0430\u0442\u044C"
+    Hint: "\u0420\u0430\u0434\u0443\u0435\u0442 \u0441\u043E\u043F\u0435\u0440\u043D\u0438\u043A\u0430
+      \u0438 \u043A\u0440\u0435\u0441\u0442\u044C\u044F\u043D"
+    BaseOpinion: -45
+    BaseChance: 100
+    GoldCost: 0
+    FoodCost: 0
+    OncePerLord: 0
+    RequiresTrait: 0
+    RequiredTrait: 0
+    RivalOpinion: 30
+    CommonsOpinion: 10
+    CourtOpinion: 0
+    OnFail: 0
+  - Id: 6
+    Title: "\u0418\u0441\u043F\u043E\u043B\u043D\u0438\u0442\u044C \u0436\u0435\u043B\u0430\u043D\u0438\u0435"
+    Hint: "\u041E\u0434\u0438\u043D \u0440\u0430\u0437 \u043D\u0430 \u043B\u043E\u0440\u0434\u0430"
+    BaseOpinion: 50
+    BaseChance: 100
+    GoldCost: 0
+    FoodCost: 0
+    OncePerLord: 1
+    RequiresTrait: 0
+    RequiredTrait: 0
+    RivalOpinion: 0
+    CommonsOpinion: 0
+    CourtOpinion: 0
+    OnFail: 0
+  - Id: 7
+    Title: "\u041F\u0440\u043E\u0441\u0438\u0442\u044C \u0432\u043E\u0439\u0441\u043A"
+    Hint: "\u0423\u043D\u0438\u0437\u0438\u0442\u0435\u043B\u044C\u043D\u043E, \u043D\u043E
+      \u043A\u043E\u043F\u044C\u044F \u043D\u0443\u0436\u043D\u044B"
+    BaseOpinion: -10
+    BaseChance: 100
+    GoldCost: 0
+    FoodCost: 0
+    OncePerLord: 1
+    RequiresTrait: 0
+    RequiredTrait: 0
+    RivalOpinion: 0
+    CommonsOpinion: 0
+    CourtOpinion: 0
+    OnFail: 0
+  Ambitions:
+  - Id: 0
+    Title: "\u0416\u0435\u043D\u0438\u0441\u044C \u043D\u0430 \u043C\u043E\u0435\u0439
+      \u0434\u043E\u0447\u0435\u0440\u0438"
+    Demand: "\u0423 \u043C\u0435\u043D\u044F \u0434\u043E\u0447\u044C \u043D\u0430
+      \u0432\u044B\u0434\u0430\u043D\u044C\u0435, \u0433\u043E\u0441\u0443\u0434\u0430\u0440\u044C."
+    OpinionOnFulfill: 50
+    GoldCost: 0
+    CommonsOpinion: 0
+    CourtOpinion: -5
+    ClosesRomance: 1
+    OnRefuse: 3
+  - Id: 1
+    Title: "\u041E\u0442\u0434\u0430\u0439 \u043C\u0435\u043B\u044C\u043D\u0438\u0446\u0443"
+    Demand: "\u041C\u0435\u043B\u044C\u043D\u0438\u0446\u0430 \u0443 \u0431\u0440\u043E\u0434\u0430
+      \u0434\u043E\u043B\u0436\u043D\u0430 \u0431\u044B\u0442\u044C \u043C\u043E\u0435\u0439."
+    OpinionOnFulfill: 40
+    GoldCost: 0
+    CommonsOpinion: -15
+    CourtOpinion: 0
+    ClosesRomance: 0
+    OnRefuse: 4
+  - Id: 2
+    Title: "\u0414\u0430\u0439 \u0442\u0438\u0442\u0443\u043B"
+    Demand: "\u042F \u0434\u043E\u0441\u0442\u043E\u0438\u043D \u0431\u043E\u043B\u044C\u0448\u0435\u0433\u043E,
+      \u0447\u0435\u043C \u0435\u0441\u0442\u044C."
+    OpinionOnFulfill: 45
+    GoldCost: 0
+    CommonsOpinion: 0
+    CourtOpinion: -10
+    ClosesRomance: 0
+    OnRefuse: 5
+  - Id: 3
+    Title: "\u0423\u0431\u0435\u0439 \u043C\u043E\u0435\u0433\u043E \u0432\u0440\u0430\u0433\u0430"
+    Demand: "\u0422\u044B \u0437\u043D\u0430\u0435\u0448\u044C, \u043E \u043A\u043E\u043C
+      \u044F."
+    OpinionOnFulfill: 60
+    GoldCost: 0
+    CommonsOpinion: 0
+    CourtOpinion: -20
+    ClosesRomance: 0
+    OnRefuse: 6
+  - Id: 4
+    Title: "\u041F\u043E\u0441\u0442\u0440\u043E\u0439 \u0447\u0430\u0441\u043E\u0432\u043D\u044E"
+    Demand: "\u0413\u043E\u0441\u043F\u043E\u0434\u044C \u0441\u043C\u043E\u0442\u0440\u0438\u0442,
+      \u0433\u043E\u0441\u0443\u0434\u0430\u0440\u044C."
+    OpinionOnFulfill: 35
+    GoldCost: 30
+    CommonsOpinion: 15
+    CourtOpinion: 0
+    ClosesRomance: 0
+    OnRefuse: 0
+  - Id: 5
+    Title: "\u0412\u044B\u0441\u043B\u0443\u0448\u0430\u0439 \u043F\u0440\u043E\u0440\u043E\u0447\u0435\u0441\u0442\u0432\u043E"
+    Demand: "\u041C\u043D\u0435 \u0431\u044B\u043B\u043E \u0432\u0438\u0434\u0435\u043D\u0438\u0435.
+      \u041F\u0440\u043E \u0442\u0435\u0431\u044F."
+    OpinionOnFulfill: 25
+    GoldCost: 0
+    CommonsOpinion: 0
+    CourtOpinion: 0
+    ClosesRomance: 0
+    OnRefuse: 3
+  - Id: 6
+    Title: "\u041F\u043E\u043F\u0440\u043E\u0431\u0443\u0439 \u043C\u043E\u0439 \u0441\u0443\u043F"
+    Demand: "\u042F \u0433\u043E\u0442\u043E\u0432\u0438\u043B \u0442\u0440\u0438
+      \u0434\u043D\u044F."
+    OpinionOnFulfill: 20
+    GoldCost: 0
+    CommonsOpinion: 0
+    CourtOpinion: 0
+    ClosesRomance: 0
+    OnRefuse: 2
+  - Id: 7
+    Title: "\u041D\u0430\u0437\u043E\u0432\u0438 \u0441\u043E\u0431\u0430\u043A\u0443
+      \u0432 \u043C\u043E\u044E \u0447\u0435\u0441\u0442\u044C"
+    Demand: "\u041F\u0443\u0441\u0442\u044F\u043A, \u043D\u043E \u043C\u043D\u0435
+      \u0431\u0443\u0434\u0435\u0442 \u043F\u0440\u0438\u044F\u0442\u043D\u043E."
+    OpinionOnFulfill: 30
+    GoldCost: 0
+    CommonsOpinion: 0
+    CourtOpinion: -5
+    ClosesRomance: 0
+    OnRefuse: 0
+  Consequences:
+  - Id: 0
+    ChronicleLine: 
+    IsLethalForLord: 0
+    IsLethalForPlayer: 0
+    LordOpinion: 0
+    CourtOpinion: 0
+    CommonsOpinion: 0
+    Gold: 0
+    Food: 0
+    Troops: 0
+    ActionsLost: 0
+  - Id: 1
+    ChronicleLine: "{lord} \u0431\u0440\u043E\u0441\u0438\u043B \u043F\u0435\u0440\u0447\u0430\u0442\u043A\u0443.
+      \u041E\u0442\u043A\u0430\u0437\u0430\u0442\u044C\u0441\u044F \u043D\u0435\u043B\u044C\u0437\u044F."
+    IsLethalForLord: 0
+    IsLethalForPlayer: 0
+    LordOpinion: 0
+    CourtOpinion: 0
+    CommonsOpinion: 0
+    Gold: 0
+    Food: 0
+    Troops: 0
+    ActionsLost: 0
+  - Id: 2
+    ChronicleLine: "\u041A \u0432\u0435\u0447\u0435\u0440\u0443 \u043E\u0431 \u044D\u0442\u043E\u043C
+      \u0437\u043D\u0430\u043B \u0432\u0435\u0441\u044C \u0437\u0430\u043C\u043E\u043A."
+    IsLethalForLord: 0
+    IsLethalForPlayer: 0
+    LordOpinion: 0
+    CourtOpinion: 0
+    CommonsOpinion: 0
+    Gold: 0
+    Food: 0
+    Troops: 0
+    ActionsLost: 0
+  - Id: 3
+    ChronicleLine: "{lord} \u0433\u043E\u0432\u043E\u0440\u0438\u043B \u0442\u0438\u0445\u043E,
+      \u043D\u043E \u0433\u043E\u0432\u043E\u0440\u0438\u043B \u0441\u043E \u0432\u0441\u0435\u043C\u0438."
+    IsLethalForLord: 0
+    IsLethalForPlayer: 0
+    LordOpinion: 0
+    CourtOpinion: 0
+    CommonsOpinion: 0
+    Gold: 0
+    Food: 0
+    Troops: 0
+    ActionsLost: 0
+  - Id: 4
+    ChronicleLine: "{lord} \u0436\u0434\u0451\u0442 \u043F\u043E\u0434\u0430\u0440\u043A\u0430.
+      \u0418 \u0436\u0434\u0430\u0442\u044C \u043D\u0435 \u043B\u044E\u0431\u0438\u0442."
+    IsLethalForLord: 0
+    IsLethalForPlayer: 0
+    LordOpinion: 0
+    CourtOpinion: 0
+    CommonsOpinion: 0
+    Gold: 0
+    Food: 0
+    Troops: 0
+    ActionsLost: 0
+  - Id: 5
+    ChronicleLine: "{lord} \u0443\u0435\u0445\u0430\u043B \u043D\u0430 \u0440\u0430\u0441\u0441\u0432\u0435\u0442\u0435.
+      \u041A\u043E\u043F\u044C\u044F \u0443\u0435\u0445\u0430\u043B\u0438 \u0441
+      \u043D\u0438\u043C."
+    IsLethalForLord: 0
+    IsLethalForPlayer: 0
+    LordOpinion: 0
+    CourtOpinion: 0
+    CommonsOpinion: 0
+    Gold: 0
+    Food: 0
+    Troops: 0
+    ActionsLost: 0
+  - Id: 6
+    ChronicleLine: "{lord} \u043F\u0435\u0440\u0435\u0441\u0442\u0430\u043B \u0441\u043F\u043E\u0440\u0438\u0442\u044C.
+      \u042D\u0442\u043E \u0445\u0443\u0436\u0435, \u0447\u0435\u043C \u0441\u043F\u043E\u0440."
+    IsLethalForLord: 0
+    IsLethalForPlayer: 0
+    LordOpinion: 0
+    CourtOpinion: 0
+    CommonsOpinion: 0
+    Gold: 0
+    Food: 0
+    Troops: 0
+    ActionsLost: 0
+  - Id: 7
+    ChronicleLine: "{lord} \u0443\u043F\u0430\u043B \u043B\u0438\u0446\u043E\u043C
+      \u0432 \u0431\u043B\u044E\u0434\u043E. \u0414\u0435\u043D\u044C \u043E\u043A\u043E\u043D\u0447\u0435\u043D."
+    IsLethalForLord: 0
+    IsLethalForPlayer: 0
+    LordOpinion: 0
+    CourtOpinion: 0
+    CommonsOpinion: 0
+    Gold: 0
+    Food: 0
+    Troops: 0
+    ActionsLost: 0
+  - Id: 8
+    ChronicleLine: "{lord} \u043A\u0430\u044F\u043B\u0441\u044F \u043D\u0430 \u043F\u043B\u043E\u0449\u0430\u0434\u0438.
+      \u041A\u0440\u0435\u0441\u0442\u044C\u044F\u043D\u0430\u043C \u043F\u043E\u043D\u0440\u0430\u0432\u0438\u043B\u043E\u0441\u044C."
+    IsLethalForLord: 0
+    IsLethalForPlayer: 0
+    LordOpinion: 0
+    CourtOpinion: 0
+    CommonsOpinion: 0
+    Gold: 0
+    Food: 0
+    Troops: 0
+    ActionsLost: 0
+  - Id: 9
+    ChronicleLine: "\u041B\u0435\u0441\u0442\u043D\u0438\u0446\u0430 \u0431\u044B\u043B\u0430
+      \u0442\u0430\u043C \u0436\u0435, \u0433\u0434\u0435 \u0432\u0447\u0435\u0440\u0430.
+      {lord} \u2014 \u043D\u0435\u0442."
+    IsLethalForLord: 0
+    IsLethalForPlayer: 0
+    LordOpinion: 0
+    CourtOpinion: 0
+    CommonsOpinion: 0
+    Gold: 0
+    Food: 0
+    Troops: 0
+    ActionsLost: 0
+  - Id: 10
+    ChronicleLine: "{lord} \u043F\u0440\u0438\u0432\u0435\u0434\u0451\u0442 \u0431\u043E\u043B\u044C\u0448\u0435,
+      \u0447\u0435\u043C \u043E\u0431\u0435\u0449\u0430\u043B."
+    IsLethalForLord: 0
+    IsLethalForPlayer: 0
+    LordOpinion: 0
+    CourtOpinion: 0
+    CommonsOpinion: 0
+    Gold: 0
+    Food: 0
+    Troops: 0
+    ActionsLost: 0
+  - Id: 11
+    ChronicleLine: "\u041E \u0440\u0430\u0437\u0433\u043E\u0432\u043E\u0440\u0435
+      \u0443\u0437\u043D\u0430\u043B \u0442\u043E\u0442, \u043A\u043E\u043C\u0443
+      \u043D\u0435 \u0441\u043B\u0435\u0434\u043E\u0432\u0430\u043B\u043E."
+    IsLethalForLord: 0
+    IsLethalForPlayer: 0
+    LordOpinion: 0
+    CourtOpinion: 0
+    CommonsOpinion: 0
+    Gold: 0
+    Food: 0
+    Troops: 0
+    ActionsLost: 0
+  - Id: 12
+    ChronicleLine: "{lord} \u043F\u043E\u0434\u0430\u0432\u0438\u043B\u0441\u044F
+      \u043D\u0430 \u0441\u043E\u0431\u0441\u0442\u0432\u0435\u043D\u043D\u043E\u043C
+      \u043F\u0438\u0440\u0443."
+    IsLethalForLord: 1
+    IsLethalForPlayer: 0
+    LordOpinion: 0
+    CourtOpinion: 0
+    CommonsOpinion: 0
+    Gold: 0
+    Food: 0
+    Troops: 0
+    ActionsLost: 0
+  - Id: 13
+    ChronicleLine: "\u041B\u043E\u0448\u0430\u0434\u044C \u0440\u0435\u0448\u0438\u043B\u0430
+      \u0438\u043D\u0430\u0447\u0435."
+    IsLethalForLord: 1
+    IsLethalForPlayer: 0
+    LordOpinion: 0
+    CourtOpinion: 0
+    CommonsOpinion: 0
+    Gold: 0
+    Food: 0
+    Troops: 0
+    ActionsLost: 0
+  - Id: 14
+    ChronicleLine: "\u041B\u044E\u0431\u043E\u0432\u043D\u0438\u043A \u043F\u0435\u0440\u0435\u0434\u0443\u043C\u0430\u043B."
+    IsLethalForLord: 1
+    IsLethalForPlayer: 0
+    LordOpinion: 0
+    CourtOpinion: 0
+    CommonsOpinion: 0
+    Gold: 0
+    Food: 0
+    Troops: 0
+    ActionsLost: 0
+  - Id: 15
+    ChronicleLine: "\u041F\u0440\u043E\u0440\u043E\u0447\u0435\u0441\u0442\u0432\u043E
+      \u0441\u0431\u044B\u043B\u043E\u0441\u044C \u0431\u0443\u043A\u0432\u0430\u043B\u044C\u043D\u043E."
+    IsLethalForLord: 1
+    IsLethalForPlayer: 0
+    LordOpinion: 0
+    CourtOpinion: 0
+    CommonsOpinion: 0
+    Gold: 0
+    Food: 0
+    Troops: 0
+    ActionsLost: 0
+  - Id: 16
+    ChronicleLine: "\u041A\u0440\u044B\u0441\u044B \u043F\u0440\u0438\u0448\u043B\u0438
+      \u0440\u0430\u043D\u044C\u0448\u0435 \u0430\u0440\u043C\u0438\u0438."
+    IsLethalForLord: 1
+    IsLethalForPlayer: 1
+    LordOpinion: 0
+    CourtOpinion: 0
+    CommonsOpinion: 0
+    Gold: 0
+    Food: 0
+    Troops: 0
+    ActionsLost: 0
+  - Id: 17
+    ChronicleLine: "\u0422\u044B \u043F\u0440\u0438\u043D\u044F\u043B \u0432\u044B\u0437\u043E\u0432.
+      \u0417\u0440\u044F."
+    IsLethalForLord: 0
+    IsLethalForPlayer: 1
+    LordOpinion: 0
+    CourtOpinion: 0
+    CommonsOpinion: 0
+    Gold: 0
+    Food: 0
+    Troops: 0
+    ActionsLost: 0
+  - Id: 18
+    ChronicleLine: "\u041D\u043E\u0447\u044C\u044E, \u043F\u044C\u044F\u043D\u044B\u043C,
+      \u0432\u043E \u0440\u0432\u0443 \u0441\u043E\u0431\u0441\u0442\u0432\u0435\u043D\u043D\u043E\u0433\u043E
+      \u0437\u0430\u043C\u043A\u0430."
+    IsLethalForLord: 0
+    IsLethalForPlayer: 1
+    LordOpinion: 0
+    CourtOpinion: 0
+    CommonsOpinion: 0
+    Gold: 0
+    Food: 0
+    Troops: 0
+    ActionsLost: 0
+  - Id: 19
+    ChronicleLine: "\u0421\u044B\u043D \u043E\u0441\u043A\u043E\u0440\u0431\u043B\u0451\u043D\u043D\u043E\u0433\u043E
+      \u043B\u043E\u0440\u0434\u0430 \u043E\u043A\u0430\u0437\u0430\u043B\u0441\u044F
+      \u0442\u0435\u0440\u043F\u0435\u043B\u0438\u0432."
+    IsLethalForLord: 0
+    IsLethalForPlayer: 1
+    LordOpinion: 0
+    CourtOpinion: 0
+    CommonsOpinion: 0
+    Gold: 0
+    Food: 0
+    Troops: 0
+    ActionsLost: 0
+  - Id: 20
+    ChronicleLine: "{lord} \u0443\u043C\u0435\u0440 \u0441\u043E \u0441\u043C\u0435\u0445\u0443
+      \u043D\u0430\u0434 \u0442\u0432\u043E\u0438\u043C \u043F\u0440\u0435\u0434\u043B\u043E\u0436\u0435\u043D\u0438\u0435\u043C."
+    IsLethalForLord: 1
+    IsLethalForPlayer: 0
+    LordOpinion: 0
+    CourtOpinion: 0
+    CommonsOpinion: 0
+    Gold: 0
+    Food: 0
+    Troops: 0
+    ActionsLost: 0
+  - Id: 21
+    ChronicleLine: "\u041E\u0431\u044A\u044F\u0432\u0438\u043B\u0441\u044F \u0435\u0449\u0451
+      \u043E\u0434\u0438\u043D \u043D\u0430\u0441\u043B\u0435\u0434\u043D\u0438\u043A."
+    IsLethalForLord: 0
+    IsLethalForPlayer: 0
+    LordOpinion: 0
+    CourtOpinion: 0
+    CommonsOpinion: 0
+    Gold: 0
+    Food: 0
+    Troops: 0
+    ActionsLost: 0
+  - Id: 22
+    ChronicleLine: "\u0414\u0432\u0430 \u043B\u044E\u0431\u043E\u0432\u043D\u0438\u043A\u0430
+      \u0432\u0441\u0442\u0440\u0435\u0442\u0438\u043B\u0438\u0441\u044C \u0432 \u043A\u043E\u0440\u0438\u0434\u043E\u0440\u0435."
+    IsLethalForLord: 0
+    IsLethalForPlayer: 0
+    LordOpinion: 0
+    CourtOpinion: 0
+    CommonsOpinion: 0
+    Gold: 0
+    Food: 0
+    Troops: 0
+    ActionsLost: 0
+  - Id: 23
+    ChronicleLine: "\u0421\u043E\u0431\u0430\u043A\u0430 \u0443\u043A\u0443\u0441\u0438\u043B\u0430
+      \u043B\u043E\u0440\u0434\u0430, \u0432 \u0447\u0435\u0441\u0442\u044C \u043A\u043E\u0442\u043E\u0440\u043E\u0433\u043E
+      \u043D\u0430\u0437\u0432\u0430\u043D\u0430."
+    IsLethalForLord: 0
+    IsLethalForPlayer: 0
+    LordOpinion: 0
+    CourtOpinion: 0
+    CommonsOpinion: 0
+    Gold: 0
+    Food: 0
+    Troops: 0
+    ActionsLost: 0
+  - Id: 24
+    ChronicleLine: "\u0411\u0440\u0430\u0442 \u041E\u0434\u043E \u043E\u0442\u043B\u0443\u0447\u0438\u043B
+      \u0442\u0435\u0431\u044F \u043B\u0438\u0447\u043D\u043E."
+    IsLethalForLord: 0
+    IsLethalForPlayer: 0
+    LordOpinion: 0
+    CourtOpinion: 0
+    CommonsOpinion: 0
+    Gold: 0
+    Food: 0
+    Troops: 0
+    ActionsLost: 0
+  - Id: 25
+    ChronicleLine: "\u0414\u043E\u0433\u043E\u0432\u043E\u0440 \u0431\u044B\u043B
+      \u043D\u0430 \u0441\u0442\u043E\u043B\u0435. \u041B\u043E\u0448\u0430\u0434\u044C
+      \u0431\u044B\u043B\u0430 \u0440\u044F\u0434\u043E\u043C."
+    IsLethalForLord: 0
+    IsLethalForPlayer: 0
+    LordOpinion: 0
+    CourtOpinion: 0
+    CommonsOpinion: 0
+    Gold: 0
+    Food: 0
+    Troops: 0
+    ActionsLost: 0
+  - Id: 26
+    ChronicleLine: "\u041A\u0440\u0435\u0441\u0442\u044C\u044F\u043D\u0438\u043D
+      \u043F\u0440\u043E\u043C\u0430\u0445\u043D\u0443\u043B\u0441\u044F. \u0418\u043B\u0438
+      \u043D\u0435\u0442."
+    IsLethalForLord: 0
+    IsLethalForPlayer: 0
+    LordOpinion: 0
+    CourtOpinion: 0
+    CommonsOpinion: 0
+    Gold: 0
+    Food: 0
+    Troops: 0
+    ActionsLost: 0
+  - Id: 27
+    ChronicleLine: "\u0422\u044B \u043F\u043E\u043F\u0440\u043E\u0431\u043E\u0432\u0430\u043B.
+      \u0422\u044B \u0441\u043A\u0430\u0437\u0430\u043B \u043F\u0440\u0430\u0432\u0434\u0443."
+    IsLethalForLord: 0
+    IsLethalForPlayer: 0
+    LordOpinion: 0
+    CourtOpinion: 0
+    CommonsOpinion: 0
+    Gold: 0
+    Food: 0
+    Troops: 0
+    ActionsLost: 0
+  - Id: 28
+    ChronicleLine: "\u041E\u0434\u043E \u0431\u044B\u043B \u043F\u0440\u0430\u0432,
+      \u0438 \u044D\u0442\u043E \u0445\u0443\u0436\u0435 \u0432\u0441\u0435\u0433\u043E."
+    IsLethalForLord: 0
+    IsLethalForPlayer: 0
+    LordOpinion: 0
+    CourtOpinion: 0
+    CommonsOpinion: 0
+    Gold: 0
+    Food: 0
+    Troops: 0
+    ActionsLost: 0
+  - Id: 29
+    ChronicleLine: "\u0422\u044B \u0440\u0430\u0441\u0441\u043A\u0430\u0437\u0430\u043B
+      \u0432\u0441\u0451. \u0412\u0441\u0435\u043C."
+    IsLethalForLord: 0
+    IsLethalForPlayer: 0
+    LordOpinion: 0
+    CourtOpinion: 0
+    CommonsOpinion: 0
+    Gold: 0
+    Food: 0
+    Troops: 0
+    ActionsLost: 0
