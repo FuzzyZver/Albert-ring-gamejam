@@ -4,11 +4,10 @@ using System.Collections.Generic;
 /// Сгенерированный персонаж. Обычный класс, не SO и не компонент:
 /// в SO писать в рантайме нельзя (пачкает ассет в редакторе и молча
 /// теряется в билде), а до спавна сущностей ECS ещё нет.
-/// Живёт ровно между генератором и InitSystem.
 /// </summary>
 public class LordData
 {
-    public int Id = -1;          // -1 = игрок
+    public int Id = -1;          // -1 = игрок или кандидат
     public string Title;
     public string GivenName;
     public string Epithet;
@@ -29,6 +28,7 @@ public class LordData
 public class CourtData
 {
     public int Seed;
-    public LordData Player;
     public List<LordData> Lords = new List<LordData>();
+    public List<LordData> Candidates = new List<LordData>();   // из кого выбирает игрок
+    public LordData Player;                                    // заполняется после выбора
 }

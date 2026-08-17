@@ -18,9 +18,21 @@ public class EcsInclude : MonoBehaviour
         _systems
             //Add (new ...
             .Add(new InitSystem())
+            .Add(new RunSetupSystem())
+            .Add(new CandidateScreenSystem())
+            .Add(new PlayerSpawnSystem())
+            .Add(new MapViewSystem())
+            .Add(new LordCardSystem())
+            .Add(new RestartSystem())
 
             //OneFrame<..
-            
+            .OneFrame<NewRunEvent>()
+            .OneFrame<CourtReadyEvent>()
+            .OneFrame<SelectCandidateEvent>()
+            .OneFrame<RunReadyEvent>()
+            .OneFrame<PinClickedEvent>()
+            .OneFrame<CloseCardEvent>()
+
 
 
             .Inject(_world)
@@ -37,9 +49,11 @@ public class EcsInclude : MonoBehaviour
         _systems.Run();
     }
 
-    public void Destroy()
+    private void OnDestroy()
     {
-        _systems.Destroy();
-        _world.Destroy();
+        _systems?.Destroy();
+        _systems = null;
+        _world?.Destroy();
+        _world = null;
     }
 }

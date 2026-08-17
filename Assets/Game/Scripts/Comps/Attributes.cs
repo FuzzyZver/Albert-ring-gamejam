@@ -69,3 +69,7 @@ public struct RngAttribute
     public int Seed;
     public System.Random Value;
 }
+
+/// <summary>Сгенерированный забег целиком. Нужен, пока игрок не выбрал себя:
+/// кандидаты должны где-то дожить до нажатия кнопки.</summary>
+public struct CourtAttribute { public CourtData Value; }

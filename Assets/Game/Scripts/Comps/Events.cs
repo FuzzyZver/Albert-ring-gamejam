@@ -4,7 +4,18 @@ using Leopotam.Ecs;
 // событие создаётся и съедается в том же кадре, цель гарантированно жива.
 // Всё, что переживает кадр (соперник, память, цель заговора) — хранит int LordId.
 
+// ─────────── забег ───────────
+
+public struct NewRunEvent { public int Seed; }        // снести всё и сгенерировать заново
+public struct CourtReadyEvent { }                     // двор есть, игрока ещё нет
+public struct SelectCandidateEvent { public int Index; }
+public struct RunReadyEvent { }                       // игрок выбран, можно показывать карту
 public struct RunStartEvent { public int Seed; }
+
+// ─────────── взаимодействие ───────────
+
+public struct PinClickedEvent { public EcsEntity Target; }
+public struct CloseCardEvent { }
 
 public struct VerbEvent
 {
@@ -52,5 +63,3 @@ public struct DeathEvent
     public DeathCause Cause;
     public int KillerLordId;
 }
-
-public struct RestartRunEvent { public int Seed; }

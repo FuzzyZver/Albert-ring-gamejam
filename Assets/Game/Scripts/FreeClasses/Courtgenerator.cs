@@ -17,10 +17,8 @@ public static class CourtGenerator
         var maleNames = new Deck<string>(chars.MaleNames, rng);
         var femaleNames = new Deck<string>(chars.FemaleNames, rng);
 
-        court.Player = MakePerson(chars, balance, rng, traits, maleNames, femaleNames);
-        court.Player.Id = -1;
-        court.Player.Troops = 0;
-
+        // Двор генерируется первым: тогда для одного сида двор не поедет,
+        // даже если поменять число кандидатов.
         for (int i = 0; i < balance.LordsCount; i++)
         {
             var lord = MakePerson(chars, balance, rng, traits, maleNames, femaleNames);
@@ -31,6 +29,15 @@ public static class CourtGenerator
         }
 
         AssignRivals(court.Lords, rng);
+
+        for (int i = 0; i < balance.CandidatesCount; i++)
+        {
+            var candidate = MakePerson(chars, balance, rng, traits, maleNames, femaleNames);
+            candidate.Id = -1;
+            candidate.Troops = 0;
+            court.Candidates.Add(candidate);
+        }
+
         return court;
     }
 

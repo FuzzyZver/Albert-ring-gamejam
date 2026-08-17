@@ -6,6 +6,7 @@ public class BalanceConfig : ScriptableObject
     [Header("Забег")]
     public int DaysUntilSiege = 12;
     public int LordsCount = 5;
+    public int CandidatesCount = 3;   // из скольких выбираешь себя
     public int ActionsPerDay = 2;
     public int PetitionersPerMorning = 3;
     public int SiegeStrength = 110;
@@ -41,6 +42,12 @@ public class BalanceConfig : ScriptableObject
     public int TroopsPerFood = 10;   // гарнизон ест: 1 пища за каждые 10 копий
     public int WallsStrength = 15;
     public int GranaryStrength = 10;
+
+    [Header("Отладка")]
+    public int FixedSeed = 0;   // 0 = каждый забег новый
+
+    /// <summary>Сид следующего забега. Поставь FixedSeed, чтобы ловить баг на одном дворе.</summary>
+    public int NextSeed() => FixedSeed != 0 ? FixedSeed : System.Environment.TickCount;
 
     public int PeasantFood(int slider) => Clamped(PeasantTaxFood, slider);
     public int PeasantOpinion(int slider) => Clamped(PeasantTaxOpinion, slider);

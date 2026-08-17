@@ -1,9 +1,42 @@
 using System;
 using UnityEngine;
+using System.Text;
 
 [CreateAssetMenu(fileName = "CharactersConfig", menuName = "Configs/CharactersConfig")]
-public class CharactersConfig : ScriptableObject
+public partial class CharactersConfig : ScriptableObject
 {
+
+    public string TraitTitle(TraitId id, Gender gender)
+    {
+        var trait = GetTrait(id);
+        return trait != null ? trait.GetTitle(gender) : id.ToString();
+    }
+
+    public string TraitLine(TraitId a, TraitId b, Gender gender) =>
+        TraitTitle(a, gender) + ", " + TraitTitle(b, gender);
+
+    /// <summary>Две строки-подсказки под кандидатом: во что ты ввязываешься.</summary>
+    public string TraitHints(TraitId a, TraitId b)
+    {
+        var text = new StringBuilder();
+        Append(text, GetTrait(a));
+        Append(text, GetTrait(b));
+        return text.ToString();
+    }
+
+    public string AmbitionTitle(AmbitionId id)
+    {
+        var ambition = GetAmbition(id);
+        return ambition != null ? ambition.Title : id.ToString();
+    }
+
+    private static void Append(StringBuilder text, TraitDefinition trait)
+    {
+        if (trait == null || string.IsNullOrEmpty(trait.Hint)) return;
+        if (text.Length > 0) text.AppendLine();
+        text.Append(trait.GetTitle(Gender.Male)).Append(" — ").Append(trait.Hint);
+    }
+
     // ─────────────────────────────  ПУЛЫ ИМЁН  ─────────────────────────────
 
     public string[] MaleTitles = { "Сир", "Лорд", "Барон", "Брат" };
