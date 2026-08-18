@@ -10,9 +10,10 @@ public class InitSystem : Injects, IEcsInitSystem
 {
     public void Init()
     {
+        UI.Screens.Show(ScreenId.None);
         UI.CharacterSelect.SetVisible(false);
         UI.LordCard.SetVisible(false);
-        //if (UI.MapRoot != null) UI.MapRoot.SetActive(false);
+        UI.Hud.SetVisible(false);
 
         EcsWorld.NewEntity().Get<NewRunEvent>().Seed = GameConfig.BalanceConfig.NextSeed();
     }

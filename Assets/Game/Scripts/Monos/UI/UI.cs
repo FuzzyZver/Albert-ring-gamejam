@@ -7,4 +7,8 @@ public class UI : MonoBehaviour
     public CharacterSelectView CharacterSelect;
     public LordCardView LordCard;
     public Button NewRunButton;
+    public ScreensView Screens;
+    public HudView Hud;
+    public NightView Night;
+    public CastleSlotView[] CastleSlots;
 }

@@ -21,7 +21,14 @@ public class EcsInclude : MonoBehaviour
             .Add(new RunSetupSystem())
             .Add(new CandidateScreenSystem())
             .Add(new PlayerSpawnSystem())
+
+            .Add(new PhaseSystem())
+            .Add(new NightSystem())
+            .Add(new CastleActionSystem())
+
+            .Add(new ScreenSystem())
             .Add(new MapViewSystem())
+            .Add(new HudSystem())
             .Add(new LordCardSystem())
             .Add(new RestartSystem())
 
@@ -30,6 +37,17 @@ public class EcsInclude : MonoBehaviour
             .OneFrame<CourtReadyEvent>()
             .OneFrame<SelectCandidateEvent>()
             .OneFrame<RunReadyEvent>()
+
+            .OneFrame<AdvancePhaseEvent>()
+            .OneFrame<PhaseEndedEvent>()
+            .OneFrame<PhaseChangedEvent>()
+            .OneFrame<DayStartedEvent>()
+            .OneFrame<SpendActionEvent>()
+
+            .OneFrame<ChangeScreenEvent>()
+            .OneFrame<CastleSlotClickedEvent>()
+            .OneFrame<SetTaxEvent>()
+
             .OneFrame<PinClickedEvent>()
             .OneFrame<CloseCardEvent>()
 

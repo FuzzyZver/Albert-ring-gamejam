@@ -1,26 +1,14 @@
 using Leopotam.Ecs;
 
-/// <summary>Карта видна только после выбора персонажа. Заодно перерисовывает подписи булавок.</summary>
+/// <summary>Подписи на булавках. Экранами заведует ScreenSystem — здесь только карта как таковая.</summary>
 public class MapViewSystem : Injects, IEcsRunSystem
 {
-    private EcsFilter<CourtReadyEvent> _courtReady;
     private EcsFilter<RunReadyEvent> _runReady;
     private EcsFilter<PersonAttribute, ActorRef> _pinned;
 
     public void Run()
     {
-        foreach (var _ in _courtReady) SetMapVisible(false);
-
-        foreach (var _ in _runReady)
-        {
-            SetMapVisible(true);
-            RefreshPins();
-        }
-    }
-
-    private void SetMapVisible(bool value)
-    {
-        if (UI.MapRoot != null) UI.MapRoot.SetActive(value);
+        foreach (var _ in _runReady) RefreshPins();
     }
 
     private void RefreshPins()

@@ -73,3 +73,31 @@ public struct RngAttribute
 /// <summary>Сгенерированный забег целиком. Нужен, пока игрок не выбрал себя:
 /// кандидаты должны где-то дожить до нажатия кнопки.</summary>
 public struct CourtAttribute { public CourtData Value; }
+
+/// <summary>На что игрок смотрит прямо сейчас. Отдельно от фазы:
+/// фаза — состояние игры, экран — состояние взгляда.</summary>
+public struct ScreenAttribute { public ScreenId Current; }
+
+/// <summary>Что заготовлено в замке на завтрашний вечер.</summary>
+public struct PlanAttribute
+{
+    public bool HasPlan;
+    public CastleSlotId Slot;
+    public int PlannedOnDay;
+}
+
+/// <summary>Предварительный ночной счёт. Считается заново на каждое движение ползунка
+/// и применяется только когда игрок ляжет спать — в этом весь смысл ночного окна.</summary>
+public struct NightReportAttribute
+{
+    public int GoldIncome;
+    public int GoldUpkeep;
+    public int FoodIncome;
+    public int FoodUpkeep;
+    public int LordOpinionDelta;
+    public int CommonsOpinionDelta;
+    public bool Starving;
+
+    public int GoldNet => GoldIncome - GoldUpkeep;
+    public int FoodNet => FoodIncome - FoodUpkeep;
+}

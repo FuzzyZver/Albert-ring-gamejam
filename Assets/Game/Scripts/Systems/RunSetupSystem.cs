@@ -7,6 +7,8 @@ using Leopotam.Ecs;
 /// </summary>
 public class RunSetupSystem : Injects, IEcsRunSystem
 {
+    private EcsWorld _world;
+
     private EcsFilter<NewRunEvent> _requests;
     private EcsFilter<RunFlag> _runs;
     private EcsFilter<PersonAttribute> _persons;   // лорды и игрок
@@ -35,13 +37,13 @@ public class RunSetupSystem : Injects, IEcsRunSystem
         CreateRun(court);
         SpawnLords(court);
 
-        EcsWorld.NewEntity().Get<CourtReadyEvent>();
+        _world.NewEntity().Get<CourtReadyEvent>();
     }
 
     private void CreateRun(CourtData court)
     {
         var balance = GameConfig.BalanceConfig;
-        var entity = EcsWorld.NewEntity();
+        var entity = _world.NewEntity();
         entity.Get<RunFlag>();
         entity.Get<CourtAttribute>().Value = court;
 
@@ -60,6 +62,9 @@ public class RunSetupSystem : Injects, IEcsRunSystem
         tax.Lords = 1;
 
         entity.Get<CommonsAttribute>().Opinion = balance.StartCommonsOpinion;
+        entity.Get<ScreenAttribute>().Current = ScreenId.None;
+        entity.Get<PlanAttribute>();
+        entity.Get<NightReportAttribute>();
 
         ref var rng = ref entity.Get<RngAttribute>();
         rng.Seed = court.Seed;
@@ -81,7 +86,7 @@ public class RunSetupSystem : Injects, IEcsRunSystem
         for (int i = 0; i < court.Lords.Count && i < pins.Length; i++)
         {
             pins[i].Bind(court.Lords[i], GameConfig.BalanceConfig);
-            pins[i].Init(EcsWorld);
+            pins[i].Init(_world);
         }
     }
 }
