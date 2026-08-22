@@ -33,9 +33,15 @@ public struct CloseCardEvent { }
 
 public struct VerbEvent
 {
-    public EcsEntity Source;   // обычно игрок
+    public int TargetLordId;
+    public VerbId Verb;
+}
+
+public struct VerbResolvedEvent
+{
     public EcsEntity Target;
     public VerbId Verb;
+    public bool Success;
 }
 
 public struct OpinionChangeEvent

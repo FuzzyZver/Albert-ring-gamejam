@@ -17,6 +17,10 @@ public struct ScandalFlag { }
 public struct LeftCourtFlag { }
 public struct DeadFlag { }
 
+/// <summary>Выделение или его цифры изменились — пересчитать и перерисовать.
+/// Помечен как OneFrame: снимается в конце кадра, когда все вьюхи уже прочитали.</summary>
+public struct SelectionChangedFlag { }
+
 // состояние забега
 public struct StarvingFlag { }             // пища на нуле
 public struct SiegeReadyFlag { }

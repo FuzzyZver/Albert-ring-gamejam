@@ -1,42 +1,11 @@
 using System;
-using UnityEngine;
+using System.Collections.Generic;
 using System.Text;
+using UnityEngine;
 
 [CreateAssetMenu(fileName = "CharactersConfig", menuName = "Configs/CharactersConfig")]
-public partial class CharactersConfig : ScriptableObject
+public class CharactersConfig : ScriptableObject
 {
-
-    public string TraitTitle(TraitId id, Gender gender)
-    {
-        var trait = GetTrait(id);
-        return trait != null ? trait.GetTitle(gender) : id.ToString();
-    }
-
-    public string TraitLine(TraitId a, TraitId b, Gender gender) =>
-        TraitTitle(a, gender) + ", " + TraitTitle(b, gender);
-
-    /// <summary>Две строки-подсказки под кандидатом: во что ты ввязываешься.</summary>
-    public string TraitHints(TraitId a, TraitId b)
-    {
-        var text = new StringBuilder();
-        Append(text, GetTrait(a));
-        Append(text, GetTrait(b));
-        return text.ToString();
-    }
-
-    public string AmbitionTitle(AmbitionId id)
-    {
-        var ambition = GetAmbition(id);
-        return ambition != null ? ambition.Title : id.ToString();
-    }
-
-    private static void Append(StringBuilder text, TraitDefinition trait)
-    {
-        if (trait == null || string.IsNullOrEmpty(trait.Hint)) return;
-        if (text.Length > 0) text.AppendLine();
-        text.Append(trait.GetTitle(Gender.Male)).Append(" — ").Append(trait.Hint);
-    }
-
     // ─────────────────────────────  ПУЛЫ ИМЁН  ─────────────────────────────
 
     public string[] MaleTitles = { "Сир", "Лорд", "Барон", "Брат" };
@@ -69,9 +38,10 @@ public partial class CharactersConfig : ScriptableObject
     public string[] Epithets(Gender gender) => gender == Gender.Male ? MaleEpithets : FemaleEpithets;
 
     // ─────────────────────  СТАРТОВАЯ МАТРИЦА  ─────────────────────
-    // Заполняется один раз при создании ассета. Дальше правишь в инспекторе,
-    // код сюда больше не лезет. Матрица РАЗРЕЖЕННАЯ: черта реагирует
-    // на два-три глагола, на остальные молчит.
+    // Заполняется один раз при создании ассета. Дальше правишь в инспекторе.
+    // Если добавил новый глагол в enum — правый клик по ассету,
+    // «Добавить недостающие записи», иначе в ассете его не будет.
+    // Матрица РАЗРЕЖЕННАЯ: черта реагирует на два-четыре глагола, на остальные молчит.
 
     private static TraitDefinition[] DefaultTraits() => new[]
     {
@@ -79,10 +49,12 @@ public partial class CharactersConfig : ScriptableObject
             Id = TraitId.Proud, Title = "Гордый", TitleFemale = "Гордая",
             Hint = "Не продаётся. Помнит оскорбления.",
             Reactions = new[] {
-                R(VerbId.Flatter,  15,  0, ConsequenceId.None,            "любит лесть"),
-                R(VerbId.Bribe,   -30,  0, ConsequenceId.None,            "не продаётся"),
-                R(VerbId.Threaten,-25,  0, ConsequenceId.ChallengeToDuel, "вызовет на поединок"),
-                R(VerbId.Insult,  -20,  0, ConsequenceId.ChallengeToDuel, "вызовет на поединок"),
+                R(VerbId.Flatter,       15,  0, ConsequenceId.None,            "любит лесть"),
+                R(VerbId.Bribe,        -30,  0, ConsequenceId.None,            "он не продаётся"),
+                R(VerbId.Threaten,     -25,  0, ConsequenceId.ChallengeToDuel, "вызовет на поединок"),
+                R(VerbId.Insult,       -20,  0, ConsequenceId.ChallengeToDuel, "вызовет на поединок"),
+                R(VerbId.AskForCounsel, 15,  0, ConsequenceId.None,            "его наконец спросили"),
+                R(VerbId.HuntTogether,   5,  0, ConsequenceId.None,            ""),
             },
             SelfReactions = new[] {
                 R(VerbId.Threaten,  5, 0, ConsequenceId.None, "ты умеешь пугать"),
@@ -94,10 +66,11 @@ public partial class CharactersConfig : ScriptableObject
             Id = TraitId.Greedy, Title = "Алчный", TitleFemale = "Алчная",
             Hint = "Всё имеет цену. Особенно он.",
             Reactions = new[] {
-                R(VerbId.Bribe,          25, 0, ConsequenceId.None,        "берёт и просит ещё"),
-                R(VerbId.Flatter,        -5, 0, ConsequenceId.None,        "словами сыт не будет"),
-                R(VerbId.AskForTroops,  -10, 0, ConsequenceId.DemandGift,  "потребует плату"),
-                R(VerbId.FulfillAmbition,10, 0, ConsequenceId.None,        ""),
+                R(VerbId.Bribe,           25, 0, ConsequenceId.None,        "берёт и просит ещё"),
+                R(VerbId.Flatter,         -5, 0, ConsequenceId.None,        "словами сыт не будет"),
+                R(VerbId.AskForTroops,   -10, 0, ConsequenceId.DemandGift,  "потребует плату"),
+                R(VerbId.FulfillAmbition, 10, 0, ConsequenceId.None,        ""),
+                R(VerbId.InviteToCastle,  10, 0, ConsequenceId.None,        "поест за твой счёт"),
             },
             SelfReactions = new[] {
                 R(VerbId.Bribe, 10, 0, ConsequenceId.None, "ты знаешь настоящую цену"),
@@ -109,14 +82,17 @@ public partial class CharactersConfig : ScriptableObject
             Id = TraitId.Cunning, Title = "Хитрый", TitleFemale = "Хитрая",
             Hint = "Видит лесть насквозь. Доносит.",
             Reactions = new[] {
-                R(VerbId.Flatter, -15, 0, ConsequenceId.None,       "видит насквозь"),
-                R(VerbId.Bribe,     5, 0, ConsequenceId.TellRival,  "возьмёт и расскажет"),
-                R(VerbId.Threaten, -5, 0, ConsequenceId.SpreadRumor, "пустит слух"),
-                R(VerbId.Insult,    5, 0, ConsequenceId.None,       "уважает прямоту"),
+                R(VerbId.Flatter,       -15, 0, ConsequenceId.None,        "видит насквозь"),
+                R(VerbId.Bribe,           5, 0, ConsequenceId.TellRival,   "возьмёт и расскажет"),
+                R(VerbId.Threaten,       -5, 0, ConsequenceId.SpreadRumor, "пустит слух"),
+                R(VerbId.Insult,          5, 0, ConsequenceId.None,        "уважает прямоту"),
+                R(VerbId.AskForCounsel,   5, 0, ConsequenceId.SpreadRumor, "расскажет всем, что ты не справляешься"),
+                R(VerbId.InviteToCastle,  5, 0, ConsequenceId.TellRival,   "запомнит планировку"),
             },
             SelfReactions = new[] {
-                R(VerbId.Flatter, 5, 0, ConsequenceId.None, ""),
-                R(VerbId.Insult,  5, 0, ConsequenceId.None, ""),
+                R(VerbId.Flatter,        5, 0, ConsequenceId.None, ""),
+                R(VerbId.Insult,         5, 0, ConsequenceId.None, ""),
+                R(VerbId.AskForCounsel,  5, 0, ConsequenceId.None, "ты услышишь и то, что не сказали"),
             },
         },
 
@@ -124,13 +100,16 @@ public partial class CharactersConfig : ScriptableObject
             Id = TraitId.Pious, Title = "Набожный", TitleFemale = "Набожная",
             Hint = "Судит тебя. Вслух.",
             Reactions = new[] {
-                R(VerbId.Seduce,          0, -25, ConsequenceId.Scandal,           "провал = скандал"),
-                R(VerbId.DrinkTogether, -10,   0, ConsequenceId.None,              "не пьёт"),
-                R(VerbId.Insult,        -15,   0, ConsequenceId.PublicRepentance,  "покается прилюдно"),
-                R(VerbId.Flatter,         5,   0, ConsequenceId.None,              ""),
+                R(VerbId.Seduce,          0, -25, ConsequenceId.Scandal,          "провал = скандал"),
+                R(VerbId.DrinkTogether, -10,   0, ConsequenceId.None,             "не пьёт"),
+                R(VerbId.Insult,        -15,   0, ConsequenceId.PublicRepentance, "покается прилюдно"),
+                R(VerbId.Flatter,         5,   0, ConsequenceId.None,             ""),
+                R(VerbId.PrayTogether,   20,   0, ConsequenceId.None,             "наконец-то"),
+                R(VerbId.HuntTogether,  -10,   0, ConsequenceId.None,             "убийство ради забавы"),
             },
             SelfReactions = new[] {
-                R(VerbId.Seduce, 0, -10, ConsequenceId.None, "тебе стыдно"),
+                R(VerbId.Seduce,        0, -10, ConsequenceId.None, "тебе стыдно"),
+                R(VerbId.PrayTogether, 10,   0, ConsequenceId.None, "ты знаешь слова"),
             },
             CommonsOpinion = 10,
         },
@@ -143,9 +122,12 @@ public partial class CharactersConfig : ScriptableObject
                 R(VerbId.Flatter,      -10, 0, ConsequenceId.None, "презирает лизоблюдов"),
                 R(VerbId.Insult,         5, 0, ConsequenceId.None, ""),
                 R(VerbId.AskForTroops,  10, 0, ConsequenceId.None, "любит войну"),
+                R(VerbId.HuntTogether,  15, 0, ConsequenceId.None, "любит кровь"),
+                R(VerbId.PrayTogether,  -5, 0, ConsequenceId.None, ""),
             },
             SelfReactions = new[] {
-                R(VerbId.Threaten, 10, 0, ConsequenceId.None, "тебе верят"),
+                R(VerbId.Threaten,     10, 0, ConsequenceId.None, "тебе верят"),
+                R(VerbId.HuntTogether, 10, 0, ConsequenceId.None, ""),
             },
             CommonsOpinion = -10,
         },
@@ -154,13 +136,16 @@ public partial class CharactersConfig : ScriptableObject
             Id = TraitId.Craven, Title = "Трусливый", TitleFemale = "Трусливая",
             Hint = "Прогибается. И сбегает.",
             Reactions = new[] {
-                R(VerbId.Threaten,      25, 0, ConsequenceId.None,       "сразу сдастся"),
-                R(VerbId.AskForTroops, -20, 0, ConsequenceId.LeaveCourt, "уедет от греха"),
-                R(VerbId.Insult,       -10, 0, ConsequenceId.LeaveCourt, "уедет от греха"),
+                R(VerbId.Threaten,       25, 0, ConsequenceId.None,       "сразу сдастся"),
+                R(VerbId.AskForTroops,  -20, 0, ConsequenceId.LeaveCourt, "уедет от греха"),
+                R(VerbId.Insult,        -10, 0, ConsequenceId.LeaveCourt, "уедет от греха"),
+                R(VerbId.HuntTogether,  -15, 0, ConsequenceId.None,       "боится лошадей"),
+                R(VerbId.InviteToCastle, 10, 0, ConsequenceId.None,       "за стенами спокойнее"),
             },
             SelfReactions = new[] {
                 R(VerbId.Threaten,     -15, 0, ConsequenceId.None, "тебе не верят"),
                 R(VerbId.AskForTroops,  -5, 0, ConsequenceId.None, ""),
+                R(VerbId.HuntTogether, -10, 0, ConsequenceId.None, "ты и сам не любишь лошадей"),
             },
         },
 
@@ -171,6 +156,7 @@ public partial class CharactersConfig : ScriptableObject
                 R(VerbId.Seduce,          0, 30, ConsequenceId.None, "почти согласен"),
                 R(VerbId.DrinkTogether,  10,  0, ConsequenceId.None, ""),
                 R(VerbId.Flatter,        10,  0, ConsequenceId.None, ""),
+                R(VerbId.InviteToCastle, 10,  0, ConsequenceId.None, "у тебя в замке есть на кого посмотреть"),
             },
             SelfReactions = new[] {
                 R(VerbId.Seduce, 0, 15, ConsequenceId.None, "ты знаешь, что делаешь"),
@@ -182,12 +168,15 @@ public partial class CharactersConfig : ScriptableObject
             Id = TraitId.Drunkard, Title = "Пьяница", TitleFemale = "Пьяница",
             Hint = "Лучший друг за столом. Худший — наутро.",
             Reactions = new[] {
-                R(VerbId.DrinkTogether, 25, 0, ConsequenceId.GetDrunk, "напьётся"),
-                R(VerbId.Bribe,         10, 0, ConsequenceId.None,     ""),
-                R(VerbId.Threaten,      -5, 0, ConsequenceId.None,     ""),
+                R(VerbId.DrinkTogether,  25, 0, ConsequenceId.GetDrunk, "напьётся"),
+                R(VerbId.Bribe,          10, 0, ConsequenceId.None,     ""),
+                R(VerbId.Threaten,       -5, 0, ConsequenceId.None,     ""),
+                R(VerbId.PrayTogether,  -10, 0, ConsequenceId.None,     "не в этом состоянии"),
+                R(VerbId.InviteToCastle, 15, 0, ConsequenceId.None,     "у тебя погреб"),
             },
             SelfReactions = new[] {
-                R(VerbId.DrinkTogether, 15, 0, ConsequenceId.ConfessDrunkenly, "ты расскажешь всё"),
+                R(VerbId.DrinkTogether,  15, 0, ConsequenceId.ConfessDrunkenly, "шанс проболтаться"),
+                R(VerbId.InviteToCastle, 10, 0, ConsequenceId.None,             ""),
             },
             DailyRisk = ConsequenceId.FallDownStairs, DailyRiskChance = 4,
         },
@@ -200,6 +189,7 @@ public partial class CharactersConfig : ScriptableObject
                 R(VerbId.Flatter,        -10, 0, ConsequenceId.None,       "не слышит"),
                 R(VerbId.Bribe,          -10, 0, ConsequenceId.None,       "не слышит"),
                 R(VerbId.Insult,         -25, 0, ConsequenceId.PlotMurder, "начнёт готовить убийство"),
+                R(VerbId.AskForCounsel,    5, 0, ConsequenceId.None,       "расскажет только о своём"),
             },
             SelfReactions = new[] {
                 R(VerbId.FulfillAmbition, 10, 0, ConsequenceId.None, ""),
@@ -211,15 +201,17 @@ public partial class CharactersConfig : ScriptableObject
             Id = TraitId.Honest, Title = "Честный", TitleFemale = "Честная",
             Hint = "Не врёт. Тебе тоже не даст.",
             Reactions = new[] {
-                R(VerbId.Bribe,        -25, 0, ConsequenceId.TellRival, "донесёт о взятке"),
-                R(VerbId.Flatter,      -10, 0, ConsequenceId.None,      "не любит лести"),
-                R(VerbId.Threaten,       5, 0, ConsequenceId.None,      "ценит прямоту"),
-                R(VerbId.AskForTroops,  15, 0, ConsequenceId.None,      "слово держит"),
+                R(VerbId.Bribe,         -25, 0, ConsequenceId.TellRival, "донесёт о взятке"),
+                R(VerbId.Flatter,       -10, 0, ConsequenceId.None,      "не любит лести"),
+                R(VerbId.Threaten,        5, 0, ConsequenceId.None,      "ценит прямоту"),
+                R(VerbId.AskForTroops,   15, 0, ConsequenceId.None,      "слово держит"),
+                R(VerbId.AskForCounsel,  10, 0, ConsequenceId.None,      "скажет правду, какой бы она ни была"),
             },
             SelfReactions = new[] {
-                R(VerbId.Bribe,        -15, 0, ConsequenceId.None, "у тебя дрожат руки"),
-                R(VerbId.Flatter,      -10, 0, ConsequenceId.None, "звучит фальшиво"),
-                R(VerbId.AskForTroops,  10, 0, ConsequenceId.None, "тебе верят"),
+                R(VerbId.Bribe,         -15, 0, ConsequenceId.None, "у тебя дрожат руки"),
+                R(VerbId.Flatter,       -10, 0, ConsequenceId.None, "звучит фальшиво"),
+                R(VerbId.AskForTroops,   10, 0, ConsequenceId.None, "тебе верят"),
+                R(VerbId.AskForCounsel,   5, 0, ConsequenceId.None, ""),
             },
             CommonsOpinion = 10,
         },
@@ -246,75 +238,184 @@ public partial class CharactersConfig : ScriptableObject
         new VerbDefinition {
             Id = VerbId.Seduce, Title = "Соблазнить", Hint = "Провал = скандал на весь двор",
             BaseOpinion = 30, BaseChance = 45, OnFail = ConsequenceId.Scandal,
+            RequiresTrait = true, RequiredTrait = TraitId.Lustful,
         },
         new VerbDefinition {
-            Id = VerbId.Insult, Title = "Послать", Hint = "Радует соперника и крестьян",
+            Id = VerbId.Insult, Title = "Послать на три буквы", Hint = "Радует соперника и крестьян",
             BaseOpinion = -45, BaseChance = 100, RivalOpinion = 30, CommonsOpinion = 10,
         },
         new VerbDefinition {
             Id = VerbId.FulfillAmbition, Title = "Исполнить желание", Hint = "Один раз на лорда",
-            BaseOpinion = 50, BaseChance = 100, OncePerLord = true,
+            BaseOpinion = 0, BaseChance = 100, OncePerLord = true, RivalOpinion = -20,
         },
         new VerbDefinition {
             Id = VerbId.AskForTroops, Title = "Просить войск", Hint = "Унизительно, но копья нужны",
             BaseOpinion = -10, BaseChance = 100, OncePerLord = true,
         },
+
+        new VerbDefinition {
+            Id = VerbId.PrayTogether, Title = "Помолиться вместе", Hint = "Крестьяне это видят",
+            BaseOpinion = 8, BaseChance = 100, CommonsOpinion = 5,
+        },
+        new VerbDefinition {
+            Id = VerbId.HuntTogether, Title = "Позвать на охоту", Hint = "Загон завтра вечером. Лошади бывают разные",
+            BaseOpinion = 12, BaseChance = 90, FoodCost = 8, OnFail = ConsequenceId.FallFromHorse,
+        },
+        new VerbDefinition {
+            Id = VerbId.InviteToCastle, Title = "Позвать в замок", Hint = "Гость увидит всё, что у тебя есть",
+            BaseOpinion = 20, BaseChance = 100, GoldCost = 10, FoodCost = 10, CourtOpinion = -3,
+        },
+        new VerbDefinition {
+            Id = VerbId.AskForCounsel, Title = "Спросить совета", Hint = "Бесплатно. Почти",
+            BaseOpinion = 6, BaseChance = 100,
+        },
     };
 
     private static AmbitionDefinition[] DefaultAmbitions() => new[]
     {
-        new AmbitionDefinition { Id = AmbitionId.MarryMyDaughter,   Title = "Женись на моей дочери", Demand = "У меня дочь на выданье, государь.", OpinionOnFulfill = 50, ClosesRomance = true, CourtOpinion = -5, OnRefuse = ConsequenceId.SpreadRumor },
-        new AmbitionDefinition { Id = AmbitionId.GiveMeTheMill,     Title = "Отдай мельницу",        Demand = "Мельница у брода должна быть моей.", OpinionOnFulfill = 40, CommonsOpinion = -15, OnRefuse = ConsequenceId.DemandGift },
-        new AmbitionDefinition { Id = AmbitionId.GrantMeATitle,     Title = "Дай титул",             Demand = "Я достоин большего, чем есть.",     OpinionOnFulfill = 45, CourtOpinion = -10, OnRefuse = ConsequenceId.LeaveCourt },
-        new AmbitionDefinition { Id = AmbitionId.KillMyRival,       Title = "Убей моего врага",      Demand = "Ты знаешь, о ком я.",               OpinionOnFulfill = 60, CourtOpinion = -20, OnRefuse = ConsequenceId.PlotMurder },
-        new AmbitionDefinition { Id = AmbitionId.BuildTheChapel,    Title = "Построй часовню",       Demand = "Господь смотрит, государь.",        OpinionOnFulfill = 35, GoldCost = 30, CommonsOpinion = 15 },
-        new AmbitionDefinition { Id = AmbitionId.HearMyProphecy,    Title = "Выслушай пророчество",  Demand = "Мне было видение. Про тебя.",       OpinionOnFulfill = 25, OnRefuse = ConsequenceId.SpreadRumor },
-        new AmbitionDefinition { Id = AmbitionId.TasteMySoup,       Title = "Попробуй мой суп",      Demand = "Я готовил три дня.",                OpinionOnFulfill = 20, OnRefuse = ConsequenceId.Scandal },
-        new AmbitionDefinition { Id = AmbitionId.NameYourDogAfterMe,Title = "Назови собаку в мою честь", Demand = "Пустяк, но мне будет приятно.", OpinionOnFulfill = 30, CourtOpinion = -5 },
+        new AmbitionDefinition { Id = AmbitionId.MarryMyDaughter,    Title = "Женись на моей дочери",     PlayerAction = "Жениться на дочери",        Demand = "У меня дочь на выданье, государь.", OpinionOnFulfill = 50, ClosesRomance = true, CourtOpinion = -5, OnRefuse = ConsequenceId.SpreadRumor },
+        new AmbitionDefinition { Id = AmbitionId.GiveMeTheMill,      Title = "Отдай мельницу",            PlayerAction = "Отдать мельницу",           Demand = "Мельница у брода должна быть моей.", OpinionOnFulfill = 40, CommonsOpinion = -15, OnRefuse = ConsequenceId.DemandGift },
+        new AmbitionDefinition { Id = AmbitionId.GrantMeATitle,      Title = "Дай титул",                 PlayerAction = "Дать титул",                Demand = "Я достоин большего, чем есть.",      OpinionOnFulfill = 45, CourtOpinion = -10, OnRefuse = ConsequenceId.LeaveCourt },
+        new AmbitionDefinition { Id = AmbitionId.KillMyRival,        Title = "Убей моего врага",          PlayerAction = "Убить его врага",           Demand = "Ты знаешь, о ком я.",                OpinionOnFulfill = 60, CourtOpinion = -20, OnRefuse = ConsequenceId.PlotMurder },
+        new AmbitionDefinition { Id = AmbitionId.BuildTheChapel,     Title = "Построй часовню",           PlayerAction = "Построить часовню",         Demand = "Господь смотрит, государь.",         OpinionOnFulfill = 35, GoldCost = 30, CommonsOpinion = 15 },
+        new AmbitionDefinition { Id = AmbitionId.HearMyProphecy,     Title = "Выслушай пророчество",      PlayerAction = "Выслушать пророчество",     Demand = "Мне было видение. Про тебя.",        OpinionOnFulfill = 25, OnRefuse = ConsequenceId.SpreadRumor },
+        new AmbitionDefinition { Id = AmbitionId.TasteMySoup,        Title = "Попробуй мой суп",          PlayerAction = "Попробовать суп",           Demand = "Я готовил три дня.",                 OpinionOnFulfill = 20, OnRefuse = ConsequenceId.Scandal },
+        new AmbitionDefinition { Id = AmbitionId.NameYourDogAfterMe, Title = "Назови собаку в мою честь", PlayerAction = "Назвать собаку в его честь", Demand = "Пустяк, но мне будет приятно.",     OpinionOnFulfill = 30, CourtOpinion = -5 },
     };
 
     private static ConsequenceDefinition[] DefaultConsequences() => new[]
     {
-        C(ConsequenceId.None,               ""),
-        C(ConsequenceId.ChallengeToDuel,    "{lord} бросил перчатку. Отказаться нельзя."),
-        C(ConsequenceId.Scandal,            "К вечеру об этом знал весь замок."),
-        C(ConsequenceId.SpreadRumor,        "{lord} говорил тихо, но говорил со всеми."),
-        C(ConsequenceId.DemandGift,         "{lord} ждёт подарка. И ждать не любит."),
-        C(ConsequenceId.LeaveCourt,         "{lord} уехал на рассвете. Копья уехали с ним."),
-        C(ConsequenceId.PlotMurder,         "{lord} перестал спорить. Это хуже, чем спор."),
-        C(ConsequenceId.GetDrunk,           "{lord} упал лицом в блюдо. День окончен."),
-        C(ConsequenceId.PublicRepentance,   "{lord} каялся на площади. Крестьянам понравилось."),
-        C(ConsequenceId.FallDownStairs,     "Лестница была там же, где вчера. {lord} — нет."),
-        C(ConsequenceId.BringExtraTroops,   "{lord} приведёт больше, чем обещал."),
-        C(ConsequenceId.TellRival,          "О разговоре узнал тот, кому не следовало."),
+        C(ConsequenceId.None,             "",                    ""),
+        C(ConsequenceId.ChallengeToDuel,  "поединок",            "{lord} бросил перчатку. Отказаться нельзя."),
+        C(ConsequenceId.Scandal,          "скандал",             "К вечеру об этом знал весь замок.",           court: -10, commons: -5),
+        C(ConsequenceId.SpreadRumor,      "слух",                "{lord} говорил тихо, но говорил со всеми.",   court: -8),
+        C(ConsequenceId.DemandGift,       "требует подарок",     "{lord} ждёт подарка. И ждать не любит.",      lord: -5),
+        C(ConsequenceId.LeaveCourt,       "уедет",               "{lord} уехал на рассвете. Копья уехали с ним."),
+        C(ConsequenceId.PlotMurder,       "заговор",             "{lord} перестал спорить. Это хуже, чем спор."),
+        C(ConsequenceId.GetDrunk,         "напьётся",            "{lord} упал лицом в блюдо. День окончен.",    actionsLost: 1),
+        C(ConsequenceId.PublicRepentance, "покается прилюдно",   "{lord} каялся на площади. Крестьянам понравилось.", commons: 10),
+        C(ConsequenceId.FallDownStairs,   "падение с лестницы",  "Лестница была там же, где вчера. {lord} — нет."),
+        C(ConsequenceId.BringExtraTroops, "приведёт больше",     "{lord} приведёт больше, чем обещал.",         troops: 8),
+        C(ConsequenceId.TellRival,        "донесёт сопернику",   "О разговоре узнал тот, кому не следовало."),
 
-        C(ConsequenceId.ChokeAtFeast,       "{lord} подавился на собственном пиру.",        lethalLord: true),
-        C(ConsequenceId.FallFromHorse,      "Лошадь решила иначе.",                          lethalLord: true),
-        C(ConsequenceId.PoisonedByLover,    "Любовник передумал.",                           lethalLord: true),
-        C(ConsequenceId.StruckByLightning,  "Пророчество сбылось буквально.",                lethalLord: true),
-        C(ConsequenceId.PlagueInCastle,     "Крысы пришли раньше армии.",                    lethalLord: true, lethalPlayer: true),
-        C(ConsequenceId.DuelGoesBadly,      "Ты принял вызов. Зря.",                         lethalPlayer: true),
-        C(ConsequenceId.DrownInMoat,        "Ночью, пьяным, во рву собственного замка.",     lethalPlayer: true),
-        C(ConsequenceId.AvengedBySon,       "Сын оскорблённого лорда оказался терпелив.",    lethalPlayer: true),
+        C(ConsequenceId.ChokeAtFeast,      "подавился",       "{lord} подавился на собственном пиру.",     lethalLord: true),
+        C(ConsequenceId.FallFromHorse,     "лошадь решила иначе", "Лошадь решила иначе.",                  lethalLord: true),
+        C(ConsequenceId.PoisonedByLover,   "яд",              "Любовник передумал.",                       lethalLord: true),
+        C(ConsequenceId.StruckByLightning, "молния",          "Пророчество сбылось буквально.",            lethalLord: true),
+        C(ConsequenceId.PlagueInCastle,    "чума",            "Крысы пришли раньше армии.",                lethalLord: true, lethalPlayer: true),
+        C(ConsequenceId.DuelGoesBadly,     "поединок проигран", "Ты принял вызов. Зря.",                   lethalPlayer: true),
+        C(ConsequenceId.DrownInMoat,       "ров",             "Ночью, пьяным, во рву собственного замка.", lethalPlayer: true),
+        C(ConsequenceId.AvengedBySon,      "месть сына",      "Сын оскорблённого лорда оказался терпелив.", lethalPlayer: true),
 
-        C(ConsequenceId.LordDiesLaughing,       "{lord} умер со смеху над твоим предложением.", lethalLord: true),
-        C(ConsequenceId.BastardClaimsCastle,    "Объявился ещё один наследник."),
-        C(ConsequenceId.LoversMeet,             "Два любовника встретились в коридоре."),
-        C(ConsequenceId.DogBitesNamesake,       "Собака укусила лорда, в честь которого названа."),
-        C(ConsequenceId.ExcommunicatedByBrother,"Брат Одо отлучил тебя лично."),
-        C(ConsequenceId.HorseEatsTheTreaty,     "Договор был на столе. Лошадь была рядом."),
-        C(ConsequenceId.TurnipToTheFace,        "Крестьянин промахнулся. Или нет."),
-        C(ConsequenceId.SoupWasTerrible,        "Ты попробовал. Ты сказал правду."),
-        C(ConsequenceId.ProphecyFulfilled,      "Одо был прав, и это хуже всего."),
-        C(ConsequenceId.ConfessDrunkenly,       "Ты рассказал всё. Всем."),
+        C(ConsequenceId.LordDiesLaughing,        "умер со смеху", "{lord} умер со смеху над твоим предложением.", lethalLord: true),
+        C(ConsequenceId.BastardClaimsCastle,     "ещё наследник", "Объявился ещё один наследник."),
+        C(ConsequenceId.LoversMeet,              "встреча в коридоре", "Два любовника встретились в коридоре.", court: -10),
+        C(ConsequenceId.DogBitesNamesake,        "собака укусила", "Собака укусила лорда, в честь которого названа.", lord: -15),
+        C(ConsequenceId.ExcommunicatedByBrother, "отлучение",   "Брат Одо отлучил тебя лично.",                commons: -20),
+        C(ConsequenceId.HorseEatsTheTreaty,      "лошадь съела договор", "Договор был на столе. Лошадь была рядом."),
+        C(ConsequenceId.TurnipToTheFace,         "репа в лицо", "Крестьянин промахнулся. Или нет.",            commons: -5),
+        C(ConsequenceId.SoupWasTerrible,         "суп был ужасен", "Ты попробовал. Ты сказал правду.",         lord: -30),
+        C(ConsequenceId.ProphecyFulfilled,       "пророчество сбылось", "Одо был прав, и это хуже всего."),
+        C(ConsequenceId.ConfessDrunkenly,        "ты рассказал всё", "Ты рассказал всё. Всем.",                court: -12),
     };
 
     private static VerbReaction R(VerbId verb, int opinion, int chance, ConsequenceId onFail, string note) =>
         new VerbReaction { Verb = verb, Opinion = opinion, Chance = chance, OnFail = onFail, Note = note };
 
-    private static ConsequenceDefinition C(ConsequenceId id, string line,
-        bool lethalLord = false, bool lethalPlayer = false) =>
-        new ConsequenceDefinition { Id = id, ChronicleLine = line, IsLethalForLord = lethalLord, IsLethalForPlayer = lethalPlayer };
+    private static ConsequenceDefinition C(ConsequenceId id, string title, string line,
+        bool lethalLord = false, bool lethalPlayer = false,
+        int lord = 0, int court = 0, int commons = 0,
+        int gold = 0, int food = 0, int troops = 0, int actionsLost = 0) =>
+        new ConsequenceDefinition
+        {
+            Id = id,
+            Title = title,
+            ChronicleLine = line,
+            IsLethalForLord = lethalLord,
+            IsLethalForPlayer = lethalPlayer,
+            LordOpinion = lord,
+            CourtOpinion = court,
+            CommonsOpinion = commons,
+            Gold = gold,
+            Food = food,
+            Troops = troops,
+            ActionsLost = actionsLost,
+        };
+
+    // ─────────────────────  ИМЕНА И ФОРМАТИРОВАНИЕ  ─────────────────────
+    // Живёт в конфиге, а не в статик-хелпере: именно конфиг владеет названиями,
+    // и системам не нужно знать ни про род, ни про падежи.
+
+    public string TraitTitle(TraitId id, Gender gender)
+    {
+        var trait = GetTrait(id);
+        return trait != null ? trait.GetTitle(gender) : id.ToString();
+    }
+
+    public string TraitLine(TraitId a, TraitId b, Gender gender) =>
+        TraitTitle(a, gender) + ", " + TraitTitle(b, gender);
+
+    /// <summary>Две строки-подсказки под кандидатом: во что ты ввязываешься.</summary>
+    public string TraitHints(TraitId a, TraitId b)
+    {
+        var text = new StringBuilder();
+        Append(text, GetTrait(a));
+        Append(text, GetTrait(b));
+        return text.ToString();
+    }
+
+    public string AmbitionTitle(AmbitionId id)
+    {
+        var ambition = GetAmbition(id);
+        return ambition != null ? ambition.Title : id.ToString();
+    }
+
+    private static void Append(StringBuilder text, TraitDefinition trait)
+    {
+        if (trait == null || string.IsNullOrEmpty(trait.Hint)) return;
+        if (text.Length > 0) text.AppendLine();
+        text.Append(trait.GetTitle(Gender.Male)).Append(" — ").Append(trait.Hint);
+    }
+
+    // ─────────────────────  ДОБОР НОВЫХ ЗАПИСЕЙ  ─────────────────────
+
+    [ContextMenu("Добавить недостающие записи")]
+    private void FillMissing()
+    {
+        int added = 0;
+        Traits = Merge(Traits, DefaultTraits(), t => (int)t.Id, ref added);
+        Verbs = Merge(Verbs, DefaultVerbs(), v => (int)v.Id, ref added);
+        Ambitions = Merge(Ambitions, DefaultAmbitions(), a => (int)a.Id, ref added);
+        Consequences = Merge(Consequences, DefaultConsequences(), c => (int)c.Id, ref added);
+
+        Debug.Log(added > 0 ? $"{name}: дописано записей — {added}" : $"{name}: всё на месте", this);
+
+#if UNITY_EDITOR
+        UnityEditor.EditorUtility.SetDirty(this);
+#endif
+    }
+
+    private static T[] Merge<T>(T[] current, T[] defaults, Func<T, int> id, ref int added)
+    {
+        var list = new List<T>(current ?? new T[0]);
+
+        for (int d = 0; d < defaults.Length; d++)
+        {
+            bool exists = false;
+            for (int i = 0; i < list.Count; i++)
+            {
+                if (id(list[i]) != id(defaults[d])) continue;
+                exists = true;
+                break;
+            }
+
+            if (exists) continue;
+            list.Add(defaults[d]);
+            added++;
+        }
+
+        return list.ToArray();
+    }
 }
 
 // ─────────────────────────────  ОПРЕДЕЛЕНИЯ  ─────────────────────────────
@@ -368,7 +469,9 @@ public struct VerbReaction
     public int Opinion;            // сдвиг итогового мнения
     public int Chance;             // сдвиг шанса успеха, %
     public ConsequenceId OnFail;   // что случится при провале
-    [TextArea(1, 2)] public string Note;  // строка для подсказки в UI
+    [TextArea(1, 2)] public string Note;  // строка для разбора в карточке
+
+    public bool IsEmpty => Opinion == 0 && Chance == 0 && OnFail == ConsequenceId.None;
 }
 
 [Serializable]
@@ -402,8 +505,9 @@ public class VerbDefinition
 public class AmbitionDefinition
 {
     public AmbitionId Id;
-    public string Title;
-    [TextArea(1, 2)] public string Demand;   // как он это озвучивает
+    public string Title;         // как он это просит: «Женись на моей дочери»
+    public string PlayerAction;  // как это делаешь ты: «Жениться на дочери»
+    [TextArea(1, 2)] public string Demand;
 
     public int OpinionOnFulfill;
     public int GoldCost;
@@ -417,6 +521,7 @@ public class AmbitionDefinition
 public class ConsequenceDefinition
 {
     public ConsequenceId Id;
+    public string Title;                            // короткое имя для разбора: «скандал»
     [TextArea(2, 3)] public string ChronicleLine;   // {lord} и {player} — слоты
 
     public bool IsLethalForLord;

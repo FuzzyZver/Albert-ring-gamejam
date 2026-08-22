@@ -16,6 +16,8 @@ public enum TraitId
     Honest      // Честный
 }
 
+// ВАЖНО: новые значения дописывать ТОЛЬКО в конец. Unity сериализует enum числом,
+// вставка в середину молча перемешает всё, что уже настроено в ассетах.
 public enum VerbId
 {
     Flatter,          // Польстить
@@ -25,7 +27,12 @@ public enum VerbId
     Seduce,           // Соблазнить
     Insult,           // Послать
     FulfillAmbition,  // Исполнить желание
-    AskForTroops      // Просить войск
+    AskForTroops,     // Просить войск
+
+    PrayTogether,     // Помолиться вместе
+    HuntTogether,     // Позвать на охоту
+    InviteToCastle,   // Позвать в замок
+    AskForCounsel     // Спросить совета
 }
 
 public enum AmbitionId
@@ -76,4 +83,3 @@ public enum ConsequenceId
     ProphecyFulfilled,   // Одо был прав, и это хуже всего
     ConfessDrunkenly     // ты рассказал всё. Всем
 }
-

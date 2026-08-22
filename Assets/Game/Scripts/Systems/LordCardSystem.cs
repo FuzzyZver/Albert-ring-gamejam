@@ -1,31 +1,19 @@
 using Leopotam.Ecs;
-using UnityEngine;
 
-/// <summary>Клик по булавке -> карточка персонажа. Игроку показывается урезанная версия.</summary>
+/// <summary>Шапка карточки. Кликов не слушает — смотрит на выделение,
+/// которым владеет SelectionSystem.</summary>
 public class LordCardSystem : Injects, IEcsInitSystem, IEcsRunSystem, IEcsDestroySystem
 {
+    private EcsWorld _world;
 
-    private EcsFilter<PinClickedEvent> _clicks;
-    private EcsFilter<CloseCardEvent> _closes;
-    private EcsFilter<CourtReadyEvent> _courtReady;
-    private EcsFilter<LordIdAttribute, PersonAttribute>.Exclude<PlayerFlag> _lords;
+    private EcsFilter<RunFlag, SelectionAttribute> _runs;
+    private EcsFilter<LordIdAttribute, PersonAttribute, TraitsAttribute> _people;
+    private EcsFilter<LordFlag, LordIdAttribute, PersonAttribute> _lords;
 
     public void Init()
     {
         if (UI.LordCard.CloseButton != null)
             UI.LordCard.CloseButton.onClick.AddListener(RequestClose);
-    }
-
-    public void Run()
-    {
-        foreach (var _ in _courtReady) UI.LordCard.SetVisible(false);
-        foreach (var _ in _closes) UI.LordCard.SetVisible(false);
-
-        foreach (var i in _clicks)
-        {
-            var target = _clicks.Get1(i).Target;
-            if (target.IsAlive()) Show(target);
-        }
     }
 
     public void Destroy()
@@ -34,9 +22,27 @@ public class LordCardSystem : Injects, IEcsInitSystem, IEcsRunSystem, IEcsDestro
             UI.LordCard.CloseButton.onClick.RemoveListener(RequestClose);
     }
 
+    public void Run()
+    {
+        foreach (var r in _runs)
+        {
+            if (!_runs.GetEntity(r).Has<SelectionChangedFlag>()) continue;
+
+            ref var selection = ref _runs.Get2(r);
+            if (!selection.HasTarget || !TryFind(selection.LordId, out var target))
+            {
+                UI.LordCard.SetVisible(false);
+                continue;
+            }
+
+            Show(target);
+        }
+    }
+
     private void Show(EcsEntity entity)
     {
         var chars = GameConfig.CharactersConfig;
+        var balance = GameConfig.BalanceConfig;
 
         ref var person = ref entity.Get<PersonAttribute>();
         ref var traits = ref entity.Get<TraitsAttribute>();
@@ -48,28 +54,41 @@ public class LordCardSystem : Injects, IEcsInitSystem, IEcsRunSystem, IEcsDestro
             return;
         }
 
+        int opinion = entity.Get<OpinionAttribute>().Value;
+
         UI.LordCard.ShowLord(
             person.FullName,
             traitLine,
             chars.AmbitionTitle(entity.Get<AmbitionAttribute>().Id),
-            RivalName(entity.Get<RivalAttribute>().LordId),
-            entity.Get<OpinionAttribute>().Value,
-            entity.Get<TroopsAttribute>().Value);
+            RivalLine(entity.Get<RivalAttribute>().LordId),
+            opinion,
+            entity.Get<TroopsAttribute>().Value,
+            opinion >= balance.TroopsComeAtOpinion);
     }
 
-    private string RivalName(int lordId)
+    private bool TryFind(int lordId, out EcsEntity found)
     {
-        if (lordId < 0) return "нет";
+        foreach (var i in _people)
+        {
+            if (_people.Get1(i).Value != lordId) continue;
+            found = _people.GetEntity(i);
+            return true;
+        }
+
+        found = default;
+        return false;
+    }
+
+    private string RivalLine(int lordId)
+    {
+        if (lordId < 0) return "врагов нет";
 
         foreach (var i in _lords)
-            if (_lords.Get1(i).Value == lordId)
-                return _lords.Get2(i).FullName;
+            if (_lords.Get2(i).Value == lordId)
+                return "враг " + _lords.Get3(i).GivenName;
 
-        return "нет";
+        return "врагов нет";
     }
 
-    private void RequestClose()
-    {
-        EcsWorld.NewEntity().Get<CloseCardEvent>();
-    }
+    private void RequestClose() => _world.NewEntity().Get<CloseCardEvent>();
 }

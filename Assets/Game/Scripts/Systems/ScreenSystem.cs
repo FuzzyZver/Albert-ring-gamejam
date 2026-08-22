@@ -52,7 +52,8 @@ public class ScreenSystem : Injects, IEcsInitSystem, IEcsRunSystem, IEcsDestroyS
         foreach (var r in _runs) _runs.Get3(r).Current = screen;
 
         UI.Screens.Show(screen);
-        UI.LordCard.SetVisible(false);   // карточка не должна висеть поверх нового экрана
+        // карточку гасить не надо: SelectionSystem сбросит выделение,
+        // а LordCardSystem сама спрячется. Два владельца одного окна — верный путь к морганию.
     }
 
     private void RefreshNav()

@@ -26,10 +26,18 @@ public class EcsInclude : MonoBehaviour
             .Add(new NightSystem())
             .Add(new CastleActionSystem())
 
+            .Add(new SelectionSystem())
+            .Add(new VerbActionSystem())
+            .Add(new ConsequenceSystem())
+            .Add(new OpinionSystem())
+            .Add(new VerbResolveSystem())   // строго после мнений: считает уже по новым цифрам
+
             .Add(new ScreenSystem())
             .Add(new MapViewSystem())
             .Add(new HudSystem())
             .Add(new LordCardSystem())
+            .Add(new VerbPanelSystem())
+            .Add(new ChronicleSystem())
             .Add(new RestartSystem())
 
             //OneFrame<..
@@ -48,8 +56,17 @@ public class EcsInclude : MonoBehaviour
             .OneFrame<CastleSlotClickedEvent>()
             .OneFrame<SetTaxEvent>()
 
+            .OneFrame<VerbEvent>()
+            .OneFrame<VerbResolvedEvent>()
+            .OneFrame<ConsequenceEvent>()
+            .OneFrame<OpinionChangeEvent>()
+            .OneFrame<CourtOpinionChangeEvent>()
+            .OneFrame<CommonsOpinionChangeEvent>()
+            .OneFrame<ChronicleEvent>()
+
             .OneFrame<PinClickedEvent>()
             .OneFrame<CloseCardEvent>()
+            .OneFrame<SelectionChangedFlag>()   // снимается здесь, когда вьюхи уже перерисовались
 
 
 
@@ -66,7 +83,6 @@ public class EcsInclude : MonoBehaviour
     {
         _systems.Run();
     }
-
     private void OnDestroy()
     {
         _systems?.Destroy();

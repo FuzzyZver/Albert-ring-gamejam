@@ -63,6 +63,8 @@ public class RunSetupSystem : Injects, IEcsRunSystem
 
         entity.Get<CommonsAttribute>().Opinion = balance.StartCommonsOpinion;
         entity.Get<ScreenAttribute>().Current = ScreenId.None;
+        entity.Get<SelectionAttribute>().LordId = SelectionAttribute.Nobody;
+        entity.Get<VerbOffersAttribute>().Value = new System.Collections.Generic.List<VerbOutcome>();
         entity.Get<PlanAttribute>();
         entity.Get<NightReportAttribute>();
 

@@ -78,6 +78,27 @@ public struct CourtAttribute { public CourtData Value; }
 /// фаза — состояние игры, экран — состояние взгляда.</summary>
 public struct ScreenAttribute { public ScreenId Current; }
 
+/// <summary>Кого игрок сейчас разглядывает. Живёт в компоненте, а не в поле системы:
+/// на выделение смотрят и карточка, и панель глаголов, и сбрасываться оно должно
+/// вместе с забегом — в RunSetupSystem это происходит само.</summary>
+public struct SelectionAttribute
+{
+    public const int Nobody = int.MinValue;
+    public const int Player = -1;
+
+    public int LordId;
+
+    public bool HasTarget => LordId != Nobody;
+    public bool IsPlayer => LordId == Player;
+}
+
+/// <summary>Строки, посчитанные для выделенного лорда. Единственный источник правды
+/// о том, что сейчас можно сделать: применение читает отсюда, а не пересчитывает.</summary>
+public struct VerbOffersAttribute
+{
+    public System.Collections.Generic.List<VerbOutcome> Value;
+}
+
 /// <summary>Что заготовлено в замке на завтрашний вечер.</summary>
 public struct PlanAttribute
 {
