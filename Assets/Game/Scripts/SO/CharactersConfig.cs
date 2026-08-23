@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 [CreateAssetMenu(fileName = "CharactersConfig", menuName = "Configs/CharactersConfig")]
 public class CharactersConfig : ScriptableObject
@@ -27,11 +28,13 @@ public class CharactersConfig : ScriptableObject
     public VerbDefinition[] Verbs = DefaultVerbs();
     public AmbitionDefinition[] Ambitions = DefaultAmbitions();
     public ConsequenceDefinition[] Consequences = DefaultConsequences();
+    public DeathDefinition[] Deaths = DefaultDeaths();
 
     public TraitDefinition GetTrait(TraitId id) => Array.Find(Traits, t => t.Id == id);
     public VerbDefinition GetVerb(VerbId id) => Array.Find(Verbs, v => v.Id == id);
     public AmbitionDefinition GetAmbition(AmbitionId id) => Array.Find(Ambitions, a => a.Id == id);
     public ConsequenceDefinition GetConsequence(ConsequenceId id) => Array.Find(Consequences, c => c.Id == id);
+    public DeathDefinition GetDeath(DeathCause cause) => Array.Find(Deaths, d => d.Cause == cause);
 
     public string[] Titles(Gender gender) => gender == Gender.Male ? MaleTitles : FemaleTitles;
     public string[] Names(Gender gender) => gender == Gender.Male ? MaleNames : FemaleNames;
@@ -60,6 +63,7 @@ public class CharactersConfig : ScriptableObject
                 R(VerbId.Threaten,  5, 0, ConsequenceId.None, "ты умеешь пугать"),
                 R(VerbId.Bribe,   -10, 0, ConsequenceId.None, "тебе противно платить"),
             },
+            DuelChance = 10,
         },
 
         new TraitDefinition {
@@ -94,13 +98,14 @@ public class CharactersConfig : ScriptableObject
                 R(VerbId.Insult,         5, 0, ConsequenceId.None, ""),
                 R(VerbId.AskForCounsel,  5, 0, ConsequenceId.None, "ты услышишь и то, что не сказали"),
             },
+            DuelChance = 5,
         },
 
         new TraitDefinition {
             Id = TraitId.Pious, Title = "Набожный", TitleFemale = "Набожная",
             Hint = "Судит тебя. Вслух.",
             Reactions = new[] {
-                R(VerbId.Seduce,          0, -25, ConsequenceId.Scandal,          "провал = скандал"),
+                R(VerbId.Seduce,          0, -25, ConsequenceId.None,             "провал = скандал"),
                 R(VerbId.DrinkTogether, -10,   0, ConsequenceId.None,             "не пьёт"),
                 R(VerbId.Insult,        -15,   0, ConsequenceId.PublicRepentance, "покается прилюдно"),
                 R(VerbId.Flatter,         5,   0, ConsequenceId.None,             ""),
@@ -129,6 +134,8 @@ public class CharactersConfig : ScriptableObject
                 R(VerbId.Threaten,     10, 0, ConsequenceId.None, "тебе верят"),
                 R(VerbId.HuntTogether, 10, 0, ConsequenceId.None, ""),
             },
+            DuelChance = 15,
+            SelfRisk = ConsequenceId.AvengedBySon, SelfRiskChance = 2,
             CommonsOpinion = -10,
         },
 
@@ -147,6 +154,7 @@ public class CharactersConfig : ScriptableObject
                 R(VerbId.AskForTroops,  -5, 0, ConsequenceId.None, ""),
                 R(VerbId.HuntTogether, -10, 0, ConsequenceId.None, "ты и сам не любишь лошадей"),
             },
+            DuelChance = -25,
         },
 
         new TraitDefinition {
@@ -175,10 +183,12 @@ public class CharactersConfig : ScriptableObject
                 R(VerbId.InviteToCastle, 15, 0, ConsequenceId.None,     "у тебя погреб"),
             },
             SelfReactions = new[] {
-                R(VerbId.DrinkTogether,  15, 0, ConsequenceId.ConfessDrunkenly, "шанс проболтаться"),
+                R(VerbId.DrinkTogether,  15, 0, ConsequenceId.ConfessDrunkenly, "шанс проболтаться", 35),
                 R(VerbId.InviteToCastle, 10, 0, ConsequenceId.None,             ""),
             },
+            DuelChance = -10,
             DailyRisk = ConsequenceId.FallDownStairs, DailyRiskChance = 4,
+            SelfRisk = ConsequenceId.DrownInMoat, SelfRiskChance = 3,
         },
 
         new TraitDefinition {
@@ -195,6 +205,7 @@ public class CharactersConfig : ScriptableObject
                 R(VerbId.FulfillAmbition, 10, 0, ConsequenceId.None, ""),
             },
             DailyRisk = ConsequenceId.ProphecyFulfilled, DailyRiskChance = 3,
+            SelfRisk = ConsequenceId.StruckByLightning, SelfRiskChance = 2,
         },
 
         new TraitDefinition {
@@ -220,12 +231,12 @@ public class CharactersConfig : ScriptableObject
     private static VerbDefinition[] DefaultVerbs() => new[]
     {
         new VerbDefinition {
-            Id = VerbId.Flatter, Title = "Польстить", Hint = "Бесплатно и почти всегда работает",
-            BaseOpinion = 10, BaseChance = 100,
+            Id = VerbId.Flatter, Title = "Польстить", Hint = "Бесплатно, но приедается",
+            BaseOpinion = 10, BaseChance = 100, RepeatPenalty = 5,
         },
         new VerbDefinition {
             Id = VerbId.Bribe, Title = "Подкупить", Hint = "Деньги решают. Не всё",
-            BaseOpinion = 15, BaseChance = 100, GoldCost = 15,
+            BaseOpinion = 15, BaseChance = 100, GoldCost = 15, RepeatPenalty = 4,
         },
         new VerbDefinition {
             Id = VerbId.Threaten, Title = "Пригрозить", Hint = "Дёшево. Дорого потом",
@@ -237,7 +248,7 @@ public class CharactersConfig : ScriptableObject
         },
         new VerbDefinition {
             Id = VerbId.Seduce, Title = "Соблазнить", Hint = "Провал = скандал на весь двор",
-            BaseOpinion = 30, BaseChance = 45, OnFail = ConsequenceId.Scandal,
+            BaseOpinion = 30, BaseChance = 45, OnFail = ConsequenceId.Scandal, OpinionOnFail = -15,
             RequiresTrait = true, RequiredTrait = TraitId.Lustful,
         },
         new VerbDefinition {
@@ -249,8 +260,8 @@ public class CharactersConfig : ScriptableObject
             BaseOpinion = 0, BaseChance = 100, OncePerLord = true, RivalOpinion = -20,
         },
         new VerbDefinition {
-            Id = VerbId.AskForTroops, Title = "Просить войск", Hint = "Унизительно, но копья нужны",
-            BaseOpinion = -10, BaseChance = 100, OncePerLord = true,
+            Id = VerbId.AskForTroops, Title = "Просить войск", Hint = "Унизительно. И он ещё может отказать",
+            BaseOpinion = -10, BaseChance = 100, CooldownDays = 1, OpinionOnFail = -10,
         },
 
         new VerbDefinition {
@@ -301,7 +312,7 @@ public class CharactersConfig : ScriptableObject
         C(ConsequenceId.ChokeAtFeast,      "подавился",       "{lord} подавился на собственном пиру.",     lethalLord: true),
         C(ConsequenceId.FallFromHorse,     "лошадь решила иначе", "Лошадь решила иначе.",                  lethalLord: true),
         C(ConsequenceId.PoisonedByLover,   "яд",              "Любовник передумал.",                       lethalLord: true),
-        C(ConsequenceId.StruckByLightning, "молния",          "Пророчество сбылось буквально.",            lethalLord: true),
+        C(ConsequenceId.StruckByLightning, "молния",          "Пророчество сбылось буквально.",            lethalLord: true, lethalPlayer: true),
         C(ConsequenceId.PlagueInCastle,    "чума",            "Крысы пришли раньше армии.",                lethalLord: true, lethalPlayer: true),
         C(ConsequenceId.DuelGoesBadly,     "поединок проигран", "Ты принял вызов. Зря.",                   lethalPlayer: true),
         C(ConsequenceId.DrownInMoat,       "ров",             "Ночью, пьяным, во рву собственного замка.", lethalPlayer: true),
@@ -319,8 +330,40 @@ public class CharactersConfig : ScriptableObject
         C(ConsequenceId.ConfessDrunkenly,        "ты рассказал всё", "Ты рассказал всё. Всем.",                court: -12),
     };
 
-    private static VerbReaction R(VerbId verb, int opinion, int chance, ConsequenceId onFail, string note) =>
-        new VerbReaction { Verb = verb, Opinion = opinion, Chance = chance, OnFail = onFail, Note = note };
+    private static DeathDefinition[] DefaultDeaths() => new[]
+    {
+        D(DeathCause.Riot,          "Бунт",
+            "Толпа не стала слушать. Ворота открыли изнутри."),
+        D(DeathCause.Famine,        "Голод",
+            "Амбары стояли пустыми не первую ночь. Голод не спрашивает титула."),
+        D(DeathCause.Assassination, "Нож в спину",
+            "{lord} вошёл без стука. Это всё, что известно летописцу."),
+        D(DeathCause.Overthrow,     "Свержение",
+            "Лорды сговорились. Кольцо сняли с ещё тёплой руки."),
+        D(DeathCause.Duel,          "Поединок",
+            "Ты принял вызов {lord}. Летописец отметил, что держался ты достойно ровно два удара."),
+        D(DeathCause.Accident,      "Нелепость",
+            "{detail}"),
+        D(DeathCause.Siege,         "Осада",
+            "Стены выдержали дольше, чем гарнизон."),
+        D(DeathCause.None,          "Ты дожил",
+            "Осада снята. Кольцо всё ещё на твоей руке — и это, отмечает летописец, удивительно."),
+    };
+
+    private static DeathDefinition D(DeathCause cause, string title, string line) =>
+        new DeathDefinition { Cause = cause, Title = title, ChronicleLine = line };
+
+    private static VerbReaction R(VerbId verb, int opinion, int chance, ConsequenceId consequence, string note,
+        int consequenceChance = 100) =>
+        new VerbReaction
+        {
+            Verb = verb,
+            Opinion = opinion,
+            Chance = chance,
+            Consequence = consequence,
+            ConsequenceChance = consequenceChance,
+            Note = note,
+        };
 
     private static ConsequenceDefinition C(ConsequenceId id, string title, string line,
         bool lethalLord = false, bool lethalPlayer = false,
@@ -379,6 +422,23 @@ public class CharactersConfig : ScriptableObject
 
     // ─────────────────────  ДОБОР НОВЫХ ЗАПИСЕЙ  ─────────────────────
 
+    /// <summary>Полная перезапись значениями из кода. Нужна, когда данные в ассете
+    /// разошлись со схемой: правки в инспекторе при этом теряются.</summary>
+    [ContextMenu("Пересобрать матрицу с нуля")]
+    private void ResetToDefaults()
+    {
+        Traits = DefaultTraits();
+        Verbs = DefaultVerbs();
+        Ambitions = DefaultAmbitions();
+        Consequences = DefaultConsequences();
+        Deaths = DefaultDeaths();
+
+        Debug.LogWarning($"{name}: матрица перезаписана значениями из кода.", this);
+#if UNITY_EDITOR
+        UnityEditor.EditorUtility.SetDirty(this);
+#endif
+    }
+
     [ContextMenu("Добавить недостающие записи")]
     private void FillMissing()
     {
@@ -387,6 +447,7 @@ public class CharactersConfig : ScriptableObject
         Verbs = Merge(Verbs, DefaultVerbs(), v => (int)v.Id, ref added);
         Ambitions = Merge(Ambitions, DefaultAmbitions(), a => (int)a.Id, ref added);
         Consequences = Merge(Consequences, DefaultConsequences(), c => (int)c.Id, ref added);
+        Deaths = Merge(Deaths, DefaultDeaths(), d => (int)d.Cause, ref added);
 
         Debug.Log(added > 0 ? $"{name}: дописано записей — {added}" : $"{name}: всё на месте", this);
 
@@ -440,9 +501,16 @@ public class TraitDefinition
     public int CommonsOpinion;      // разовый сдвиг мнения крестьян на старте
     public int OpinionDriftPerDay;  // сам теплеет или остывает
 
-    [Header("Риск каждую ночь")]
+    [Header("Риск каждую ночь, если черта на лорде")]
     public ConsequenceId DailyRisk;
     [Range(0, 100)] public int DailyRiskChance;
+
+    [Header("Риск каждую ночь, если черта на тебе")]
+    public ConsequenceId SelfRisk;
+    [Range(0, 100)] public int SelfRiskChance;
+
+    [Header("Поединок")]
+    public int DuelChance;   // сдвиг шанса победить: на тебе — в плюс, на противнике — в минус
 
     [Header("Открывает глаголы")]
     public VerbId[] UnlockedVerbs = new VerbId[0];
@@ -466,12 +534,21 @@ public class TraitDefinition
 public struct VerbReaction
 {
     public VerbId Verb;
-    public int Opinion;            // сдвиг итогового мнения
-    public int Chance;             // сдвиг шанса успеха, %
-    public ConsequenceId OnFail;   // что случится при провале
+    public int Opinion;   // сдвиг итогового мнения
+    public int Chance;    // сдвиг шанса успеха, %
+
+    /// <summary>Что случится, когда к нему применят этот глагол.
+    /// Срабатывает НЕЗАВИСИМО от того, удался глагол или нет: Гордый вызывает
+    /// на поединок именно потому, что ты успешно ему пригрозил.
+    /// Провал самого броска описывается отдельно — в VerbDefinition.OnFail.</summary>
+    [FormerlySerializedAs("OnFail")]
+    public ConsequenceId Consequence;
+    [Range(0, 100)] public int ConsequenceChance;   // 0 = всегда
+
     [TextArea(1, 2)] public string Note;  // строка для разбора в карточке
 
-    public bool IsEmpty => Opinion == 0 && Chance == 0 && OnFail == ConsequenceId.None;
+    public bool IsEmpty => Opinion == 0 && Chance == 0 && Consequence == ConsequenceId.None;
+    public int RealChance => ConsequenceChance <= 0 ? 100 : ConsequenceChance;
 }
 
 [Serializable]
@@ -489,6 +566,8 @@ public class VerbDefinition
     public int GoldCost;
     public int FoodCost;
     public bool OncePerLord;
+    public int CooldownDays;     // 0 = хоть каждый день
+    public int RepeatPenalty;    // сколько мнения теряет каждое повторение: приедается
     public bool RequiresTrait;
     public TraitId RequiredTrait;
 
@@ -499,6 +578,7 @@ public class VerbDefinition
 
     [Header("Провал")]
     public ConsequenceId OnFail;
+    public int OpinionOnFail;    // отказ тоже стоит лица
 }
 
 [Serializable]
@@ -515,6 +595,19 @@ public class AmbitionDefinition
     public int CourtOpinion;
     public bool ClosesRomance;
     public ConsequenceId OnRefuse;
+}
+
+/// <summary>
+/// Смерть — не последствие. Последствие это то, что случилось; смерть проверяется
+/// отдельными условиями и лишь цитирует последствие в графе «причина».
+/// {lord} — виновник, {detail} — строка последствия, если оно было.
+/// </summary>
+[Serializable]
+public class DeathDefinition
+{
+    public DeathCause Cause;
+    public string Title;
+    [TextArea(2, 3)] public string ChronicleLine;
 }
 
 [Serializable]

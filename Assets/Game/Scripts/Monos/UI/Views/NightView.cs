@@ -40,7 +40,11 @@ public class NightView : MonoBehaviour
         if (_foodLine != null)
             _foodLine.text = $"Пища +{report.FoodIncome} − {report.FoodUpkeep} на гарнизон  →  {foodAfter}";
         if (_opinionLine != null)
-            _opinionLine.text = $"Мнения: лорды {Signed(report.LordOpinionDelta)} · крестьяне {Signed(report.CommonsOpinionDelta)}";
+        {
+            _opinionLine.text = report.MemoryPenalty != 0
+                ? $"Мнения: лорды {Signed(report.LordOpinionDelta)} · крестьяне {Signed(report.CommonsOpinionDelta)} (из них {report.MemoryPenalty} — старые обиды)"
+                : $"Мнения: лорды {Signed(report.LordOpinionDelta)} · крестьяне {Signed(report.CommonsOpinionDelta)}";
+        }
 
         if (_warning != null)
         {

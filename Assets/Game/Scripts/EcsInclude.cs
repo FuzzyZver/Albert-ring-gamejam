@@ -15,26 +15,34 @@ public class EcsInclude : MonoBehaviour
         _world = new EcsWorld();
         _systems = new EcsSystems(_world);
 
+        _world = new EcsWorld();
+        _systems = new EcsSystems(_world);
+
         _systems
             //Add (new ...
             .Add(new InitSystem())
             .Add(new RunSetupSystem())
-            .Add(new CandidateScreenSystem())
             .Add(new PlayerSpawnSystem())
+            .Add(new CandidateScreenSystem())   // после PlayerSpawn: ловит RunReadyEvent
 
             .Add(new PhaseSystem())
             .Add(new NightSystem())
+            .Add(new DeathWatchSystem())    // сразу после ночного счёта, до последствий
+            .Add(new SiegeSystem())         // после смертей: голод важнее армии у ворот
             .Add(new CastleActionSystem())
 
             .Add(new SelectionSystem())
             .Add(new VerbActionSystem())
-            .Add(new ConsequenceSystem())
+            .Add(new ConsequenceSystem())   // ловит и глаголы, и ночные риски черт
+            .Add(new DuelSystem())
             .Add(new OpinionSystem())
             .Add(new VerbResolveSystem())   // строго после мнений: считает уже по новым цифрам
+            .Add(new RunEndSystem())        // до ScreenSystem: эпилог просит экран событием
 
             .Add(new ScreenSystem())
             .Add(new MapViewSystem())
             .Add(new HudSystem())
+            .Add(new EveningSystem())
             .Add(new LordCardSystem())
             .Add(new VerbPanelSystem())
             .Add(new ChronicleSystem())
@@ -63,6 +71,11 @@ public class EcsInclude : MonoBehaviour
             .OneFrame<CourtOpinionChangeEvent>()
             .OneFrame<CommonsOpinionChangeEvent>()
             .OneFrame<ChronicleEvent>()
+
+            .OneFrame<EveningChoiceEvent>()
+            .OneFrame<DeathEvent>()
+            .OneFrame<VictoryEvent>()
+            .OneFrame<DuelResolvedEvent>()
 
             .OneFrame<PinClickedEvent>()
             .OneFrame<CloseCardEvent>()

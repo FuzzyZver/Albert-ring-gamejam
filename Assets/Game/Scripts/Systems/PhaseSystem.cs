@@ -11,7 +11,7 @@ public class PhaseSystem : Injects, IEcsRunSystem
     private EcsWorld _world;
 
     private EcsFilter<AdvancePhaseEvent> _requests;
-    private EcsFilter<RunFlag, CalendarAttribute> _runs;
+    private EcsFilter<RunFlag, CalendarAttribute>.Exclude<RunOverFlag, PhaseLockFlag> _runs;
 
     public void Run()
     {
@@ -30,7 +30,9 @@ public class PhaseSystem : Injects, IEcsRunSystem
         {
             ref var calendar = ref _runs.Get2(r);
 
-            _world.NewEntity().Get<PhaseEndedEvent>().Phase = calendar.Phase;
+            ref var ended = ref _world.NewEntity().Get<PhaseEndedEvent>();
+            ended.Phase = calendar.Phase;
+            ended.Day = calendar.Day;
 
             if (calendar.Phase == DayPhase.Night)
             {

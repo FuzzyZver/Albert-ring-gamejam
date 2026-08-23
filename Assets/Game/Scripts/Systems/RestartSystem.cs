@@ -10,12 +10,16 @@ public class RestartSystem : Injects, IEcsInitSystem, IEcsDestroySystem
     {
         if (UI.NewRunButton != null)
             UI.NewRunButton.onClick.AddListener(RequestNewRun);
+        if (UI.Epilogue != null && UI.Epilogue.RestartButton != null)
+            UI.Epilogue.RestartButton.onClick.AddListener(RequestNewRun);
     }
 
     public void Destroy()
     {
         if (UI.NewRunButton != null)
             UI.NewRunButton.onClick.RemoveListener(RequestNewRun);
+        if (UI.Epilogue != null && UI.Epilogue.RestartButton != null)
+            UI.Epilogue.RestartButton.onClick.RemoveListener(RequestNewRun);
     }
 
     private void RequestNewRun()

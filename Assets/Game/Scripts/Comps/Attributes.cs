@@ -37,8 +37,16 @@ public struct AmbitionAttribute { public AmbitionId Id; }
 
 public struct RivalAttribute { public int LordId; }
 
-/// <summary>Какие глаголы уже потрачены на этом лорде (OncePerLord).</summary>
-public struct SpentVerbsAttribute { public System.Collections.Generic.List<VerbId> Value; }
+/// <summary>Одно применение глагола к лорду. Дата нужна и для «один раз за забег»,
+/// и для кулдауна, и для того, чтобы лесть приедалась.</summary>
+public struct VerbUse
+{
+    public VerbId Verb;
+    public int Day;
+}
+
+/// <summary>Вся история разговоров с этим лордом.</summary>
+public struct VerbHistoryAttribute { public System.Collections.Generic.List<VerbUse> Value; }
 
 // ─────────── забег ───────────
 
@@ -63,6 +71,11 @@ public struct TaxAttribute
 }
 
 public struct CommonsAttribute { public int Opinion; }
+
+/// <summary>Крестьяне помнят. Каждая ночь повышенной подати добавляет злости,
+/// спокойная — гасит. Злость вычитается из мнения СЛЕДУЮЩЕЙ ночью,
+/// поэтому подымать налог на день выгодно, а на неделю — самоубийство.</summary>
+public struct CommonsMemoryAttribute { public int Grudge; }
 
 public struct RngAttribute
 {
@@ -99,6 +112,37 @@ public struct VerbOffersAttribute
     public System.Collections.Generic.List<VerbOutcome> Value;
 }
 
+/// <summary>Сколько ночей подряд амбары пусты. Голод убивает не сразу — успеваешь заметить.</summary>
+public struct StarvingAttribute { public int Nights; }
+
+/// <summary>Кто вызвал тебя на поединок. -1 — никто.</summary>
+public struct DuelAttribute { public int LordId; public int Chance; }
+
+/// <summary>Что показывает вечерний экран прямо сейчас. Заполняют системы событий,
+/// рисует EveningSystem. Waiting значит «ждём выбора игрока» — пока он стоит,
+/// фаза не двигается.</summary>
+public struct EveningAttribute
+{
+    public EveningKind Kind;
+    public int LordId;
+    public string Title;
+    public string Body;
+    public string Choice;
+    public bool Waiting;
+}
+
+/// <summary>Чем всё кончилось. Заполняется один раз, читается эпилогом.</summary>
+public struct RunEndAttribute
+{
+    public bool Victory;
+    public DeathCause Cause;
+    public int KillerLordId;
+    public string Detail;
+    public int Day;
+    public int Defence;
+    public int SiegeStrength;
+}
+
 /// <summary>Что заготовлено в замке на завтрашний вечер.</summary>
 public struct PlanAttribute
 {
@@ -117,6 +161,7 @@ public struct NightReportAttribute
     public int FoodUpkeep;
     public int LordOpinionDelta;
     public int CommonsOpinionDelta;
+    public int MemoryPenalty;      // сколько из CommonsOpinionDelta — это старые обиды
     public bool Starving;
 
     public int GoldNet => GoldIncome - GoldUpkeep;

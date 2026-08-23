@@ -64,5 +64,11 @@ public class LordActor : Actor
         var entity = GetEntity();
         if (!entity.IsAlive()) return;
         world.NewEntity().Get<PinClickedEvent>().Target = entity;
+
+        //world.NewEntity().Get<ConsequenceEvent>() = new ConsequenceEvent
+        //{
+        //    Source = entity,
+        //    Id = ConsequenceId.ChallengeToDuel
+        //};
     }
 }

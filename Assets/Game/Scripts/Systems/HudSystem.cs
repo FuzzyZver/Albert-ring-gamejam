@@ -11,6 +11,8 @@ public class HudSystem : Injects, IEcsInitSystem, IEcsRunSystem, IEcsDestroySyst
     private EcsFilter<CourtReadyEvent> _courtReady;
     private EcsFilter<RunReadyEvent> _runReady;
     private EcsFilter<RunFlag, CalendarAttribute, TreasuryAttribute> _runs;
+    private EcsFilter<RunFlag, RunOverFlag> _finished;
+    private EcsFilter<RunFlag, PhaseLockFlag> _locked;
 
     private int _day = int.MinValue;
     private int _phase = int.MinValue;
@@ -42,6 +44,14 @@ public class HudSystem : Injects, IEcsInitSystem, IEcsRunSystem, IEcsDestroySyst
         foreach (var _ in _runReady) UI.Hud.SetVisible(true);
 
         foreach (var r in _runs) Refresh(r);
+
+        if (UI.Hud.NextPhaseButton != null)
+        {
+            bool blocked = false;
+            foreach (var _ in _finished) blocked = true;
+            foreach (var _ in _locked) blocked = true;
+            UI.Hud.NextPhaseButton.interactable = !blocked;
+        }
     }
 
     private void Refresh(int runIndex)

@@ -13,6 +13,7 @@ public class SelectionSystem : Injects, IEcsRunSystem
     private EcsFilter<CourtReadyEvent> _newRuns;
 
     private EcsFilter<RunFlag, SelectionAttribute> _runs;
+    private EcsFilter<RunFlag, RunOverFlag> _finished;
 
     public void Run()
     {
@@ -22,6 +23,10 @@ public class SelectionSystem : Injects, IEcsRunSystem
         foreach (var _ in _newRuns) Set(SelectionAttribute.Nobody);
 
         foreach (var i in _clicks) Select(_clicks.Get1(i).Target);
+
+        // Эпилог просит экран событием, а SelectionSystem стоит раньше и его не увидит.
+        // Поэтому смотрим на сам факт: забег кончился — выделять некого.
+        foreach (var _ in _finished) Set(SelectionAttribute.Nobody);
     }
 
     private void Select(EcsEntity target)
@@ -40,6 +45,8 @@ public class SelectionSystem : Injects, IEcsRunSystem
         foreach (var r in _runs)
         {
             ref var selection = ref _runs.Get2(r);
+            if (selection.LordId == lordId) continue;   // не дёргать вьюхи впустую
+
             selection.LordId = lordId;
             _runs.GetEntity(r).Get<SelectionChangedFlag>();
         }

@@ -13,6 +13,7 @@ public class InitSystem : Injects, IEcsInitSystem
         UI.Screens.Show(ScreenId.None);
         UI.CharacterSelect.SetVisible(false);
         UI.LordCard.SetVisible(false);
+        UI.Epilogue.SetVisible(false);
         UI.Hud.SetVisible(false);
 
         EcsWorld.NewEntity().Get<NewRunEvent>().Seed = GameConfig.BalanceConfig.NextSeed();

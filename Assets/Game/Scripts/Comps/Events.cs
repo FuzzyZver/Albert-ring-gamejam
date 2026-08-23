@@ -15,7 +15,9 @@ public struct RunStartEvent { public int Seed; }
 // ─────────── цикл дня ───────────
 
 public struct AdvancePhaseEvent { }                        // просьба сдвинуть фазу
-public struct PhaseEndedEvent { public DayPhase Phase; }   // фаза, которая только что закончилась
+/// <summary>Фаза, которая только что закончилась. День едет в самом событии:
+/// к моменту, когда его прочитают, календарь уже перевернулся на следующий.</summary>
+public struct PhaseEndedEvent { public DayPhase Phase; public int Day; }
 public struct PhaseChangedEvent { public DayPhase Phase; } // фаза, которая началась
 public struct DayStartedEvent { public int Day; }
 public struct SpendActionEvent { public int Amount; }
@@ -81,5 +83,17 @@ public struct ChronicleEvent { public string Line; }
 public struct DeathEvent
 {
     public DeathCause Cause;
-    public int KillerLordId;
+    public int KillerLordId;   // -1, если виновных нет
+    public string Detail;      // строка последствия, если смерть пришла через него
 }
+
+public struct VictoryEvent { public int Defence; }
+
+public struct DuelResolvedEvent
+{
+    public int LordId;
+    public bool PlayerWon;
+    public int Chance;
+}
+
+public struct EveningChoiceEvent { public int Index; }

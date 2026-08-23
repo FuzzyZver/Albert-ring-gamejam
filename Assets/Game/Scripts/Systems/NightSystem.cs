@@ -83,6 +83,7 @@ public class NightSystem : Injects, IEcsInitSystem, IEcsRunSystem, IEcsDestroySy
     {
         if (report.Starving) return "Амбары пусты. Гарнизон ляжет спать голодным.";
         if (foodAfter <= report.FoodUpkeep) return "Пищи хватит на одну ночь. Не больше.";
+        if (report.MemoryPenalty <= -6) return "Крестьяне помнят прошлые поборы. И считают.";
         if (report.CommonsOpinionDelta <= -15) return "Крестьяне точат вилы.";
         return string.Empty;
     }
@@ -97,14 +98,19 @@ public class NightSystem : Injects, IEcsInitSystem, IEcsRunSystem, IEcsDestroySy
         ref var tax = ref _runs.Get2(runIndex);
         ref var treasury = ref _runs.Get3(runIndex);
 
+        int grudge = _runs.GetEntity(runIndex).Get<CommonsMemoryAttribute>().Grudge;
+
         var report = new NightReportAttribute
         {
             GoldIncome = balance.LordGold(tax.Lords) * LordsAtCourt() / Mathf.Max(1, balance.LordsCount),
             FoodIncome = balance.PeasantFood(tax.Peasants),
             FoodUpkeep = balance.FoodUpkeep(treasury.Garrison),
             LordOpinionDelta = balance.LordOpinion(tax.Lords),
-            CommonsOpinionDelta = balance.PeasantOpinion(tax.Peasants),
+            MemoryPenalty = -grudge * balance.GrudgePerLevel,
         };
+
+        // Сегодняшнее недовольство плюс всё, что накопилось за прошлые ночи.
+        report.CommonsOpinionDelta = balance.PeasantOpinion(tax.Peasants) + report.MemoryPenalty;
 
         foreach (var p in _players)
         {
@@ -147,15 +153,27 @@ public class NightSystem : Injects, IEcsInitSystem, IEcsRunSystem, IEcsDestroySy
             treasury.Gold = Mathf.Max(0, treasury.Gold + report.GoldNet);
             treasury.Food = treasury.Food + report.FoodNet;
 
+            ref var starving = ref entity.Get<StarvingAttribute>();
+
             if (treasury.Food < 0)
             {
                 treasury.Food = 0;
                 entity.Get<StarvingFlag>();
+                starving.Nights++;
             }
-            else if (entity.Has<StarvingFlag>())
+            else
             {
-                entity.Del<StarvingFlag>();
+                if (entity.Has<StarvingFlag>()) entity.Del<StarvingFlag>();
+                starving.Nights = 0;
             }
+
+            ref var memory = ref entity.Get<CommonsMemoryAttribute>();
+            ref var tax = ref _runs.Get2(r);
+
+            int over = Mathf.Max(0, tax.Peasants - balance.TaxNeutralLevel);
+            memory.Grudge = over > 0
+                ? Mathf.Min(balance.GrudgeMax, memory.Grudge + over)
+                : Mathf.Max(0, memory.Grudge - balance.GrudgeDecay);
 
             ref var commons = ref entity.Get<CommonsAttribute>();
             commons.Opinion = balance.ClampOpinion(commons.Opinion + report.CommonsOpinionDelta

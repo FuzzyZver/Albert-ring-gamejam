@@ -1,3 +1,11 @@
+/// <summary>Последствие, которое повесила черта. Срабатывает при применении глагола
+/// независимо от того, удался он или нет — в отличие от VerbOutcome.OnFail.</summary>
+public struct VerbConsequence
+{
+    public ConsequenceId Id;
+    public int Chance;
+}
+
 /// <summary>
 /// Готовая строка карточки: и цифра, и разбор, откуда она взялась.
 /// Считается один раз в VerbResolveSystem и складывается в VerbOffersAttribute.
@@ -16,11 +24,14 @@ public struct VerbOutcome
 
     public int GoldCost;
     public int FoodCost;
+    public int OpinionOnFail;
+    public int TroopsGained;
     public int RivalOpinion;
     public int CommonsOpinion;
     public int CourtOpinion;
 
-    public ConsequenceId OnFail;
+    public ConsequenceId OnFail;                                    // провал самого броска
+    public System.Collections.Generic.List<VerbConsequence> Consequences;   // реакции черт
 
     public bool Available;
     public string Blocked;

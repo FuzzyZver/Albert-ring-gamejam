@@ -14,6 +14,7 @@ public class ScreenSystem : Injects, IEcsInitSystem, IEcsRunSystem, IEcsDestroyS
     private EcsFilter<CourtReadyEvent> _courtReady;
     private EcsFilter<RunReadyEvent> _runReady;
     private EcsFilter<RunFlag, CalendarAttribute, ScreenAttribute> _runs;
+    private EcsFilter<RunFlag, RunOverFlag> _finished;
 
     public void Init()
     {
@@ -30,10 +31,23 @@ public class ScreenSystem : Injects, IEcsInitSystem, IEcsRunSystem, IEcsDestroyS
         foreach (var _ in _courtReady) Apply(ScreenId.None);
         foreach (var _ in _runReady) Apply(ScreenId.Map);
 
+        if (IsOver())
+        {
+            foreach (var i in _requests) Apply(_requests.Get1(i).Target);
+            UI.Hud.SetNavAvailable(false, false, false);
+            return;
+        }
+
         foreach (var i in _phaseChanges) Apply(ScreenFor(_phaseChanges.Get1(i).Phase));
         foreach (var i in _requests) Apply(_requests.Get1(i).Target);
 
         RefreshNav();
+    }
+
+    private bool IsOver()
+    {
+        foreach (var _ in _finished) return true;
+        return false;
     }
 
     private static ScreenId ScreenFor(DayPhase phase)
@@ -52,6 +66,8 @@ public class ScreenSystem : Injects, IEcsInitSystem, IEcsRunSystem, IEcsDestroyS
         foreach (var r in _runs) _runs.Get3(r).Current = screen;
 
         UI.Screens.Show(screen);
+        UI.Epilogue.SetVisible(screen == ScreenId.Epilogue);
+
         // карточку гасить не надо: SelectionSystem сбросит выделение,
         // а LordCardSystem сама спрячется. Два владельца одного окна — верный путь к морганию.
     }

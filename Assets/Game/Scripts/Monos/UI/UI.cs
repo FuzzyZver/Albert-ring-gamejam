@@ -19,10 +19,14 @@ public class UI : MonoBehaviour
     public LordCardView LordCard;
     public VerbPanelView VerbPanel;      // положи внутрь корня LordCard
 
+    [Header("Вечер")]
+    public EveningView Evening;
+
     [Header("Замок и ночь")]
     public CastleSlotView[] CastleSlots;
     public NightView Night;
 
-    [Header("Летопись")]
+    [Header("Летопись и эпилог")]
     public ChronicleView Chronicle;
+    public EpilogueView Epilogue;
 }

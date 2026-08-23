@@ -66,6 +66,11 @@ public class RunSetupSystem : Injects, IEcsRunSystem
         entity.Get<SelectionAttribute>().LordId = SelectionAttribute.Nobody;
         entity.Get<VerbOffersAttribute>().Value = new System.Collections.Generic.List<VerbOutcome>();
         entity.Get<PlanAttribute>();
+        entity.Get<StarvingAttribute>();
+        entity.Get<CommonsMemoryAttribute>();
+        entity.Get<RunEndAttribute>();
+        entity.Get<DuelAttribute>().LordId = -1;
+        entity.Get<EveningAttribute>();
         entity.Get<NightReportAttribute>();
 
         ref var rng = ref entity.Get<RngAttribute>();

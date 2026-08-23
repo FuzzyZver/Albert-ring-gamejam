@@ -66,11 +66,42 @@ public class ConsequenceSystem : Injects, IEcsRunSystem
         }
 
         if (definition.IsLethalForLord && sourceAlive) source.Get<DeadFlag>();
+        if (sourceAlive) ApplyState(definition.Id, source);
 
         string line = definition.ChronicleLine;
         if (sourceAlive && source.Has<PersonAttribute>())
             line = line.Replace("{lord}", source.Get<PersonAttribute>().GivenName);
 
         _world.NewEntity().Get<ChronicleEvent>().Line = line;
+    }
+
+    /// <summary>Последствия, которые меняют не цифры, а состояние лорда.
+    /// Вызов на поединок здесь не обрабатывается намеренно: им заведует DuelSystem,
+    /// обе системы просто слушают одно событие и не знают друг о друге.</summary>
+    private static void ApplyState(ConsequenceId id, EcsEntity lord)
+    {
+        switch (id)
+        {
+            case ConsequenceId.PlotMurder:
+                lord.Get<PlottingFlag>();
+                break;
+
+            case ConsequenceId.LeaveCourt:
+                lord.Get<LeftCourtFlag>();
+                break;
+
+            case ConsequenceId.Scandal:
+                lord.Get<ScandalFlag>();
+                break;
+
+            case ConsequenceId.GetDrunk:
+                lord.Get<DrunkFlag>();
+                break;
+
+            case ConsequenceId.TellRival:
+            case ConsequenceId.SpreadRumor:
+                lord.Get<VengefulFlag>();
+                break;
+        }
     }
 }

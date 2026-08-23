@@ -15,7 +15,8 @@ public enum ScreenId
     Court,
     Castle,
     Evening,
-    Night
+    Night,
+    Epilogue
 }
 
 /// <summary>Булавки внутри замка. Стройка — постоянные улучшения,
@@ -24,6 +25,15 @@ public enum CastleSlotId
 {
     Construction,
     Gathering
+}
+
+/// <summary>Что происходит вечером. Пока два вида, но экран рассчитан на рост:
+/// пиры, молебны, доносы и выборы игрока лягут сюда же.</summary>
+public enum EveningKind
+{
+    None,
+    Message,
+    Duel
 }
 
 public enum TaxKind

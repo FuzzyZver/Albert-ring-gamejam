@@ -54,12 +54,36 @@ public class VerbResolveSystem : Injects, IEcsRunSystem
         public bool AmbitionDone;
         public bool HasRival;
         public string RivalName;
-        public int Gold, Food, Actions;
+        public int TargetTroops;
+        public int TargetOpinion;
+        public int Gold, Food, Actions, Day;
         public bool IsDay;
-        public List<VerbId> Spent;
+        public List<VerbUse> History;
 
         public bool PlayerHas(TraitId id) => PlayerA == id || PlayerB == id;
-        public bool IsSpent(VerbId verb) => Spent != null && Spent.Contains(verb);
+
+        public int Uses(VerbId verb)
+        {
+            if (History == null) return 0;
+
+            int count = 0;
+            for (int i = 0; i < History.Count; i++)
+                if (History[i].Verb == verb) count++;
+
+            return count;
+        }
+
+        /// <summary>int.MinValue, если ещё ни разу.</summary>
+        public int LastDay(VerbId verb)
+        {
+            int last = int.MinValue;
+            if (History == null) return last;
+
+            for (int i = 0; i < History.Count; i++)
+                if (History[i].Verb == verb && History[i].Day > last) last = History[i].Day;
+
+            return last;
+        }
     }
 
     private Context BuildContext(int runIndex, EcsEntity target)
@@ -72,7 +96,9 @@ public class VerbResolveSystem : Injects, IEcsRunSystem
         context.TargetGender = target.Get<PersonAttribute>().Gender;
         context.Ambition = target.Get<AmbitionAttribute>().Id;
         context.AmbitionDone = target.Has<AmbitionFulfilledFlag>();
-        context.Spent = target.Get<SpentVerbsAttribute>().Value;
+        context.History = target.Get<VerbHistoryAttribute>().Value;
+        context.TargetTroops = target.Get<TroopsAttribute>().Value;
+        context.TargetOpinion = target.Get<OpinionAttribute>().Value;
 
         int rivalId = target.Get<RivalAttribute>().LordId;
         context.HasRival = rivalId >= 0;
@@ -93,6 +119,7 @@ public class VerbResolveSystem : Injects, IEcsRunSystem
         context.Gold = treasury.Gold;
         context.Food = treasury.Food;
         context.Actions = calendar.ActionsLeft;
+        context.Day = calendar.Day;
         context.IsDay = calendar.Phase == DayPhase.Day;
 
         return context;
@@ -130,6 +157,19 @@ public class VerbResolveSystem : Injects, IEcsRunSystem
         outcome.CommonsOpinion = definition.CommonsOpinion;
         outcome.CourtOpinion = definition.CourtOpinion;
         outcome.OnFail = definition.OnFail;
+        outcome.OpinionOnFail = definition.OpinionOnFail;
+
+        // Просьба о войске — единственный глагол, который двигает копья.
+        // Лорд отдаёт часть сразу: они защищают стены, но и едят каждую ночь.
+        // И он вправе отказать: шанс растёт от мнения, при +30 уже прилично.
+        if (verb == VerbId.AskForTroops)
+        {
+            var balance = GameConfig.BalanceConfig;
+            outcome.Chance = balance.TroopsChance(context.TargetOpinion);
+
+            if (context.TargetTroops > 0)
+                outcome.TroopsGained = Mathf.Max(1, context.TargetTroops * balance.TroopsPercentOnRequest / 100);
+        }
 
         if (ambition != null)
         {
@@ -145,6 +185,15 @@ public class VerbResolveSystem : Injects, IEcsRunSystem
         ApplyReaction(chars.GetTrait(context.TargetB), verb, context.TargetGender, false, ref outcome);
         ApplyReaction(chars.GetTrait(context.PlayerA), verb, Gender.Male, true, ref outcome);
         ApplyReaction(chars.GetTrait(context.PlayerB), verb, Gender.Male, true, ref outcome);
+
+        int repeats = context.Uses(verb);
+        if (repeats > 0 && definition.RepeatPenalty > 0)
+        {
+            int penalty = definition.RepeatPenalty * repeats;
+            outcome.Opinion -= penalty;
+            Separate();
+            _text.Append("приедается −").Append(penalty);
+        }
 
         outcome.IsChanceBased = outcome.Chance < 100;
         outcome.Chance = outcome.IsChanceBased ? Mathf.Clamp(outcome.Chance, 5, 95) : 100;
@@ -168,7 +217,16 @@ public class VerbResolveSystem : Injects, IEcsRunSystem
 
         outcome.Opinion += reaction.Opinion;
         outcome.Chance += reaction.Chance;
-        if (reaction.OnFail != ConsequenceId.None) outcome.OnFail = reaction.OnFail;
+
+        if (reaction.Consequence != ConsequenceId.None)
+        {
+            if (outcome.Consequences == null) outcome.Consequences = new List<VerbConsequence>();
+            outcome.Consequences.Add(new VerbConsequence
+            {
+                Id = reaction.Consequence,
+                Chance = reaction.RealChance,
+            });
+        }
 
         Separate();
         _text.Append(trait.GetTitle(gender));
@@ -180,6 +238,12 @@ public class VerbResolveSystem : Injects, IEcsRunSystem
 
     private void AppendSideEffects(Context context, ref VerbOutcome outcome)
     {
+        if (outcome.TroopsGained > 0)
+        {
+            Separate();
+            _text.Append('+').Append(outcome.TroopsGained).Append(" копий — их надо кормить");
+        }
+
         if (outcome.RivalOpinion != 0 && context.HasRival)
         {
             Separate();
@@ -201,6 +265,12 @@ public class VerbResolveSystem : Injects, IEcsRunSystem
 
     private void AppendFailure(CharactersConfig chars, ref VerbOutcome outcome)
     {
+        if (outcome.IsChanceBased && outcome.OpinionOnFail != 0)
+        {
+            Separate();
+            _text.Append("отказ ").Append(Signed(outcome.OpinionOnFail));
+        }
+
         if (outcome.OnFail == ConsequenceId.None) return;
 
         var consequence = chars.GetConsequence(outcome.OnFail);
@@ -217,9 +287,13 @@ public class VerbResolveSystem : Injects, IEcsRunSystem
     {
         if (!context.IsDay) Deny(ref outcome, "не время для разговоров");
         else if (context.Actions <= 0) Deny(ref outcome, "действий не осталось");
-        else if (definition.OncePerLord && context.IsSpent(definition.Id)) Deny(ref outcome, "уже было");
+        else if (definition.OncePerLord && context.Uses(definition.Id) > 0) Deny(ref outcome, "уже было");
+        else if (definition.CooldownDays > 0
+                 && context.Day - context.LastDay(definition.Id) < definition.CooldownDays)
+            Deny(ref outcome, "просил сегодня");
         else if (definition.Id == VerbId.FulfillAmbition && context.AmbitionDone) Deny(ref outcome, "уже исполнено");
         else if (definition.Id == VerbId.FulfillAmbition && ambition == null) Deny(ref outcome, "желания нет");
+        else if (definition.Id == VerbId.AskForTroops && context.TargetTroops <= 0) Deny(ref outcome, "копий у него нет");
         else if (definition.RequiresTrait && !context.PlayerHas(definition.RequiredTrait))
             Deny(ref outcome, "нужна черта");
         else if (outcome.GoldCost > context.Gold) Deny(ref outcome, "не хватает золота");
@@ -249,6 +323,7 @@ public class VerbResolveSystem : Injects, IEcsRunSystem
         }
 
         if (definition.OncePerLord && ambition == null) Separate("один раз");
+        if (definition.CooldownDays > 0) Separate("раз в " + definition.CooldownDays + " дн.");
 
         return _text.Length > 0 ? _text.ToString() : "бесплатно";
     }

@@ -1,3 +1,4 @@
+using UnityEngine;
 using Leopotam.Ecs;
 
 /// <summary>
@@ -41,6 +42,8 @@ public class VerbActionSystem : Injects, IEcsRunSystem
         if (success) Succeed(runIndex, outcome, target);
         else Fail(outcome, target);
 
+        FireConsequences(runIndex, outcome, target);
+
         _runs.GetEntity(runIndex).Get<SelectionChangedFlag>();   // цифры изменились, пересчитать
 
         ref var resolved = ref _world.NewEntity().Get<VerbResolvedEvent>();
@@ -61,11 +64,10 @@ public class VerbActionSystem : Injects, IEcsRunSystem
         treasury.Food -= outcome.FoodCost;
         calendar.ActionsLeft--;
 
-        var definition = GameConfig.CharactersConfig.GetVerb(outcome.Verb);
-        if (definition == null || !definition.OncePerLord) return;
-
-        var spent = target.Get<SpentVerbsAttribute>().Value;
-        if (spent != null && !spent.Contains(outcome.Verb)) spent.Add(outcome.Verb);
+        // Пишем каждое применение: по этой истории считается и «один раз за забег»,
+        // и кулдаун, и то, насколько лесть уже приелась.
+        var history = target.Get<VerbHistoryAttribute>().Value;
+        if (history != null) history.Add(new VerbUse { Verb = outcome.Verb, Day = calendar.Day });
     }
 
     // ─────────────────────── успех ───────────────────────
@@ -93,12 +95,12 @@ public class VerbActionSystem : Injects, IEcsRunSystem
             court.Reason = outcome.Title;
         }
 
-        ApplySpecials(runIndex, outcome.Verb, target);
+        ApplySpecials(runIndex, outcome.Verb, target, outcome.TroopsGained);
         Chronicle($"{Name(target)}: {outcome.Title} — {Signed(outcome.Opinion)}");
     }
 
     /// <summary>Глаголы, которые меняют не только цифры, но и состояние.</summary>
-    private void ApplySpecials(int runIndex, VerbId verb, EcsEntity target)
+    private void ApplySpecials(int runIndex, VerbId verb, EcsEntity target, int troops)
     {
         switch (verb)
         {
@@ -114,6 +116,21 @@ public class VerbActionSystem : Injects, IEcsRunSystem
             case VerbId.InviteToCastle:
                 target.Get<AtCourtFlag>();
                 break;
+
+            case VerbId.AskForTroops:
+                {
+                    if (troops <= 0) break;
+
+                    ref var lordTroops = ref target.Get<TroopsAttribute>();
+                    ref var treasury = ref _runs.GetEntity(runIndex).Get<TreasuryAttribute>();
+
+                    int sent = Mathf.Min(troops, lordTroops.Value);
+                    lordTroops.Value -= sent;
+                    treasury.Garrison += sent;
+
+                    Chronicle($"{Name(target)} прислал {sent} копий. Теперь их надо кормить.");
+                    break;
+                }
 
             case VerbId.HuntTogether:
                 {
@@ -132,12 +149,31 @@ public class VerbActionSystem : Injects, IEcsRunSystem
 
     private void Fail(VerbOutcome outcome, EcsEntity target)
     {
-        Chronicle($"{Name(target)}: {outcome.Title} — не вышло.");
+        Chronicle($"{Name(target)}: {outcome.Title} — отказ.");
+        Opinion(target, outcome.OpinionOnFail, "отказ");
+
         if (outcome.OnFail == ConsequenceId.None) return;
 
         ref var consequence = ref _world.NewEntity().Get<ConsequenceEvent>();
         consequence.Source = target;
         consequence.Id = outcome.OnFail;
+    }
+
+    /// <summary>Реакции черт. Летят независимо от того, удался глагол:
+    /// Гордый вызывает на поединок именно потому, что ты успешно ему пригрозил.</summary>
+    private void FireConsequences(int runIndex, VerbOutcome outcome, EcsEntity target)
+    {
+        if (outcome.Consequences == null) return;
+
+        for (int i = 0; i < outcome.Consequences.Count; i++)
+        {
+            var pending = outcome.Consequences[i];
+            if (pending.Chance < 100 && Roll(runIndex) >= pending.Chance) continue;
+
+            ref var request = ref _world.NewEntity().Get<ConsequenceEvent>();
+            request.Source = target;
+            request.Id = pending.Id;
+        }
     }
 
     // ─────────────────────── мелочи ───────────────────────

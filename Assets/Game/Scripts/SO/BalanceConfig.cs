@@ -28,9 +28,15 @@ public class BalanceConfig : ScriptableObject
     [Header("Смерти")]
     public int RiotBelowCommons = -50;
     public int AssassinationBelowOpinion = -60;
+    [Range(0, 100)] public int AssassinationChance = 25;
     public int OverthrowBelowOpinion = -30;
     public int OverthrowLordsCount = 3;
-    public int FamineDaysToRiot = 2;
+    public int FamineNightsToDeath = 3;
+
+    [Header("Поединок")]
+    [Range(0, 100)] public int DuelWinChanceBase = 55;   // ТВОЙ шанс победить, не шанс получить вызов
+    public int DuelChanceMin = 5;
+    public int DuelChanceMax = 95;
 
     [Header("Налоги, индекс = ползунок 0..3")]
     public int[] PeasantTaxFood = { 0, 4, 8, 12 };
@@ -48,9 +54,32 @@ public class BalanceConfig : ScriptableObject
     public int WallsStrength = 15;
     public int GranaryStrength = 10;
 
+    [Header("Просьба о войске")]
+    [Range(0, 100)] public int TroopsPercentOnRequest = 50;   // сколько копий лорд отдаёт сразу
+    public int TroopsChanceBase = 20;        // шанс согласия при мнении 0
+    public int TroopsChancePerOpinion = 2;   // за каждое очко мнения
+    public int TroopsChanceMax = 95;
+
+    [Header("Память крестьян")]
+    public int TaxNeutralLevel = 1;   // выше этого уровня копится злость
+    public int GrudgePerLevel = 2;    // очков мнения за каждую единицу злости
+    public int GrudgeDecay = 1;       // сколько сходит за спокойную ночь
+    public int GrudgeMax = 8;
+
     [Header("Тексты")]
     public string[] PhaseNames = { "Утро", "День", "Вечер", "Ночь" };
     public string[] PhaseButtons = { "Распустить двор", "Вечереет", "Ночь", "Спать" };
+
+    [Header("Тексты вечера")]
+    [TextArea(2, 4)]
+    public string EveningQuietText =
+        "Свечи догорели, никто не пришёл. Летописец записал: «день без происшествий» — и, кажется, был разочарован.";
+    [TextArea(2, 4)]
+    public string DuelChallengeText =
+        "{lord} ждёт во дворе с обнажённым клинком. Отказаться нельзя — двор смотрит.\n\nТвои шансы: {chance}%.";
+    [TextArea(2, 4)]
+    public string DuelWinText =
+        "{lord} упал на третьем выпаде. Летопись отметит, что ты был милосерден. Летопись солжёт.";
 
     [Header("Отладка")]
     public int FixedSeed = 0;   // 0 = каждый забег новый
@@ -71,6 +100,10 @@ public class BalanceConfig : ScriptableObject
         garrison <= 0 ? 0 : Mathf.CeilToInt(garrison / (float)Mathf.Max(1, TroopsPerFood));
 
     public int ClampOpinion(int value) => Mathf.Clamp(value, OpinionMin, OpinionMax);
+
+    /// <summary>Шанс, что лорд отдаст копья. При мнении +30 уже прилично, дальше растёт.</summary>
+    public int TroopsChance(int opinion) =>
+        Mathf.Clamp(TroopsChanceBase + opinion * TroopsChancePerOpinion, 0, TroopsChanceMax);
 
     private static int Clamped(int[] table, int slider)
     {

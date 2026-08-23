@@ -37,6 +37,6 @@ public static class LordFactory
         entity.Get<TroopsAttribute>().Value = data.Troops;
         entity.Get<AmbitionAttribute>().Id = data.Ambition;
         entity.Get<RivalAttribute>().LordId = data.RivalId;
-        entity.Get<SpentVerbsAttribute>().Value = new List<VerbId>();
+        entity.Get<VerbHistoryAttribute>().Value = new List<VerbUse>();
     }
 }

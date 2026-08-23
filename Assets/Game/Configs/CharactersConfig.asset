@@ -104,6 +104,9 @@ MonoBehaviour:
     OpinionDriftPerDay: 0
     DailyRisk: 0
     DailyRiskChance: 0
+    SelfRisk: 0
+    SelfRiskChance: 0
+    DuelChance: 10
     UnlockedVerbs: 
   - Id: 1
     Title: "\u0410\u043B\u0447\u043D\u044B\u0439"
@@ -146,7 +149,10 @@ MonoBehaviour:
     OpinionDriftPerDay: 0
     DailyRisk: 0
     DailyRiskChance: 0
-    UnlockedVerbs: 
+    SelfRisk: 0
+    SelfRiskChance: 0
+    DuelChance: 0
+    UnlockedVerbs: 00000000
   - Id: 2
     Title: "\u0425\u0438\u0442\u0440\u044B\u0439"
     TitleFemale: "\u0425\u0438\u0442\u0440\u0430\u044F"
@@ -190,6 +196,9 @@ MonoBehaviour:
     OpinionDriftPerDay: 0
     DailyRisk: 0
     DailyRiskChance: 0
+    SelfRisk: 0
+    SelfRiskChance: 0
+    DuelChance: 5
     UnlockedVerbs: 
   - Id: 3
     Title: "\u041D\u0430\u0431\u043E\u0436\u043D\u044B\u0439"
@@ -228,6 +237,9 @@ MonoBehaviour:
     OpinionDriftPerDay: 0
     DailyRisk: 0
     DailyRiskChance: 0
+    SelfRisk: 0
+    SelfRiskChance: 0
+    DuelChance: 0
     UnlockedVerbs: 
   - Id: 4
     Title: "\u0416\u0435\u0441\u0442\u043E\u043A\u0438\u0439"
@@ -268,6 +280,9 @@ MonoBehaviour:
     OpinionDriftPerDay: 0
     DailyRisk: 0
     DailyRiskChance: 0
+    SelfRisk: 19
+    SelfRiskChance: 2
+    DuelChance: 15
     UnlockedVerbs: 
   - Id: 5
     Title: "\u0422\u0440\u0443\u0441\u043B\u0438\u0432\u044B\u0439"
@@ -307,6 +322,9 @@ MonoBehaviour:
     OpinionDriftPerDay: 0
     DailyRisk: 0
     DailyRiskChance: 0
+    SelfRisk: 0
+    SelfRiskChance: 0
+    DuelChance: -25
     UnlockedVerbs: 
   - Id: 6
     Title: "\u041F\u043E\u0445\u043E\u0442\u043B\u0438\u0432\u044B\u0439"
@@ -342,6 +360,9 @@ MonoBehaviour:
     OpinionDriftPerDay: 0
     DailyRisk: 0
     DailyRiskChance: 0
+    SelfRisk: 0
+    SelfRiskChance: 0
+    DuelChance: 0
     UnlockedVerbs: 04000000
   - Id: 7
     Title: "\u041F\u044C\u044F\u043D\u0438\u0446\u0430"
@@ -378,6 +399,9 @@ MonoBehaviour:
     OpinionDriftPerDay: 0
     DailyRisk: 9
     DailyRiskChance: 4
+    SelfRisk: 18
+    SelfRiskChance: 3
+    DuelChance: -10
     UnlockedVerbs: 
   - Id: 8
     Title: "\u041E\u0434\u0435\u0440\u0436\u0438\u043C\u044B\u0439"
@@ -418,6 +442,9 @@ MonoBehaviour:
     OpinionDriftPerDay: 0
     DailyRisk: 28
     DailyRiskChance: 3
+    SelfRisk: 15
+    SelfRiskChance: 2
+    DuelChance: 0
     UnlockedVerbs: 
   - Id: 9
     Title: "\u0427\u0435\u0441\u0442\u043D\u044B\u0439"
@@ -468,6 +495,9 @@ MonoBehaviour:
     OpinionDriftPerDay: 0
     DailyRisk: 0
     DailyRiskChance: 0
+    SelfRisk: 0
+    SelfRiskChance: 0
+    DuelChance: 0
     UnlockedVerbs: 
   Verbs:
   - Id: 0
@@ -592,6 +622,8 @@ MonoBehaviour:
   - Id: 0
     Title: "\u0416\u0435\u043D\u0438\u0441\u044C \u043D\u0430 \u043C\u043E\u0435\u0439
       \u0434\u043E\u0447\u0435\u0440\u0438"
+    PlayerAction: "\u0416\u0435\u043D\u0438\u0442\u044C\u0441\u044F \u043D\u0430
+      \u0434\u043E\u0447\u0435\u0440\u0438"
     Demand: "\u0423 \u043C\u0435\u043D\u044F \u0434\u043E\u0447\u044C \u043D\u0430
       \u0432\u044B\u0434\u0430\u043D\u044C\u0435, \u0433\u043E\u0441\u0443\u0434\u0430\u0440\u044C."
     OpinionOnFulfill: 50
@@ -602,6 +634,7 @@ MonoBehaviour:
     OnRefuse: 3
   - Id: 1
     Title: "\u041E\u0442\u0434\u0430\u0439 \u043C\u0435\u043B\u044C\u043D\u0438\u0446\u0443"
+    PlayerAction: "\u041E\u0442\u0434\u0430\u0442\u044C \u043C\u0435\u043B\u044C\u043D\u0438\u0446\u0443"
     Demand: "\u041C\u0435\u043B\u044C\u043D\u0438\u0446\u0430 \u0443 \u0431\u0440\u043E\u0434\u0430
       \u0434\u043E\u043B\u0436\u043D\u0430 \u0431\u044B\u0442\u044C \u043C\u043E\u0435\u0439."
     OpinionOnFulfill: 40
@@ -612,6 +645,7 @@ MonoBehaviour:
     OnRefuse: 4
   - Id: 2
     Title: "\u0414\u0430\u0439 \u0442\u0438\u0442\u0443\u043B"
+    PlayerAction: "\u0414\u0430\u0442\u044C \u0442\u0438\u0442\u0443\u043B"
     Demand: "\u042F \u0434\u043E\u0441\u0442\u043E\u0438\u043D \u0431\u043E\u043B\u044C\u0448\u0435\u0433\u043E,
       \u0447\u0435\u043C \u0435\u0441\u0442\u044C."
     OpinionOnFulfill: 45
@@ -622,6 +656,7 @@ MonoBehaviour:
     OnRefuse: 5
   - Id: 3
     Title: "\u0423\u0431\u0435\u0439 \u043C\u043E\u0435\u0433\u043E \u0432\u0440\u0430\u0433\u0430"
+    PlayerAction: "\u0423\u0431\u0438\u0442\u044C \u0435\u0433\u043E \u0432\u0440\u0430\u0433\u0430"
     Demand: "\u0422\u044B \u0437\u043D\u0430\u0435\u0448\u044C, \u043E \u043A\u043E\u043C
       \u044F."
     OpinionOnFulfill: 60
@@ -632,6 +667,7 @@ MonoBehaviour:
     OnRefuse: 6
   - Id: 4
     Title: "\u041F\u043E\u0441\u0442\u0440\u043E\u0439 \u0447\u0430\u0441\u043E\u0432\u043D\u044E"
+    PlayerAction: "\u041F\u043E\u0441\u0442\u0440\u043E\u0438\u0442\u044C \u0447\u0430\u0441\u043E\u0432\u043D\u044E"
     Demand: "\u0413\u043E\u0441\u043F\u043E\u0434\u044C \u0441\u043C\u043E\u0442\u0440\u0438\u0442,
       \u0433\u043E\u0441\u0443\u0434\u0430\u0440\u044C."
     OpinionOnFulfill: 35
@@ -642,6 +678,7 @@ MonoBehaviour:
     OnRefuse: 0
   - Id: 5
     Title: "\u0412\u044B\u0441\u043B\u0443\u0448\u0430\u0439 \u043F\u0440\u043E\u0440\u043E\u0447\u0435\u0441\u0442\u0432\u043E"
+    PlayerAction: "\u0412\u044B\u0441\u043B\u0443\u0448\u0430\u0442\u044C \u043F\u0440\u043E\u0440\u043E\u0447\u0435\u0441\u0442\u0432\u043E"
     Demand: "\u041C\u043D\u0435 \u0431\u044B\u043B\u043E \u0432\u0438\u0434\u0435\u043D\u0438\u0435.
       \u041F\u0440\u043E \u0442\u0435\u0431\u044F."
     OpinionOnFulfill: 25
@@ -652,6 +689,8 @@ MonoBehaviour:
     OnRefuse: 3
   - Id: 6
     Title: "\u041F\u043E\u043F\u0440\u043E\u0431\u0443\u0439 \u043C\u043E\u0439 \u0441\u0443\u043F"
+    PlayerAction: "\u041F\u043E\u043F\u0440\u043E\u0431\u043E\u0432\u0430\u0442\u044C
+      \u0441\u0443\u043F"
     Demand: "\u042F \u0433\u043E\u0442\u043E\u0432\u0438\u043B \u0442\u0440\u0438
       \u0434\u043D\u044F."
     OpinionOnFulfill: 20
@@ -663,6 +702,8 @@ MonoBehaviour:
   - Id: 7
     Title: "\u041D\u0430\u0437\u043E\u0432\u0438 \u0441\u043E\u0431\u0430\u043A\u0443
       \u0432 \u043C\u043E\u044E \u0447\u0435\u0441\u0442\u044C"
+    PlayerAction: "\u041D\u0430\u0437\u0432\u0430\u0442\u044C \u0441\u043E\u0431\u0430\u043A\u0443
+      \u0432 \u0435\u0433\u043E \u0447\u0435\u0441\u0442\u044C"
     Demand: "\u041F\u0443\u0441\u0442\u044F\u043A, \u043D\u043E \u043C\u043D\u0435
       \u0431\u0443\u0434\u0435\u0442 \u043F\u0440\u0438\u044F\u0442\u043D\u043E."
     OpinionOnFulfill: 30
@@ -673,6 +714,7 @@ MonoBehaviour:
     OnRefuse: 0
   Consequences:
   - Id: 0
+    Title: 
     ChronicleLine: 
     IsLethalForLord: 0
     IsLethalForPlayer: 0
@@ -684,6 +726,7 @@ MonoBehaviour:
     Troops: 0
     ActionsLost: 0
   - Id: 1
+    Title: "\u043F\u043E\u0435\u0434\u0438\u043D\u043E\u043A"
     ChronicleLine: "{lord} \u0431\u0440\u043E\u0441\u0438\u043B \u043F\u0435\u0440\u0447\u0430\u0442\u043A\u0443.
       \u041E\u0442\u043A\u0430\u0437\u0430\u0442\u044C\u0441\u044F \u043D\u0435\u043B\u044C\u0437\u044F."
     IsLethalForLord: 0
@@ -696,6 +739,7 @@ MonoBehaviour:
     Troops: 0
     ActionsLost: 0
   - Id: 2
+    Title: "\u0441\u043A\u0430\u043D\u0434\u0430\u043B"
     ChronicleLine: "\u041A \u0432\u0435\u0447\u0435\u0440\u0443 \u043E\u0431 \u044D\u0442\u043E\u043C
       \u0437\u043D\u0430\u043B \u0432\u0435\u0441\u044C \u0437\u0430\u043C\u043E\u043A."
     IsLethalForLord: 0
@@ -708,6 +752,7 @@ MonoBehaviour:
     Troops: 0
     ActionsLost: 0
   - Id: 3
+    Title: "\u0441\u043B\u0443\u0445"
     ChronicleLine: "{lord} \u0433\u043E\u0432\u043E\u0440\u0438\u043B \u0442\u0438\u0445\u043E,
       \u043D\u043E \u0433\u043E\u0432\u043E\u0440\u0438\u043B \u0441\u043E \u0432\u0441\u0435\u043C\u0438."
     IsLethalForLord: 0
@@ -720,6 +765,7 @@ MonoBehaviour:
     Troops: 0
     ActionsLost: 0
   - Id: 4
+    Title: "\u0442\u0440\u0435\u0431\u0443\u0435\u0442 \u043F\u043E\u0434\u0430\u0440\u043E\u043A"
     ChronicleLine: "{lord} \u0436\u0434\u0451\u0442 \u043F\u043E\u0434\u0430\u0440\u043A\u0430.
       \u0418 \u0436\u0434\u0430\u0442\u044C \u043D\u0435 \u043B\u044E\u0431\u0438\u0442."
     IsLethalForLord: 0
@@ -732,6 +778,7 @@ MonoBehaviour:
     Troops: 0
     ActionsLost: 0
   - Id: 5
+    Title: "\u0443\u0435\u0434\u0435\u0442"
     ChronicleLine: "{lord} \u0443\u0435\u0445\u0430\u043B \u043D\u0430 \u0440\u0430\u0441\u0441\u0432\u0435\u0442\u0435.
       \u041A\u043E\u043F\u044C\u044F \u0443\u0435\u0445\u0430\u043B\u0438 \u0441
       \u043D\u0438\u043C."
@@ -745,6 +792,7 @@ MonoBehaviour:
     Troops: 0
     ActionsLost: 0
   - Id: 6
+    Title: "\u0437\u0430\u0433\u043E\u0432\u043E\u0440"
     ChronicleLine: "{lord} \u043F\u0435\u0440\u0435\u0441\u0442\u0430\u043B \u0441\u043F\u043E\u0440\u0438\u0442\u044C.
       \u042D\u0442\u043E \u0445\u0443\u0436\u0435, \u0447\u0435\u043C \u0441\u043F\u043E\u0440."
     IsLethalForLord: 0
@@ -757,6 +805,7 @@ MonoBehaviour:
     Troops: 0
     ActionsLost: 0
   - Id: 7
+    Title: "\u043D\u0430\u043F\u044C\u0451\u0442\u0441\u044F"
     ChronicleLine: "{lord} \u0443\u043F\u0430\u043B \u043B\u0438\u0446\u043E\u043C
       \u0432 \u0431\u043B\u044E\u0434\u043E. \u0414\u0435\u043D\u044C \u043E\u043A\u043E\u043D\u0447\u0435\u043D."
     IsLethalForLord: 0
@@ -769,6 +818,7 @@ MonoBehaviour:
     Troops: 0
     ActionsLost: 0
   - Id: 8
+    Title: "\u043F\u043E\u043A\u0430\u0435\u0442\u0441\u044F \u043F\u0440\u0438\u043B\u044E\u0434\u043D\u043E"
     ChronicleLine: "{lord} \u043A\u0430\u044F\u043B\u0441\u044F \u043D\u0430 \u043F\u043B\u043E\u0449\u0430\u0434\u0438.
       \u041A\u0440\u0435\u0441\u0442\u044C\u044F\u043D\u0430\u043C \u043F\u043E\u043D\u0440\u0430\u0432\u0438\u043B\u043E\u0441\u044C."
     IsLethalForLord: 0
@@ -781,6 +831,7 @@ MonoBehaviour:
     Troops: 0
     ActionsLost: 0
   - Id: 9
+    Title: "\u043F\u0430\u0434\u0435\u043D\u0438\u0435 \u0441 \u043B\u0435\u0441\u0442\u043D\u0438\u0446\u044B"
     ChronicleLine: "\u041B\u0435\u0441\u0442\u043D\u0438\u0446\u0430 \u0431\u044B\u043B\u0430
       \u0442\u0430\u043C \u0436\u0435, \u0433\u0434\u0435 \u0432\u0447\u0435\u0440\u0430.
       {lord} \u2014 \u043D\u0435\u0442."
@@ -794,6 +845,7 @@ MonoBehaviour:
     Troops: 0
     ActionsLost: 0
   - Id: 10
+    Title: "\u043F\u0440\u0438\u0432\u0435\u0434\u0451\u0442 \u0431\u043E\u043B\u044C\u0448\u0435"
     ChronicleLine: "{lord} \u043F\u0440\u0438\u0432\u0435\u0434\u0451\u0442 \u0431\u043E\u043B\u044C\u0448\u0435,
       \u0447\u0435\u043C \u043E\u0431\u0435\u0449\u0430\u043B."
     IsLethalForLord: 0
@@ -806,6 +858,7 @@ MonoBehaviour:
     Troops: 0
     ActionsLost: 0
   - Id: 11
+    Title: "\u0434\u043E\u043D\u0435\u0441\u0451\u0442 \u0441\u043E\u043F\u0435\u0440\u043D\u0438\u043A\u0443"
     ChronicleLine: "\u041E \u0440\u0430\u0437\u0433\u043E\u0432\u043E\u0440\u0435
       \u0443\u0437\u043D\u0430\u043B \u0442\u043E\u0442, \u043A\u043E\u043C\u0443
       \u043D\u0435 \u0441\u043B\u0435\u0434\u043E\u0432\u0430\u043B\u043E."
@@ -819,6 +872,7 @@ MonoBehaviour:
     Troops: 0
     ActionsLost: 0
   - Id: 12
+    Title: "\u043F\u043E\u0434\u0430\u0432\u0438\u043B\u0441\u044F"
     ChronicleLine: "{lord} \u043F\u043E\u0434\u0430\u0432\u0438\u043B\u0441\u044F
       \u043D\u0430 \u0441\u043E\u0431\u0441\u0442\u0432\u0435\u043D\u043D\u043E\u043C
       \u043F\u0438\u0440\u0443."
@@ -832,6 +886,8 @@ MonoBehaviour:
     Troops: 0
     ActionsLost: 0
   - Id: 13
+    Title: "\u043B\u043E\u0448\u0430\u0434\u044C \u0440\u0435\u0448\u0438\u043B\u0430
+      \u0438\u043D\u0430\u0447\u0435"
     ChronicleLine: "\u041B\u043E\u0448\u0430\u0434\u044C \u0440\u0435\u0448\u0438\u043B\u0430
       \u0438\u043D\u0430\u0447\u0435."
     IsLethalForLord: 1
@@ -844,6 +900,7 @@ MonoBehaviour:
     Troops: 0
     ActionsLost: 0
   - Id: 14
+    Title: "\u044F\u0434"
     ChronicleLine: "\u041B\u044E\u0431\u043E\u0432\u043D\u0438\u043A \u043F\u0435\u0440\u0435\u0434\u0443\u043C\u0430\u043B."
     IsLethalForLord: 1
     IsLethalForPlayer: 0
@@ -855,6 +912,7 @@ MonoBehaviour:
     Troops: 0
     ActionsLost: 0
   - Id: 15
+    Title: "\u043C\u043E\u043B\u043D\u0438\u044F"
     ChronicleLine: "\u041F\u0440\u043E\u0440\u043E\u0447\u0435\u0441\u0442\u0432\u043E
       \u0441\u0431\u044B\u043B\u043E\u0441\u044C \u0431\u0443\u043A\u0432\u0430\u043B\u044C\u043D\u043E."
     IsLethalForLord: 1
@@ -867,6 +925,7 @@ MonoBehaviour:
     Troops: 0
     ActionsLost: 0
   - Id: 16
+    Title: "\u0447\u0443\u043C\u0430"
     ChronicleLine: "\u041A\u0440\u044B\u0441\u044B \u043F\u0440\u0438\u0448\u043B\u0438
       \u0440\u0430\u043D\u044C\u0448\u0435 \u0430\u0440\u043C\u0438\u0438."
     IsLethalForLord: 1
@@ -879,6 +938,7 @@ MonoBehaviour:
     Troops: 0
     ActionsLost: 0
   - Id: 17
+    Title: "\u043F\u043E\u0435\u0434\u0438\u043D\u043E\u043A \u043F\u0440\u043E\u0438\u0433\u0440\u0430\u043D"
     ChronicleLine: "\u0422\u044B \u043F\u0440\u0438\u043D\u044F\u043B \u0432\u044B\u0437\u043E\u0432.
       \u0417\u0440\u044F."
     IsLethalForLord: 0
@@ -891,6 +951,7 @@ MonoBehaviour:
     Troops: 0
     ActionsLost: 0
   - Id: 18
+    Title: "\u0440\u043E\u0432"
     ChronicleLine: "\u041D\u043E\u0447\u044C\u044E, \u043F\u044C\u044F\u043D\u044B\u043C,
       \u0432\u043E \u0440\u0432\u0443 \u0441\u043E\u0431\u0441\u0442\u0432\u0435\u043D\u043D\u043E\u0433\u043E
       \u0437\u0430\u043C\u043A\u0430."
@@ -904,6 +965,7 @@ MonoBehaviour:
     Troops: 0
     ActionsLost: 0
   - Id: 19
+    Title: "\u043C\u0435\u0441\u0442\u044C \u0441\u044B\u043D\u0430"
     ChronicleLine: "\u0421\u044B\u043D \u043E\u0441\u043A\u043E\u0440\u0431\u043B\u0451\u043D\u043D\u043E\u0433\u043E
       \u043B\u043E\u0440\u0434\u0430 \u043E\u043A\u0430\u0437\u0430\u043B\u0441\u044F
       \u0442\u0435\u0440\u043F\u0435\u043B\u0438\u0432."
@@ -917,6 +979,7 @@ MonoBehaviour:
     Troops: 0
     ActionsLost: 0
   - Id: 20
+    Title: "\u0443\u043C\u0435\u0440 \u0441\u043E \u0441\u043C\u0435\u0445\u0443"
     ChronicleLine: "{lord} \u0443\u043C\u0435\u0440 \u0441\u043E \u0441\u043C\u0435\u0445\u0443
       \u043D\u0430\u0434 \u0442\u0432\u043E\u0438\u043C \u043F\u0440\u0435\u0434\u043B\u043E\u0436\u0435\u043D\u0438\u0435\u043C."
     IsLethalForLord: 1
@@ -929,6 +992,7 @@ MonoBehaviour:
     Troops: 0
     ActionsLost: 0
   - Id: 21
+    Title: "\u0435\u0449\u0451 \u043D\u0430\u0441\u043B\u0435\u0434\u043D\u0438\u043A"
     ChronicleLine: "\u041E\u0431\u044A\u044F\u0432\u0438\u043B\u0441\u044F \u0435\u0449\u0451
       \u043E\u0434\u0438\u043D \u043D\u0430\u0441\u043B\u0435\u0434\u043D\u0438\u043A."
     IsLethalForLord: 0
@@ -941,6 +1005,7 @@ MonoBehaviour:
     Troops: 0
     ActionsLost: 0
   - Id: 22
+    Title: "\u0432\u0441\u0442\u0440\u0435\u0447\u0430 \u0432 \u043A\u043E\u0440\u0438\u0434\u043E\u0440\u0435"
     ChronicleLine: "\u0414\u0432\u0430 \u043B\u044E\u0431\u043E\u0432\u043D\u0438\u043A\u0430
       \u0432\u0441\u0442\u0440\u0435\u0442\u0438\u043B\u0438\u0441\u044C \u0432 \u043A\u043E\u0440\u0438\u0434\u043E\u0440\u0435."
     IsLethalForLord: 0
@@ -953,6 +1018,7 @@ MonoBehaviour:
     Troops: 0
     ActionsLost: 0
   - Id: 23
+    Title: "\u0441\u043E\u0431\u0430\u043A\u0430 \u0443\u043A\u0443\u0441\u0438\u043B\u0430"
     ChronicleLine: "\u0421\u043E\u0431\u0430\u043A\u0430 \u0443\u043A\u0443\u0441\u0438\u043B\u0430
       \u043B\u043E\u0440\u0434\u0430, \u0432 \u0447\u0435\u0441\u0442\u044C \u043A\u043E\u0442\u043E\u0440\u043E\u0433\u043E
       \u043D\u0430\u0437\u0432\u0430\u043D\u0430."
@@ -966,6 +1032,7 @@ MonoBehaviour:
     Troops: 0
     ActionsLost: 0
   - Id: 24
+    Title: "\u043E\u0442\u043B\u0443\u0447\u0435\u043D\u0438\u0435"
     ChronicleLine: "\u0411\u0440\u0430\u0442 \u041E\u0434\u043E \u043E\u0442\u043B\u0443\u0447\u0438\u043B
       \u0442\u0435\u0431\u044F \u043B\u0438\u0447\u043D\u043E."
     IsLethalForLord: 0
@@ -978,6 +1045,7 @@ MonoBehaviour:
     Troops: 0
     ActionsLost: 0
   - Id: 25
+    Title: "\u043B\u043E\u0448\u0430\u0434\u044C \u0441\u044A\u0435\u043B\u0430 \u0434\u043E\u0433\u043E\u0432\u043E\u0440"
     ChronicleLine: "\u0414\u043E\u0433\u043E\u0432\u043E\u0440 \u0431\u044B\u043B
       \u043D\u0430 \u0441\u0442\u043E\u043B\u0435. \u041B\u043E\u0448\u0430\u0434\u044C
       \u0431\u044B\u043B\u0430 \u0440\u044F\u0434\u043E\u043C."
@@ -991,6 +1059,7 @@ MonoBehaviour:
     Troops: 0
     ActionsLost: 0
   - Id: 26
+    Title: "\u0440\u0435\u043F\u0430 \u0432 \u043B\u0438\u0446\u043E"
     ChronicleLine: "\u041A\u0440\u0435\u0441\u0442\u044C\u044F\u043D\u0438\u043D
       \u043F\u0440\u043E\u043C\u0430\u0445\u043D\u0443\u043B\u0441\u044F. \u0418\u043B\u0438
       \u043D\u0435\u0442."
@@ -1004,6 +1073,7 @@ MonoBehaviour:
     Troops: 0
     ActionsLost: 0
   - Id: 27
+    Title: "\u0441\u0443\u043F \u0431\u044B\u043B \u0443\u0436\u0430\u0441\u0435\u043D"
     ChronicleLine: "\u0422\u044B \u043F\u043E\u043F\u0440\u043E\u0431\u043E\u0432\u0430\u043B.
       \u0422\u044B \u0441\u043A\u0430\u0437\u0430\u043B \u043F\u0440\u0430\u0432\u0434\u0443."
     IsLethalForLord: 0
@@ -1016,6 +1086,7 @@ MonoBehaviour:
     Troops: 0
     ActionsLost: 0
   - Id: 28
+    Title: "\u043F\u0440\u043E\u0440\u043E\u0447\u0435\u0441\u0442\u0432\u043E \u0441\u0431\u044B\u043B\u043E\u0441\u044C"
     ChronicleLine: "\u041E\u0434\u043E \u0431\u044B\u043B \u043F\u0440\u0430\u0432,
       \u0438 \u044D\u0442\u043E \u0445\u0443\u0436\u0435 \u0432\u0441\u0435\u0433\u043E."
     IsLethalForLord: 0
@@ -1028,6 +1099,7 @@ MonoBehaviour:
     Troops: 0
     ActionsLost: 0
   - Id: 29
+    Title: "\u0442\u044B \u0440\u0430\u0441\u0441\u043A\u0430\u0437\u0430\u043B \u0432\u0441\u0451"
     ChronicleLine: "\u0422\u044B \u0440\u0430\u0441\u0441\u043A\u0430\u0437\u0430\u043B
       \u0432\u0441\u0451. \u0412\u0441\u0435\u043C."
     IsLethalForLord: 0
@@ -1039,3 +1111,46 @@ MonoBehaviour:
     Food: 0
     Troops: 0
     ActionsLost: 0
+  Deaths:
+  - Cause: 1
+    Title: "\u0411\u0443\u043D\u0442"
+    ChronicleLine: "\u0422\u043E\u043B\u043F\u0430 \u043D\u0435 \u0441\u0442\u0430\u043B\u0430
+      \u0441\u043B\u0443\u0448\u0430\u0442\u044C. \u0412\u043E\u0440\u043E\u0442\u0430
+      \u043E\u0442\u043A\u0440\u044B\u043B\u0438 \u0438\u0437\u043D\u0443\u0442\u0440\u0438."
+  - Cause: 2
+    Title: "\u0413\u043E\u043B\u043E\u0434"
+    ChronicleLine: "\u0410\u043C\u0431\u0430\u0440\u044B \u0441\u0442\u043E\u044F\u043B\u0438
+      \u043F\u0443\u0441\u0442\u044B\u043C\u0438 \u043D\u0435 \u043F\u0435\u0440\u0432\u0443\u044E
+      \u043D\u043E\u0447\u044C. \u0413\u043E\u043B\u043E\u0434 \u043D\u0435 \u0441\u043F\u0440\u0430\u0448\u0438\u0432\u0430\u0435\u0442
+      \u0442\u0438\u0442\u0443\u043B\u0430."
+  - Cause: 3
+    Title: "\u041D\u043E\u0436 \u0432 \u0441\u043F\u0438\u043D\u0443"
+    ChronicleLine: "{lord} \u0432\u043E\u0448\u0451\u043B \u0431\u0435\u0437 \u0441\u0442\u0443\u043A\u0430.
+      \u042D\u0442\u043E \u0432\u0441\u0451, \u0447\u0442\u043E \u0438\u0437\u0432\u0435\u0441\u0442\u043D\u043E
+      \u043B\u0435\u0442\u043E\u043F\u0438\u0441\u0446\u0443."
+  - Cause: 4
+    Title: "\u0421\u0432\u0435\u0440\u0436\u0435\u043D\u0438\u0435"
+    ChronicleLine: "\u041B\u043E\u0440\u0434\u044B \u0441\u0433\u043E\u0432\u043E\u0440\u0438\u043B\u0438\u0441\u044C.
+      \u041A\u043E\u043B\u044C\u0446\u043E \u0441\u043D\u044F\u043B\u0438 \u0441
+      \u0435\u0449\u0451 \u0442\u0451\u043F\u043B\u043E\u0439 \u0440\u0443\u043A\u0438."
+  - Cause: 5
+    Title: "\u041F\u043E\u0435\u0434\u0438\u043D\u043E\u043A"
+    ChronicleLine: "\u0422\u044B \u043F\u0440\u0438\u043D\u044F\u043B \u0432\u044B\u0437\u043E\u0432
+      {lord}. \u041B\u0435\u0442\u043E\u043F\u0438\u0441\u0435\u0446 \u043E\u0442\u043C\u0435\u0442\u0438\u043B,
+      \u0447\u0442\u043E \u0434\u0435\u0440\u0436\u0430\u043B\u0441\u044F \u0442\u044B
+      \u0434\u043E\u0441\u0442\u043E\u0439\u043D\u043E \u0440\u043E\u0432\u043D\u043E
+      \u0434\u0432\u0430 \u0443\u0434\u0430\u0440\u0430."
+  - Cause: 6
+    Title: "\u041D\u0435\u043B\u0435\u043F\u043E\u0441\u0442\u044C"
+    ChronicleLine: '{detail}'
+  - Cause: 7
+    Title: "\u041E\u0441\u0430\u0434\u0430"
+    ChronicleLine: "\u0421\u0442\u0435\u043D\u044B \u0432\u044B\u0434\u0435\u0440\u0436\u0430\u043B\u0438
+      \u0434\u043E\u043B\u044C\u0448\u0435, \u0447\u0435\u043C \u0433\u0430\u0440\u043D\u0438\u0437\u043E\u043D."
+  - Cause: 0
+    Title: "\u0422\u044B \u0434\u043E\u0436\u0438\u043B"
+    ChronicleLine: "\u041E\u0441\u0430\u0434\u0430 \u0441\u043D\u044F\u0442\u0430.
+      \u041A\u043E\u043B\u044C\u0446\u043E \u0432\u0441\u0451 \u0435\u0449\u0451
+      \u043D\u0430 \u0442\u0432\u043E\u0435\u0439 \u0440\u0443\u043A\u0435 \u2014
+      \u0438 \u044D\u0442\u043E, \u043E\u0442\u043C\u0435\u0447\u0430\u0435\u0442
+      \u043B\u0435\u0442\u043E\u043F\u0438\u0441\u0435\u0446, \u0443\u0434\u0438\u0432\u0438\u0442\u0435\u043B\u044C\u043D\u043E."
