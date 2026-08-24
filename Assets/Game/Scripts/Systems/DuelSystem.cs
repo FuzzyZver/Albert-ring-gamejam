@@ -14,7 +14,6 @@ public class DuelSystem : Injects, IEcsRunSystem
     private EcsWorld _world;
 
     private EcsFilter<ConsequenceEvent> _consequences;
-    private EcsFilter<PhaseChangedEvent> _phaseStarts;
     private EcsFilter<RunFlag, DuelAttribute, EveningAttribute>.Exclude<RunOverFlag> _runs;
     private EcsFilter<LordFlag, LordIdAttribute, PersonAttribute, TraitsAttribute> _lords;
     private EcsFilter<PlayerFlag, TraitsAttribute> _players;
@@ -27,8 +26,7 @@ public class DuelSystem : Injects, IEcsRunSystem
             Challenge(_consequences.Get1(i).Source);
         }
 
-        foreach (var i in _phaseStarts)
-            if (_phaseStarts.Get1(i).Phase == DayPhase.Evening) Announce();
+        Announce();
 
         Resolve();
     }
@@ -51,6 +49,8 @@ public class DuelSystem : Injects, IEcsRunSystem
 
     // ─────────────────────── вечер ───────────────────────
 
+    /// <summary>Очередь вечера дошла до поединка — наполняем текст.
+    /// Замком фазы заведует EveningSystem, здесь его не трогаем.</summary>
     private void Announce()
     {
         var balance = GameConfig.BalanceConfig;
@@ -59,11 +59,16 @@ public class DuelSystem : Injects, IEcsRunSystem
         foreach (var r in _runs)
         {
             ref var duel = ref _runs.Get2(r);
-            if (duel.LordId < 0) continue;
+            ref var evening = ref _runs.Get3(r);
 
-            if (!TryFindLord(duel.LordId, out int index) || _lords.GetEntity(index).Has<DeadFlag>())
+            if (evening.Kind != EveningKind.Duel || !evening.Waiting) continue;
+            if (!string.IsNullOrEmpty(evening.Body)) continue;   // уже наполнено
+
+            if (duel.LordId < 0 || !TryFindLord(duel.LordId, out int index)
+                || _lords.GetEntity(index).Has<DeadFlag>())
             {
-                duel.LordId = -1;   // противник не дожил до вечера
+                duel.LordId = -1;          // противник не дожил до вечера
+                evening.Waiting = false;
                 continue;
             }
 
@@ -71,19 +76,10 @@ public class DuelSystem : Injects, IEcsRunSystem
                 balance.DuelWinChanceBase + PlayerSkill(chars) - LordSkill(chars, index),
                 balance.DuelChanceMin, balance.DuelChanceMax);
 
-            string name = _lords.Get3(index).GivenName;
-
-            ref var evening = ref _runs.Get3(r);
-            evening.Kind = EveningKind.Duel;
-            evening.LordId = duel.LordId;
             evening.Title = "Поединок";
             evening.Body = balance.DuelChallengeText
-                .Replace("{lord}", name)
+                .Replace("{lord}", _lords.Get3(index).GivenName)
                 .Replace("{chance}", duel.Chance.ToString());
-            evening.Choice = "Выйти во двор";
-            evening.Waiting = true;
-
-            _runs.GetEntity(r).Get<PhaseLockFlag>();
         }
     }
 
@@ -100,7 +96,7 @@ public class DuelSystem : Injects, IEcsRunSystem
             if (!entity.Has<DuelAcceptedFlag>()) continue;
             entity.Del<DuelAcceptedFlag>();
 
-            if (duel.LordId < 0 || !evening.Waiting) continue;
+            if (duel.LordId < 0 || evening.Kind != EveningKind.Duel) continue;
             if (!TryFindLord(duel.LordId, out int index)) { Release(entity, ref duel, ref evening); continue; }
 
             var lord = _lords.GetEntity(index);
@@ -119,7 +115,7 @@ public class DuelSystem : Injects, IEcsRunSystem
                 lord.Get<DeadFlag>();
                 lord.Get<LeftCourtFlag>();
 
-                evening.Body = balance.DuelWinText.Replace("{lord}", name);
+                evening.Result = balance.DuelWinText.Replace("{lord}", name);
                 Chronicle($"Поединок с {name} — ты выстоял. Копий его больше нет.");
             }
             else
@@ -138,8 +134,7 @@ public class DuelSystem : Injects, IEcsRunSystem
     {
         duel.LordId = -1;
         evening.Waiting = false;
-        evening.Choice = string.Empty;
-        if (run.Has<PhaseLockFlag>()) run.Del<PhaseLockFlag>();
+        evening.ShowingResult = !string.IsNullOrEmpty(evening.Result);
     }
 
     // ─────────────────────── мастерство ───────────────────────

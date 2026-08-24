@@ -1,12 +1,17 @@
 using Leopotam.Ecs;
 
 /// <summary>
-/// Единственное место, где игрок умирает. Проверяет условия в конце ночи,
-/// уже после ночного счёта — поэтому голод и налоги успевают сработать.
+/// Единственное место, где умирает игрок. Смерти делятся на два сорта, и проверяются
+/// они по-разному.
 ///
-/// Порядок проверок не случаен: сперва то, что ты сделал сам и видел заранее
-/// (бунт, голод, заговор лордов), потом броски. Так смерть почти всегда
-/// читается как своя ошибка, а не как невезение.
+/// ПОРОГОВЫЕ — бунт и свержение. Это условия на цифры, которые игрок видит на экране,
+/// поэтому проверяются каждый кадр: толпа приходит ровно тогда, когда мнение
+/// пересекло черту, а не когда ты соберёшься спать.
+///
+/// НОЧНЫЕ — голод, нож и собственная черта. Это броски, им место раз в ночь.
+///
+/// Последствия сюда не заглядывают: событие у ворот только двигает мнение,
+/// а убивает или нет — решает эта система по своему порогу.
 /// </summary>
 public class DeathWatchSystem : Injects, IEcsRunSystem
 {
@@ -19,43 +24,58 @@ public class DeathWatchSystem : Injects, IEcsRunSystem
 
     public void Run()
     {
+        if (!PlayerExists()) return;   // до выбора персонажа умирать некому
+
+        if (CheckThresholds()) return;
+
         foreach (var i in _phaseEnds)
         {
             if (_phaseEnds.Get1(i).Phase != DayPhase.Night) continue;
-            Check();
+            if (CheckNightly()) return;
         }
     }
 
-    private void Check()
+    // ─────────────────────── пороги ───────────────────────
+
+    private bool CheckThresholds()
     {
         var balance = GameConfig.BalanceConfig;
 
         foreach (var r in _runs)
         {
-            if (_runs.Get2(r).Opinion <= balance.RiotBelowCommons)
+            int commons = _runs.Get2(r).Opinion;
+            Warn(_runs.GetEntity(r), commons, balance);
+
+            if (commons <= balance.RiotBelowCommons)
             {
                 Kill(DeathCause.Riot, -1, string.Empty);
-                return;
-            }
-
-            if (_runs.Get3(r).Nights >= balance.FamineNightsToDeath)
-            {
-                Kill(DeathCause.Famine, -1, string.Empty);
-                return;
+                return true;
             }
 
             if (CountAngry(balance.OverthrowBelowOpinion) >= balance.OverthrowLordsCount)
             {
                 Kill(DeathCause.Overthrow, -1, string.Empty);
-                return;
+                return true;
             }
-
-            if (TryAssassination(r, balance)) return;
-            if (TryOwnTrait(r)) return;
         }
+
+        return false;
     }
 
-    // ─────────────────────── условия ───────────────────────
+    /// <summary>Один раз предупредить, когда мнение вошло в опасную зону,
+    /// и снять предупреждение, когда вышло. Иначе бунт выглядит как гром среди ясного неба.</summary>
+    private void Warn(EcsEntity run, int commons, BalanceConfig balance)
+    {
+        ref var memory = ref run.Get<CommonsMemoryAttribute>();
+        bool danger = commons <= balance.RiotBelowCommons + balance.RiotWarningMargin;
+
+        if (danger == memory.Warned) return;
+        memory.Warned = danger;
+
+        _world.NewEntity().Get<ChronicleEvent>().Line = danger
+            ? "Крестьяне перестали здороваться. На тебя смотрят и считают."
+            : "В деревнях снова здороваются. Пока.";
+    }
 
     private int CountAngry(int threshold)
     {
@@ -65,6 +85,27 @@ public class DeathWatchSystem : Injects, IEcsRunSystem
             if (_lords.Get3(i).Value <= threshold) count++;
 
         return count;
+    }
+
+    // ─────────────────────── ночные броски ───────────────────────
+
+    private bool CheckNightly()
+    {
+        var balance = GameConfig.BalanceConfig;
+
+        foreach (var r in _runs)
+        {
+            if (_runs.Get3(r).Nights >= balance.FamineNightsToDeath)
+            {
+                Kill(DeathCause.Famine, -1, string.Empty);
+                return true;
+            }
+
+            if (TryAssassination(r, balance)) return true;
+            if (TryOwnTrait(r)) return true;
+        }
+
+        return false;
     }
 
     /// <summary>Ножа заслуживают двое: тот, кто уже готовит заговор,
@@ -119,13 +160,20 @@ public class DeathWatchSystem : Injects, IEcsRunSystem
 
         if (!consequence.IsLethalForPlayer)
         {
-            ref var request = ref _world.NewEntity().Get<ConsequenceEvent>();
-            request.Id = trait.SelfRisk;
+            _world.NewEntity().Get<ConsequenceEvent>().Id = trait.SelfRisk;
             return false;
         }
 
         Kill(DeathCause.Accident, -1, consequence.ChronicleLine);
         return true;
+    }
+
+    // ─────────────────────── мелочи ───────────────────────
+
+    private bool PlayerExists()
+    {
+        foreach (var _ in _players) return true;
+        return false;
     }
 
     private void Kill(DeathCause cause, int killerLordId, string detail)

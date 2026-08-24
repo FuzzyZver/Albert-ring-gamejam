@@ -20,6 +20,7 @@ public class HudSystem : Injects, IEcsInitSystem, IEcsRunSystem, IEcsDestroySyst
     private int _gold = int.MinValue;
     private int _food = int.MinValue;
     private int _garrison = int.MinValue;
+    private int _commons = int.MinValue;
 
     public void Init()
     {
@@ -80,18 +81,23 @@ public class HudSystem : Injects, IEcsInitSystem, IEcsRunSystem, IEcsDestroySyst
             UI.Hud.SetActions(_actions);
         }
 
-        if (_gold != treasury.Gold || _food != treasury.Food || _garrison != treasury.Garrison)
+        int commons = _runs.GetEntity(runIndex).Get<CommonsAttribute>().Opinion;
+
+        if (_gold != treasury.Gold || _food != treasury.Food
+            || _garrison != treasury.Garrison || _commons != commons)
         {
             _gold = treasury.Gold;
             _food = treasury.Food;
             _garrison = treasury.Garrison;
-            UI.Hud.SetResources(_gold, _food, _garrison);
+            _commons = commons;
+            UI.Hud.SetResources(_gold, _food, _garrison, _commons,
+                balance.RiotBelowCommons, balance.RiotWarningMargin);
         }
     }
 
     private void Invalidate()
     {
-        _day = _phase = _actions = _gold = _food = _garrison = int.MinValue;
+        _day = _phase = _actions = _gold = _food = _garrison = _commons = int.MinValue;
     }
 
     private void RequestAdvance() => _world.NewEntity().Get<AdvancePhaseEvent>();

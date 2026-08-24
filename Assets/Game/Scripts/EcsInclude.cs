@@ -15,11 +15,8 @@ public class EcsInclude : MonoBehaviour
         _world = new EcsWorld();
         _systems = new EcsSystems(_world);
 
-        _world = new EcsWorld();
-        _systems = new EcsSystems(_world);
-
         _systems
-            //Add (new ...
+            //Add (new ..
             .Add(new InitSystem())
             .Add(new RunSetupSystem())
             .Add(new PlayerSpawnSystem())
@@ -33,8 +30,11 @@ public class EcsInclude : MonoBehaviour
 
             .Add(new SelectionSystem())
             .Add(new VerbActionSystem())
+            .Add(new PetitionSystem())      // утро у трона
+            .Add(new EveningSystem())       // очередь вечера
+            .Add(new ChoiceEffectSystem())  // применяет выбор просителя или события
+            .Add(new DuelSystem())          // после ChoiceEffect: выбор тоже может вызвать на поединок
             .Add(new ConsequenceSystem())   // ловит и глаголы, и ночные риски черт
-            .Add(new DuelSystem())
             .Add(new OpinionSystem())
             .Add(new VerbResolveSystem())   // строго после мнений: считает уже по новым цифрам
             .Add(new RunEndSystem())        // до ScreenSystem: эпилог просит экран событием
@@ -42,7 +42,7 @@ public class EcsInclude : MonoBehaviour
             .Add(new ScreenSystem())
             .Add(new MapViewSystem())
             .Add(new HudSystem())
-            .Add(new EveningSystem())
+            .Add(new EveningViewSystem())   // после DuelSystem: тело поединка дописано
             .Add(new LordCardSystem())
             .Add(new VerbPanelSystem())
             .Add(new ChronicleSystem())
@@ -73,6 +73,10 @@ public class EcsInclude : MonoBehaviour
             .OneFrame<ChronicleEvent>()
 
             .OneFrame<EveningChoiceEvent>()
+            .OneFrame<PetitionChoiceEvent>()
+            .OneFrame<CallNextPetitionerEvent>()
+            .OneFrame<QueueEveningEvent>()
+            .OneFrame<ApplyChoiceEvent>()
             .OneFrame<DeathEvent>()
             .OneFrame<VictoryEvent>()
             .OneFrame<DuelResolvedEvent>()
@@ -80,7 +84,6 @@ public class EcsInclude : MonoBehaviour
             .OneFrame<PinClickedEvent>()
             .OneFrame<CloseCardEvent>()
             .OneFrame<SelectionChangedFlag>()   // снимается здесь, когда вьюхи уже перерисовались
-
 
 
             .Inject(_world)

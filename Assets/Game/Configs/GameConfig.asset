@@ -14,3 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::GameConfig
   CharactersConfig: {fileID: 11400000, guid: 8d645177639484041abc9b994f001a3e, type: 2}
   BalanceConfig: {fileID: 11400000, guid: a7ef5dfb2df4dce429ce065147224842, type: 2}
+  EventsConfig: {fileID: 11400000, guid: 64b87adfaea017b4a9c5ae2e9235f7e9, type: 2}

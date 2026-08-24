@@ -41,7 +41,7 @@ public class CastleActionSystem : Injects, IEcsInitSystem, IEcsRunSystem, IEcsDe
                 plan.HasPlan = true;
                 plan.Slot = slot;
                 plan.PlannedOnDay = calendar.Day;
-                Debug.Log($"День {calendar.Day}: сборы назначены на завтрашний вечер");
+                Debug.Log($"День {calendar.Day}: пир назначен на завтрашний вечер");
             }
             else
             {

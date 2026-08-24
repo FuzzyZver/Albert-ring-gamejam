@@ -17,7 +17,13 @@ public class HudView : MonoBehaviour
     [SerializeField] private TMP_Text _gold;
     [SerializeField] private TMP_Text _food;
     [SerializeField] private TMP_Text _garrison;
+    [SerializeField] private TMP_Text _commons;
     [SerializeField] private TMP_Text _actions;
+
+    [Header("Цвета мнения крестьян")]
+    [SerializeField] private Color _calm = new Color(0.36f, 0.80f, 0.45f);
+    [SerializeField] private Color _uneasy = new Color(0.92f, 0.75f, 0.30f);
+    [SerializeField] private Color _angry = new Color(0.90f, 0.35f, 0.35f);
 
     [Header("Кнопки")]
     [SerializeField] private Button _nextPhase;
@@ -51,11 +57,20 @@ public class HudView : MonoBehaviour
             if (_phaseMarks[i] != null) _phaseMarks[i].SetActive(i == (int)phase);
     }
 
-    public void SetResources(int gold, int food, int garrison)
+    /// <summary>riotAt — порог бунта. Когда цифра к нему подходит, она краснеет:
+    /// смерть от бунта должна быть видна заранее, а не случаться вдруг.</summary>
+    public void SetResources(int gold, int food, int garrison, int commons, int riotAt, int warningMargin)
     {
         if (_gold != null) _gold.text = gold.ToString();
         if (_food != null) _food.text = food.ToString();
         if (_garrison != null) _garrison.text = garrison.ToString();
+
+        if (_commons == null) return;
+
+        _commons.text = commons > 0 ? "+" + commons : commons.ToString();
+        _commons.color =
+            commons <= riotAt + warningMargin ? _angry :
+            commons < 0 ? _uneasy : _calm;
     }
 
     public void SetActions(int left)

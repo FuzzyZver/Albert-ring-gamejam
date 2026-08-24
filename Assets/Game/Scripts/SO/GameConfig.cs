@@ -5,4 +5,5 @@ public class GameConfig : ScriptableObject
 {
     public CharactersConfig CharactersConfig;
     public BalanceConfig BalanceConfig;
+    public EventsConfig EventsConfig;
 }

@@ -27,6 +27,7 @@ public class BalanceConfig : ScriptableObject
 
     [Header("Смерти")]
     public int RiotBelowCommons = -50;
+    public int RiotWarningMargin = 15;   // за сколько до бунта предупреждать
     public int AssassinationBelowOpinion = -60;
     [Range(0, 100)] public int AssassinationChance = 25;
     public int OverthrowBelowOpinion = -30;

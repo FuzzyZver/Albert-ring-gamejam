@@ -97,3 +97,23 @@ public struct DuelResolvedEvent
 }
 
 public struct EveningChoiceEvent { public int Index; }
+public struct PetitionChoiceEvent { public int Index; }
+public struct CallNextPetitionerEvent { }
+
+/// <summary>Положить событие в вечернюю очередь. Любая система может это сделать
+/// в течение дня — вечером они сыграют по порядку.</summary>
+public struct QueueEveningEvent
+{
+    public EveningKind Kind;
+    public EveningEventId Id;
+    public int LordId;
+}
+
+/// <summary>Применить последствия выбранного варианта. И проситель, и вечернее
+/// событие шлют одно и то же — арифметика живёт в ChoiceEffectSystem.</summary>
+public struct ApplyChoiceEvent
+{
+    public ChoiceDefinition Choice;
+    public int LordId;
+    public string Result;
+}

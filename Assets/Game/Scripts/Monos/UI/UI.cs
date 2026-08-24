@@ -19,6 +19,9 @@ public class UI : MonoBehaviour
     public LordCardView LordCard;
     public VerbPanelView VerbPanel;      // положи внутрь корня LordCard
 
+    [Header("Двор")]
+    public CourtView Court;
+
     [Header("Вечер")]
     public EveningView Evening;
 

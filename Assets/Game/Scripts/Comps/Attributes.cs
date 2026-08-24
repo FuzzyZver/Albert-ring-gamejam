@@ -75,7 +75,11 @@ public struct CommonsAttribute { public int Opinion; }
 /// <summary>Крестьяне помнят. Каждая ночь повышенной подати добавляет злости,
 /// спокойная — гасит. Злость вычитается из мнения СЛЕДУЮЩЕЙ ночью,
 /// поэтому подымать налог на день выгодно, а на неделю — самоубийство.</summary>
-public struct CommonsMemoryAttribute { public int Grudge; }
+public struct CommonsMemoryAttribute
+{
+    public int Grudge;
+    public bool Warned;   // предупреждение об опасной зоне уже выдано
+}
 
 public struct RngAttribute
 {
@@ -118,17 +122,53 @@ public struct StarvingAttribute { public int Nights; }
 /// <summary>Кто вызвал тебя на поединок. -1 — никто.</summary>
 public struct DuelAttribute { public int LordId; public int Chance; }
 
+/// <summary>Один проситель в утренней очереди. LordId — тот, кого подставят в {lord}.</summary>
+public struct PetitionEntry
+{
+    public PetitionId Id;
+    public int LordId;
+}
+
+/// <summary>Трое у трона. Index — кто стоит перед тобой сейчас, -1 значит «ещё не звал».
+/// Пока очередь не кончилась, утро не отпускает: на забеге висит PhaseLockFlag.</summary>
+public struct PetitionQueueAttribute
+{
+    public System.Collections.Generic.List<PetitionEntry> Value;
+    public int Index;
+    public bool Waiting;    // ждём выбора игрока
+    public string Result;   // что вышло из прошлого выбора
+}
+
+/// <summary>Одно вечернее событие в очереди.</summary>
+public struct EveningEntry
+{
+    public EveningKind Kind;
+    public EveningEventId Id;
+    public int LordId;
+}
+
+/// <summary>Вечер играется по очереди: пир, потом слух, потом поединок.
+/// Другие системы могут докладывать сюда события в течение дня.</summary>
+public struct EveningQueueAttribute
+{
+    public System.Collections.Generic.List<EveningEntry> Value;
+    public int Index;
+    public bool Started;
+}
+
 /// <summary>Что показывает вечерний экран прямо сейчас. Заполняют системы событий,
 /// рисует EveningSystem. Waiting значит «ждём выбора игрока» — пока он стоит,
 /// фаза не двигается.</summary>
 public struct EveningAttribute
 {
     public EveningKind Kind;
+    public EveningEventId Id;
     public int LordId;
     public string Title;
     public string Body;
-    public string Choice;
-    public bool Waiting;
+    public string Result;
+    public bool Waiting;        // ждём выбора игрока
+    public bool ShowingResult;  // выбор сделан, показываем итог — очередь стоит
 }
 
 /// <summary>Чем всё кончилось. Заполняется один раз, читается эпилогом.</summary>

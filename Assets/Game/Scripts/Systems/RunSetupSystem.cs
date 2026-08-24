@@ -71,6 +71,14 @@ public class RunSetupSystem : Injects, IEcsRunSystem
         entity.Get<RunEndAttribute>();
         entity.Get<DuelAttribute>().LordId = -1;
         entity.Get<EveningAttribute>();
+
+        ref var petitions = ref entity.Get<PetitionQueueAttribute>();
+        petitions.Value = new System.Collections.Generic.List<PetitionEntry>();
+        petitions.Index = -1;
+
+        ref var evenings = ref entity.Get<EveningQueueAttribute>();
+        evenings.Value = new System.Collections.Generic.List<EveningEntry>();
+        evenings.Index = -1;
         entity.Get<NightReportAttribute>();
 
         ref var rng = ref entity.Get<RngAttribute>();

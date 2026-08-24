@@ -27,12 +27,37 @@ public enum CastleSlotId
     Gathering
 }
 
+/// <summary>Кто пришёл к трону утром. Новые дописывать только в конец.</summary>
+public enum PetitionId
+{
+    LandlessKnight,     // рыцарь без надела
+    BanditsInTheWood,   // крестьянин: разбойники
+    BurnedMill,         // мельник
+    LowerTheToll,       // городской голова
+    AbsentFromMass,     // настоятель про лорда
+    SoldiersWidow,      // вдова
+    MercenaryCaptain,   // капитан наёмников
+    Informer            // доносчик
+}
+
+/// <summary>Вечерние события из конфига. Новые дописывать только в конец.</summary>
+public enum EveningEventId
+{
+    QuietEvening,
+    Feast,
+    DrunkenNight,
+    ProphecyAtTable,
+    LoversInTheHall,
+    PeasantsAtTheGate,
+    RumorSpreads
+}
+
 /// <summary>Что происходит вечером. Пока два вида, но экран рассчитан на рост:
 /// пиры, молебны, доносы и выборы игрока лягут сюда же.</summary>
 public enum EveningKind
 {
     None,
-    Message,
+    Story,   // событие из EventsConfig
     Duel
 }
 
