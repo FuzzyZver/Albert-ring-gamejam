@@ -14,8 +14,26 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "EventsConfig", menuName = "Configs/EventsConfig")]
 public class EventsConfig : ScriptableObject
 {
+    [Header("Подписи фаз")]
+    public string[] PhaseNames = { "Утро", "День", "Вечер", "Ночь" };
+    public string[] PhaseButtons = { "Распустить двор", "Вечереет", "Ночь", "Спать" };
+
+    [Header("Поединок")]
+    [TextArea(2, 4)]
+    public string DuelChallengeText =
+        "{lord} ждёт во дворе с обнажённым клинком. Отказаться нельзя — двор смотрит.\n\nТвои шансы: {chance}%.";
+    [TextArea(2, 4)]
+    public string DuelWinText =
+        "{lord} упал на третьем выпаде. Летопись отметит, что ты был милосерден. Летопись солжёт.";
+
     public PetitionDefinition[] Petitions = DefaultPetitions();
     public EveningEventDefinition[] EveningEvents = DefaultEveningEvents();
+
+    public string PhaseName(DayPhase phase) => Text(PhaseNames, (int)phase, phase.ToString());
+    public string PhaseButton(DayPhase phase) => Text(PhaseButtons, (int)phase, "Дальше");
+
+    private static string Text(string[] table, int index, string fallback) =>
+        table == null || index < 0 || index >= table.Length ? fallback : table[index];
 
     public PetitionDefinition GetPetition(PetitionId id) => Array.Find(Petitions, p => p.Id == id);
     public EveningEventDefinition GetEvening(EveningEventId id) => Array.Find(EveningEvents, e => e.Id == id);
@@ -251,8 +269,8 @@ public class EventsConfig : ScriptableObject
         },
 
         new EveningEventDefinition {
-            Id = EveningEventId.RumorSpreads, Title = "Слух", Weight = 8, MinDay = 3,
-            Text = "К вечеру по замку пошёл слух. Про тебя, разумеется. Подробностей никто не знает, но все уверены.",
+            Id = EveningEventId.RumorSpreads, Title = "Слух", Weight = 14, NeedsScandal = true, NeedsLord = true,
+            Text = "После истории с {lord} по замку пошёл слух. Подробностей никто не знает, но все уверены.",
             Choices = new[] {
                 C("Не заметить", "Слух пожил своей жизнью и оброс деталями.",
                     court: -6),
@@ -361,6 +379,7 @@ public class EveningEventDefinition
     public int MinDay = 1;
     public bool NeedsLord;
     public bool NeedsLover;
+    public bool NeedsScandal;   // при дворе есть кто-то опозоренный
     public bool NeedsPlayerTrait;
     public TraitId PlayerTrait;
     public bool NeedsCourtTrait;

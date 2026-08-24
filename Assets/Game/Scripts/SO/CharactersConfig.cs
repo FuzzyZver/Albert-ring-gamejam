@@ -37,7 +37,6 @@ public class CharactersConfig : ScriptableObject
     public DeathDefinition GetDeath(DeathCause cause) => Array.Find(Deaths, d => d.Cause == cause);
 
     public string[] Titles(Gender gender) => gender == Gender.Male ? MaleTitles : FemaleTitles;
-    public string[] Names(Gender gender) => gender == Gender.Male ? MaleNames : FemaleNames;
     public string[] Epithets(Gender gender) => gender == Gender.Male ? MaleEpithets : FemaleEpithets;
 
     // ─────────────────────  СТАРТОВАЯ МАТРИЦА  ─────────────────────
@@ -169,7 +168,6 @@ public class CharactersConfig : ScriptableObject
             SelfReactions = new[] {
                 R(VerbId.Seduce, 0, 15, ConsequenceId.None, "ты знаешь, что делаешь"),
             },
-            UnlockedVerbs = new[] { VerbId.Seduce },
         },
 
         new TraitDefinition {
@@ -284,13 +282,13 @@ public class CharactersConfig : ScriptableObject
 
     private static AmbitionDefinition[] DefaultAmbitions() => new[]
     {
-        new AmbitionDefinition { Id = AmbitionId.MarryMyDaughter,    Title = "Женись на моей дочери",     PlayerAction = "Жениться на дочери",        Demand = "У меня дочь на выданье, государь.", OpinionOnFulfill = 50, ClosesRomance = true, CourtOpinion = -5, OnRefuse = ConsequenceId.SpreadRumor },
-        new AmbitionDefinition { Id = AmbitionId.GiveMeTheMill,      Title = "Отдай мельницу",            PlayerAction = "Отдать мельницу",           Demand = "Мельница у брода должна быть моей.", OpinionOnFulfill = 40, CommonsOpinion = -15, OnRefuse = ConsequenceId.DemandGift },
-        new AmbitionDefinition { Id = AmbitionId.GrantMeATitle,      Title = "Дай титул",                 PlayerAction = "Дать титул",                Demand = "Я достоин большего, чем есть.",      OpinionOnFulfill = 45, CourtOpinion = -10, OnRefuse = ConsequenceId.LeaveCourt },
-        new AmbitionDefinition { Id = AmbitionId.KillMyRival,        Title = "Убей моего врага",          PlayerAction = "Убить его врага",           Demand = "Ты знаешь, о ком я.",                OpinionOnFulfill = 60, CourtOpinion = -20, OnRefuse = ConsequenceId.PlotMurder },
+        new AmbitionDefinition { Id = AmbitionId.MarryMyDaughter,    Title = "Женись на моей дочери",     PlayerAction = "Жениться на дочери",        Demand = "У меня дочь на выданье, государь.", OpinionOnFulfill = 50, ClosesRomance = true, CourtOpinion = -5 },
+        new AmbitionDefinition { Id = AmbitionId.GiveMeTheMill,      Title = "Отдай мельницу",            PlayerAction = "Отдать мельницу",           Demand = "Мельница у брода должна быть моей.", OpinionOnFulfill = 40, CommonsOpinion = -15 },
+        new AmbitionDefinition { Id = AmbitionId.GrantMeATitle,      Title = "Дай титул",                 PlayerAction = "Дать титул",                Demand = "Я достоин большего, чем есть.",      OpinionOnFulfill = 45, CourtOpinion = -10 },
+        new AmbitionDefinition { Id = AmbitionId.KillMyRival,        Title = "Убей моего врага",          PlayerAction = "Убить его врага",           Demand = "Ты знаешь, о ком я.",                OpinionOnFulfill = 60, CourtOpinion = -20 },
         new AmbitionDefinition { Id = AmbitionId.BuildTheChapel,     Title = "Построй часовню",           PlayerAction = "Построить часовню",         Demand = "Господь смотрит, государь.",         OpinionOnFulfill = 35, GoldCost = 30, CommonsOpinion = 15 },
-        new AmbitionDefinition { Id = AmbitionId.HearMyProphecy,     Title = "Выслушай пророчество",      PlayerAction = "Выслушать пророчество",     Demand = "Мне было видение. Про тебя.",        OpinionOnFulfill = 25, OnRefuse = ConsequenceId.SpreadRumor },
-        new AmbitionDefinition { Id = AmbitionId.TasteMySoup,        Title = "Попробуй мой суп",          PlayerAction = "Попробовать суп",           Demand = "Я готовил три дня.",                 OpinionOnFulfill = 20, OnRefuse = ConsequenceId.Scandal },
+        new AmbitionDefinition { Id = AmbitionId.HearMyProphecy,     Title = "Выслушай пророчество",      PlayerAction = "Выслушать пророчество",     Demand = "Мне было видение. Про тебя.",        OpinionOnFulfill = 25 },
+        new AmbitionDefinition { Id = AmbitionId.TasteMySoup,        Title = "Попробуй мой суп",          PlayerAction = "Попробовать суп",           Demand = "Я готовил три дня.",                 OpinionOnFulfill = 20 },
         new AmbitionDefinition { Id = AmbitionId.NameYourDogAfterMe, Title = "Назови собаку в мою честь", PlayerAction = "Назвать собаку в его честь", Demand = "Пустяк, но мне будет приятно.",     OpinionOnFulfill = 30, CourtOpinion = -5 },
     };
 
@@ -512,9 +510,6 @@ public class TraitDefinition
     [Header("Поединок")]
     public int DuelChance;   // сдвиг шанса победить: на тебе — в плюс, на противнике — в минус
 
-    [Header("Открывает глаголы")]
-    public VerbId[] UnlockedVerbs = new VerbId[0];
-
     public string GetTitle(Gender gender) =>
         gender == Gender.Female && !string.IsNullOrEmpty(TitleFemale) ? TitleFemale : Title;
 
@@ -594,7 +589,6 @@ public class AmbitionDefinition
     public int CommonsOpinion;
     public int CourtOpinion;
     public bool ClosesRomance;
-    public ConsequenceId OnRefuse;
 }
 
 /// <summary>

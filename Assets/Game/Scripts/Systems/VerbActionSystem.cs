@@ -45,11 +45,6 @@ public class VerbActionSystem : Injects, IEcsRunSystem
         FireConsequences(runIndex, outcome, target);
 
         _runs.GetEntity(runIndex).Get<SelectionChangedFlag>();   // цифры изменились, пересчитать
-
-        ref var resolved = ref _world.NewEntity().Get<VerbResolvedEvent>();
-        resolved.Target = target;
-        resolved.Verb = outcome.Verb;
-        resolved.Success = success;
     }
 
     // ─────────────────────── цена ───────────────────────
@@ -114,7 +109,11 @@ public class VerbActionSystem : Injects, IEcsRunSystem
                 break;
 
             case VerbId.InviteToCastle:
-                target.Get<AtCourtFlag>();
+                if (target.Has<LeftCourtFlag>())
+                {
+                    target.Del<LeftCourtFlag>();   // уехавшего можно вернуть — за стол и за деньги
+                    Chronicle($"{Name(target)} вернулся ко двору. Копья вернулись с ним.");
+                }
                 break;
 
             case VerbId.AskForTroops:

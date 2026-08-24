@@ -109,6 +109,7 @@ public class EveningSystem : Injects, IEcsRunSystem
             if (definition.NeedsPlayerTrait && !PlayerHas(definition.PlayerTrait)) continue;
             if (definition.NeedsCourtTrait && FindLordWith(definition.CourtTrait) < 0) continue;
             if (definition.NeedsLover && FindLover() < 0) continue;
+            if (definition.NeedsScandal && FindScandal() < 0) continue;
 
             _eligible.Add(definition.Id);
             _weights.Add(definition.Weight);
@@ -272,6 +273,7 @@ public class EveningSystem : Injects, IEcsRunSystem
         if (definition == null || !definition.NeedsLord) return -1;
         if (definition.NeedsCourtTrait) return FindLordWith(definition.CourtTrait);
         if (definition.NeedsLover) return FindLover();
+        if (definition.NeedsScandal) return FindScandal();
         return RandomLord(run);
     }
 
@@ -290,6 +292,14 @@ public class EveningSystem : Injects, IEcsRunSystem
     {
         foreach (var i in _lords)
             if (_lords.GetEntity(i).Has<LoverFlag>()) return _lords.Get2(i).Value;
+
+        return -1;
+    }
+
+    private int FindScandal()
+    {
+        foreach (var i in _lords)
+            if (_lords.GetEntity(i).Has<ScandalFlag>()) return _lords.Get2(i).Value;
 
         return -1;
     }

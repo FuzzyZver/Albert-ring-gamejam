@@ -94,10 +94,6 @@ public class ConsequenceSystem : Injects, IEcsRunSystem
                 lord.Get<ScandalFlag>();
                 break;
 
-            case ConsequenceId.GetDrunk:
-                lord.Get<DrunkFlag>();
-                break;
-
             case ConsequenceId.TellRival:
             case ConsequenceId.SpreadRumor:
                 lord.Get<VengefulFlag>();

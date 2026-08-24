@@ -56,10 +56,13 @@ public class LordCardSystem : Injects, IEcsInitSystem, IEcsRunSystem, IEcsDestro
 
         int opinion = entity.Get<OpinionAttribute>().Value;
 
+        var ambition = chars.GetAmbition(entity.Get<AmbitionAttribute>().Id);
+
         UI.LordCard.ShowLord(
             person.FullName,
             traitLine,
-            chars.AmbitionTitle(entity.Get<AmbitionAttribute>().Id),
+            ambition != null ? ambition.Title : string.Empty,
+            ambition != null ? ambition.Demand : string.Empty,
             RivalLine(entity.Get<RivalAttribute>().LordId),
             opinion,
             entity.Get<TroopsAttribute>().Value,

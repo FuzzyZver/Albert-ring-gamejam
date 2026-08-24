@@ -11,7 +11,6 @@ public class CastleActionSystem : Injects, IEcsInitSystem, IEcsRunSystem, IEcsDe
     private EcsWorld _world;
 
     private EcsFilter<CastleSlotClickedEvent> _clicks;
-    private EcsFilter<SpendActionEvent> _spends;
     private EcsFilter<RunFlag, CalendarAttribute, PlanAttribute> _runs;
 
     public void Init() => Subscribe(true);
@@ -20,7 +19,6 @@ public class CastleActionSystem : Injects, IEcsInitSystem, IEcsRunSystem, IEcsDe
     public void Run()
     {
         foreach (var i in _clicks) Use(_clicks.Get1(i).Slot);
-        foreach (var i in _spends) Spend(_spends.Get1(i).Amount);
 
         RefreshSlots();
     }
@@ -47,15 +45,6 @@ public class CastleActionSystem : Injects, IEcsInitSystem, IEcsRunSystem, IEcsDe
             {
                 Debug.Log($"День {calendar.Day}: стройка (заглушка, этап 6)");
             }
-        }
-    }
-
-    private void Spend(int amount)
-    {
-        foreach (var r in _runs)
-        {
-            ref var calendar = ref _runs.Get2(r);
-            calendar.ActionsLeft = Mathf.Max(0, calendar.ActionsLeft - amount);
         }
     }
 

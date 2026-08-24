@@ -120,9 +120,13 @@ public class DeathWatchSystem : Injects, IEcsRunSystem
             var lord = _lords.GetEntity(i);
             bool plotting = lord.Has<PlottingFlag>();
             bool furious = _lords.Get3(i).Value <= balance.AssassinationBelowOpinion;
-            if (!plotting && !furious) continue;
+            bool vengeful = lord.Has<VengefulFlag>();
 
-            if (rng.Next(100) >= balance.AssassinationChance) continue;
+            int chance =
+                plotting || furious ? balance.AssassinationChance :
+                vengeful ? balance.VengefulAssassinationChance : 0;
+
+            if (chance <= 0 || rng.Next(100) >= chance) continue;
 
             Kill(DeathCause.Assassination, _lords.Get2(i).Value, string.Empty);
             return true;

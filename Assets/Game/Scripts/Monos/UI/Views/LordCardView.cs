@@ -14,6 +14,7 @@ public class LordCardView : MonoBehaviour
 
     [SerializeField] private GameObject _lordOnly;
     [SerializeField] private TMP_Text _ambition;
+    [SerializeField] private TMP_Text _ambitionQuote;   // как он это просит, своими словами
     [SerializeField] private TMP_Text _rival;
     [SerializeField] private TMP_Text _opinion;
     [SerializeField] private TMP_Text _willCome;
@@ -37,7 +38,7 @@ public class LordCardView : MonoBehaviour
         if (_traits != null) _traits.text = traits;
     }
 
-    public void ShowLord(string fullName, string traits, string ambition, string rival,
+    public void ShowLord(string fullName, string traits, string ambition, string quote, string rival,
         int opinion, int troops, bool willCome)
     {
         SetVisible(true);
@@ -46,6 +47,12 @@ public class LordCardView : MonoBehaviour
         if (_name != null) _name.text = fullName;
         if (_traits != null) _traits.text = $"{traits} · {troops} копий";
         if (_ambition != null) _ambition.text = "Хочет: " + ambition;
+
+        if (_ambitionQuote != null)
+        {
+            _ambitionQuote.text = string.IsNullOrEmpty(quote) ? string.Empty : "«" + quote + "»";
+            _ambitionQuote.gameObject.SetActive(!string.IsNullOrEmpty(quote));
+        }
         if (_rival != null) _rival.text = rival;
 
         if (_opinion != null)

@@ -39,7 +39,6 @@ public class PhaseSystem : Injects, IEcsRunSystem
                 calendar.Day++;
                 calendar.Phase = DayPhase.Morning;
                 calendar.ActionsLeft = GameConfig.BalanceConfig.ActionsPerDay;
-                _world.NewEntity().Get<DayStartedEvent>().Day = calendar.Day;
             }
             else
             {

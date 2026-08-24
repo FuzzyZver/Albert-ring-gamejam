@@ -16,7 +16,7 @@ public class EcsInclude : MonoBehaviour
         _systems = new EcsSystems(_world);
 
         _systems
-            //Add (new ..
+            //Add (new ...
             .Add(new InitSystem())
             .Add(new RunSetupSystem())
             .Add(new PlayerSpawnSystem())
@@ -57,15 +57,12 @@ public class EcsInclude : MonoBehaviour
             .OneFrame<AdvancePhaseEvent>()
             .OneFrame<PhaseEndedEvent>()
             .OneFrame<PhaseChangedEvent>()
-            .OneFrame<DayStartedEvent>()
-            .OneFrame<SpendActionEvent>()
 
             .OneFrame<ChangeScreenEvent>()
             .OneFrame<CastleSlotClickedEvent>()
             .OneFrame<SetTaxEvent>()
 
             .OneFrame<VerbEvent>()
-            .OneFrame<VerbResolvedEvent>()
             .OneFrame<ConsequenceEvent>()
             .OneFrame<OpinionChangeEvent>()
             .OneFrame<CourtOpinionChangeEvent>()
@@ -79,12 +76,10 @@ public class EcsInclude : MonoBehaviour
             .OneFrame<ApplyChoiceEvent>()
             .OneFrame<DeathEvent>()
             .OneFrame<VictoryEvent>()
-            .OneFrame<DuelResolvedEvent>()
 
             .OneFrame<PinClickedEvent>()
             .OneFrame<CloseCardEvent>()
             .OneFrame<SelectionChangedFlag>()   // снимается здесь, когда вьюхи уже перерисовались
-
 
             .Inject(_world)
             .Inject(_gameConfig)

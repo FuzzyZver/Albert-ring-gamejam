@@ -179,6 +179,8 @@ public class NightSystem : Injects, IEcsInitSystem, IEcsRunSystem, IEcsDestroySy
             commons.Opinion = balance.ClampOpinion(commons.Opinion + report.CommonsOpinionDelta
                 + (entity.Has<StarvingFlag>() ? balance.StarvingCommonsPenalty : 0));
 
+            var rng = entity.Get<RngAttribute>().Value;
+
             foreach (var l in _lords)
             {
                 ref var opinion = ref _lords.Get2(l);
@@ -189,11 +191,28 @@ public class NightSystem : Injects, IEcsInitSystem, IEcsRunSystem, IEcsDestroySy
                     + Drift(chars.GetTrait(traits.B));
 
                 opinion.Value = balance.ClampOpinion(opinion.Value + drift);
+
+                // Черта лорда каждую ночь бросает свой риск: пьяница и лестница
+                // знакомы давно. Убивает или нет — решит ConsequenceSystem по конфигу.
+                var lord = _lords.GetEntity(l);
+                RollRisk(chars.GetTrait(traits.A), lord, rng);
+                RollRisk(chars.GetTrait(traits.B), lord, rng);
             }
         }
     }
 
     private static int Drift(TraitDefinition trait) => trait != null ? trait.OpinionDriftPerDay : 0;
+
+    private void RollRisk(TraitDefinition trait, EcsEntity lord, System.Random rng)
+    {
+        if (trait == null || rng == null) return;
+        if (trait.DailyRisk == ConsequenceId.None || trait.DailyRiskChance <= 0) return;
+        if (rng.Next(100) >= trait.DailyRiskChance) return;
+
+        ref var request = ref _world.NewEntity().Get<ConsequenceEvent>();
+        request.Source = lord;
+        request.Id = trait.DailyRisk;
+    }
 
     // ─────────── ползунки ───────────
 

@@ -77,7 +77,7 @@ public class DuelSystem : Injects, IEcsRunSystem
                 balance.DuelChanceMin, balance.DuelChanceMax);
 
             evening.Title = "Поединок";
-            evening.Body = balance.DuelChallengeText
+            evening.Body = GameConfig.EventsConfig.DuelChallengeText
                 .Replace("{lord}", _lords.Get3(index).GivenName)
                 .Replace("{chance}", duel.Chance.ToString());
         }
@@ -105,17 +105,12 @@ public class DuelSystem : Injects, IEcsRunSystem
             var rng = entity.Get<RngAttribute>().Value;
             bool won = rng == null || rng.Next(100) < duel.Chance;
 
-            ref var resolved = ref _world.NewEntity().Get<DuelResolvedEvent>();
-            resolved.LordId = duel.LordId;
-            resolved.PlayerWon = won;
-            resolved.Chance = duel.Chance;
-
             if (won)
             {
                 lord.Get<DeadFlag>();
                 lord.Get<LeftCourtFlag>();
 
-                evening.Result = balance.DuelWinText.Replace("{lord}", name);
+                evening.Result = GameConfig.EventsConfig.DuelWinText.Replace("{lord}", name);
                 Chronicle($"Поединок с {name} — ты выстоял. Копий его больше нет.");
             }
             else

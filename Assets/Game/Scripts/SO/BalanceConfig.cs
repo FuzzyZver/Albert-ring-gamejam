@@ -30,6 +30,7 @@ public class BalanceConfig : ScriptableObject
     public int RiotWarningMargin = 15;   // за сколько до бунта предупреждать
     public int AssassinationBelowOpinion = -60;
     [Range(0, 100)] public int AssassinationChance = 25;
+    [Range(0, 100)] public int VengefulAssassinationChance = 8;   // затаившему обиду хватает и меньшего
     public int OverthrowBelowOpinion = -30;
     public int OverthrowLordsCount = 3;
     public int FamineNightsToDeath = 3;
@@ -51,7 +52,7 @@ public class BalanceConfig : ScriptableObject
     public int OpinionMin = -100;
     public int OpinionMax = 100;
 
-    [Header("Осада")]
+    [Header("Осада. Стены и амбар — задел под постройки, этап 6")]
     public int WallsStrength = 15;
     public int GranaryStrength = 10;
 
@@ -67,21 +68,6 @@ public class BalanceConfig : ScriptableObject
     public int GrudgeDecay = 1;       // сколько сходит за спокойную ночь
     public int GrudgeMax = 8;
 
-    [Header("Тексты")]
-    public string[] PhaseNames = { "Утро", "День", "Вечер", "Ночь" };
-    public string[] PhaseButtons = { "Распустить двор", "Вечереет", "Ночь", "Спать" };
-
-    [Header("Тексты вечера")]
-    [TextArea(2, 4)]
-    public string EveningQuietText =
-        "Свечи догорели, никто не пришёл. Летописец записал: «день без происшествий» — и, кажется, был разочарован.";
-    [TextArea(2, 4)]
-    public string DuelChallengeText =
-        "{lord} ждёт во дворе с обнажённым клинком. Отказаться нельзя — двор смотрит.\n\nТвои шансы: {chance}%.";
-    [TextArea(2, 4)]
-    public string DuelWinText =
-        "{lord} упал на третьем выпаде. Летопись отметит, что ты был милосерден. Летопись солжёт.";
-
     [Header("Отладка")]
     public int FixedSeed = 0;   // 0 = каждый забег новый
 
@@ -92,9 +78,6 @@ public class BalanceConfig : ScriptableObject
     public int PeasantOpinion(int slider) => Clamped(PeasantTaxOpinion, slider);
     public int LordGold(int slider) => Clamped(LordTaxGold, slider);
     public int LordOpinion(int slider) => Clamped(LordTaxOpinion, slider);
-
-    public string PhaseName(DayPhase phase) => Text(PhaseNames, (int)phase, phase.ToString());
-    public string PhaseButton(DayPhase phase) => Text(PhaseButtons, (int)phase, "Дальше");
 
     /// <summary>Сколько пищи съедает гарнизон за ночь. Одно копьё всё равно ест.</summary>
     public int FoodUpkeep(int garrison) =>
@@ -112,9 +95,4 @@ public class BalanceConfig : ScriptableObject
         return table[Mathf.Clamp(slider, 0, table.Length - 1)];
     }
 
-    private static string Text(string[] table, int index, string fallback)
-    {
-        if (table == null || index < 0 || index >= table.Length) return fallback;
-        return table[index];
-    }
 }

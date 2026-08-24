@@ -32,7 +32,6 @@ public static class LordFactory
         }
 
         entity.Get<LordFlag>();
-        entity.Get<AtCourtFlag>();
         entity.Get<OpinionAttribute>().Value = balance.StartLordOpinion;
         entity.Get<TroopsAttribute>().Value = data.Troops;
         entity.Get<AmbitionAttribute>().Id = data.Ambition;

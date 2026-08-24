@@ -58,6 +58,7 @@ public class VerbResolveSystem : Injects, IEcsRunSystem
         public int TargetOpinion;
         public int Gold, Food, Actions, Day;
         public bool IsDay;
+        public bool RomanceClosed;
         public List<VerbUse> History;
 
         public bool PlayerHas(TraitId id) => PlayerA == id || PlayerB == id;
@@ -96,6 +97,9 @@ public class VerbResolveSystem : Injects, IEcsRunSystem
         context.TargetGender = target.Get<PersonAttribute>().Gender;
         context.Ambition = target.Get<AmbitionAttribute>().Id;
         context.AmbitionDone = target.Has<AmbitionFulfilledFlag>();
+
+        var ambition = GameConfig.CharactersConfig.GetAmbition(context.Ambition);
+        context.RomanceClosed = context.AmbitionDone && ambition != null && ambition.ClosesRomance;
         context.History = target.Get<VerbHistoryAttribute>().Value;
         context.TargetTroops = target.Get<TroopsAttribute>().Value;
         context.TargetOpinion = target.Get<OpinionAttribute>().Value;
@@ -294,6 +298,8 @@ public class VerbResolveSystem : Injects, IEcsRunSystem
         else if (definition.Id == VerbId.FulfillAmbition && context.AmbitionDone) Deny(ref outcome, "уже исполнено");
         else if (definition.Id == VerbId.FulfillAmbition && ambition == null) Deny(ref outcome, "желания нет");
         else if (definition.Id == VerbId.AskForTroops && context.TargetTroops <= 0) Deny(ref outcome, "копий у него нет");
+        else if (definition.Id == VerbId.Seduce && context.RomanceClosed)
+            Deny(ref outcome, "ты женат на его дочери");
         else if (definition.RequiresTrait && !context.PlayerHas(definition.RequiredTrait))
             Deny(ref outcome, "нужна черта");
         else if (outcome.GoldCost > context.Gold) Deny(ref outcome, "не хватает золота");

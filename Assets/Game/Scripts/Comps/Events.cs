@@ -10,7 +10,6 @@ public struct NewRunEvent { public int Seed; }        // снести всё и 
 public struct CourtReadyEvent { }                     // двор есть, игрока ещё нет
 public struct SelectCandidateEvent { public int Index; }
 public struct RunReadyEvent { }                       // игрок выбран, можно показывать карту
-public struct RunStartEvent { public int Seed; }
 
 // ─────────── цикл дня ───────────
 
@@ -19,8 +18,6 @@ public struct AdvancePhaseEvent { }                        // просьба с�
 /// к моменту, когда его прочитают, календарь уже перевернулся на следующий.</summary>
 public struct PhaseEndedEvent { public DayPhase Phase; public int Day; }
 public struct PhaseChangedEvent { public DayPhase Phase; } // фаза, которая началась
-public struct DayStartedEvent { public int Day; }
-public struct SpendActionEvent { public int Amount; }
 
 // ─────────── экраны и замок ───────────
 
@@ -37,13 +34,6 @@ public struct VerbEvent
 {
     public int TargetLordId;
     public VerbId Verb;
-}
-
-public struct VerbResolvedEvent
-{
-    public EcsEntity Target;
-    public VerbId Verb;
-    public bool Success;
 }
 
 public struct OpinionChangeEvent
@@ -72,12 +62,6 @@ public struct ConsequenceEvent
     public ConsequenceId Id;
 }
 
-public struct AmbitionDemandEvent { public EcsEntity Lord; }
-
-public struct NextPhaseEvent { }
-
-public struct DayEndEvent { }
-
 public struct ChronicleEvent { public string Line; }
 
 public struct DeathEvent
@@ -89,19 +73,13 @@ public struct DeathEvent
 
 public struct VictoryEvent { public int Defence; }
 
-public struct DuelResolvedEvent
-{
-    public int LordId;
-    public bool PlayerWon;
-    public int Chance;
-}
-
 public struct EveningChoiceEvent { public int Index; }
 public struct PetitionChoiceEvent { public int Index; }
 public struct CallNextPetitionerEvent { }
 
-/// <summary>Положить событие в вечернюю очередь. Любая система может это сделать
-/// в течение дня — вечером они сыграют по порядку.</summary>
+/// <summary>Положить событие в вечернюю очередь. Точка расширения: пока никто не пишет,
+/// потому что пир и поединок вечер собирает сам из PlanAttribute и DuelAttribute.
+/// Понадобится, когда событие захочет назначить другое событие.</summary>
 public struct QueueEveningEvent
 {
     public EveningKind Kind;

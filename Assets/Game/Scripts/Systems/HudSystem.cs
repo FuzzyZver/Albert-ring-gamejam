@@ -70,9 +70,10 @@ public class HudSystem : Injects, IEcsInitSystem, IEcsRunSystem, IEcsDestroySyst
         if (_phase != (int)calendar.Phase)
         {
             _phase = (int)calendar.Phase;
+            var events = GameConfig.EventsConfig;
             UI.Hud.SetPhase(calendar.Phase,
-                balance.PhaseName(calendar.Phase),
-                balance.PhaseButton(calendar.Phase));
+                events.PhaseName(calendar.Phase),
+                events.PhaseButton(calendar.Phase));
         }
 
         if (_actions != calendar.ActionsLeft)
