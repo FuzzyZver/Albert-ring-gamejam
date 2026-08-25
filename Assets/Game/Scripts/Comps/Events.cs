@@ -22,7 +22,11 @@ public struct PhaseChangedEvent { public DayPhase Phase; } // фаза, кото
 // ─────────── экраны и замок ───────────
 
 public struct ChangeScreenEvent { public ScreenId Target; }
-public struct CastleSlotClickedEvent { public CastleSlotId Slot; }
+public struct BuildingPinClickedEvent { public BuildingId Id; }
+public struct BuildRequestEvent { public BuildingId Id; public int Level; }
+public struct CastleActionsPinClickedEvent { }
+public struct CastleActionRequestEvent { public CastleActionId Id; }
+public struct CloseCastleCardEvent { }
 public struct SetTaxEvent { public TaxKind Kind; public int Value; }
 
 // ─────────── взаимодействие ───────────

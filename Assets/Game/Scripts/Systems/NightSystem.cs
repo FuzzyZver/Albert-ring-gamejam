@@ -17,6 +17,7 @@ public class NightSystem : Injects, IEcsInitSystem, IEcsRunSystem, IEcsDestroySy
     private EcsFilter<RunFlag, TaxAttribute, TreasuryAttribute> _runs;
     private EcsFilter<LordFlag, OpinionAttribute, TraitsAttribute>.Exclude<LeftCourtFlag> _lords;
     private EcsFilter<PlayerFlag, TraitsAttribute> _players;
+    private EcsFilter<BuildingAttribute> _buildings;
 
     public void Init()
     {
@@ -109,8 +110,23 @@ public class NightSystem : Injects, IEcsInitSystem, IEcsRunSystem, IEcsDestroySy
             MemoryPenalty = -grudge * balance.GrudgePerLevel,
         };
 
+        // Постройки кормят казну каждую ночь, начиная с той, в которую достроились.
+        int buildingCommons = 0;
+        foreach (var b in _buildings)
+        {
+            var tier = TierOf(_buildings.Get1(b));
+            if (tier == null) continue;
+
+            report.BuildingGold += tier.GoldPerDay;
+            report.BuildingFood += tier.FoodPerDay;
+            buildingCommons += tier.CommonsPerDay;
+        }
+
+        report.GoldIncome += report.BuildingGold;
+        report.FoodIncome += report.BuildingFood;
+
         // Сегодняшнее недовольство плюс всё, что накопилось за прошлые ночи.
-        report.CommonsOpinionDelta = balance.PeasantOpinion(tax.Peasants) + report.MemoryPenalty;
+        report.CommonsOpinionDelta = balance.PeasantOpinion(tax.Peasants) + report.MemoryPenalty + buildingCommons;
 
         foreach (var p in _players)
         {
@@ -188,7 +204,8 @@ public class NightSystem : Injects, IEcsInitSystem, IEcsRunSystem, IEcsDestroySy
 
                 int drift = report.LordOpinionDelta
                     + Drift(chars.GetTrait(traits.A))
-                    + Drift(chars.GetTrait(traits.B));
+                    + Drift(chars.GetTrait(traits.B))
+                    + BuildingDrift(traits);
 
                 opinion.Value = balance.ClampOpinion(opinion.Value + drift);
 
@@ -202,6 +219,35 @@ public class NightSystem : Injects, IEcsInitSystem, IEcsRunSystem, IEcsDestroySy
     }
 
     private static int Drift(TraitDefinition trait) => trait != null ? trait.OpinionDriftPerDay : 0;
+
+    /// <summary>Что постройки думают об этом лорде. Публичные дома радуют почти всех,
+    /// набожного — наоборот, а рынок злит алчного.</summary>
+    private int BuildingDrift(TraitsAttribute traits)
+    {
+        int total = 0;
+
+        foreach (var b in _buildings)
+        {
+            var tier = TierOf(_buildings.Get1(b));
+            if (tier == null) continue;
+
+            total += tier.CourtPerDay;
+            if (tier.LordEffects == null) continue;
+
+            for (int i = 0; i < tier.LordEffects.Length; i++)
+                if (tier.LordEffects[i].Applies(traits)) total += tier.LordEffects[i].Opinion;
+        }
+
+        return total;
+    }
+
+    private BuildingTier TierOf(BuildingAttribute building)
+    {
+        if (building.Level <= 0) return null;
+
+        var definition = GameConfig.BuildingsConfig.GetBuilding(building.Id);
+        return definition != null ? definition.Tier(building.Level) : null;
+    }
 
     private void RollRisk(TraitDefinition trait, EcsEntity lord, System.Random rng)
     {

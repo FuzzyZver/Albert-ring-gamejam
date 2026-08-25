@@ -26,7 +26,8 @@ public class UI : MonoBehaviour
     public EveningView Evening;
 
     [Header("Замок и ночь")]
-    public CastleSlotView[] CastleSlots;
+    public BuildingCardView BuildingCard;
+    public CastleActionsView CastleActions;
     public NightView Night;
 
     [Header("Летопись и эпилог")]

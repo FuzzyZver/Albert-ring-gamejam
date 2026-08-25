@@ -1,0 +1,282 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e8b6a866e6e9a3344af651d0af5e2045, type: 3}
+  m_Name: BuildingsConfig
+  m_EditorClassIdentifier: Assembly-CSharp::BuildingsConfig
+  MaxLevel: 3
+  Buildings:
+  - Id: 0
+    EmptyLabel: "\u041F\u0443\u0441\u0442\u044B\u0440\u044C \u0443 \u0432\u043E\u0440\u043E\u0442"
+    Description: "\u0422\u043E\u0440\u0433\u043E\u0432\u043B\u044F \u043A\u043E\u0440\u043C\u0438\u0442
+      \u043A\u0430\u0437\u043D\u0443 \u0438 \u0437\u043B\u0438\u0442 \u0442\u0435\u0445,
+      \u043A\u0442\u043E \u043F\u0440\u0438\u0432\u044B\u043A \u043A\u043E\u0440\u043C\u0438\u0442\u044C\u0441\u044F
+      \u0441\u0430\u043C."
+    Tiers:
+    - Title: "\u0422\u043E\u0440\u0433\u043E\u0432\u044B\u0435 \u0440\u044F\u0434\u044B"
+      GoldCost: 20
+      FoodCost: 0
+      BuildDays: 0
+      GoldPerDay: 3
+      FoodPerDay: 0
+      CommonsPerDay: 0
+      CourtPerDay: 0
+      LordEffects:
+      - Trait: 1
+        Invert: 0
+        Opinion: -1
+      SiegeDefence: 0
+    - Title: "\u0420\u044B\u043D\u043E\u0447\u043D\u0430\u044F \u043F\u043B\u043E\u0449\u0430\u0434\u044C"
+      GoldCost: 35
+      FoodCost: 0
+      BuildDays: 1
+      GoldPerDay: 6
+      FoodPerDay: 0
+      CommonsPerDay: 0
+      CourtPerDay: 0
+      LordEffects:
+      - Trait: 1
+        Invert: 0
+        Opinion: -2
+      SiegeDefence: 0
+    - Title: "\u0413\u043E\u0441\u0442\u0438\u043D\u044B\u0439 \u0434\u0432\u043E\u0440"
+      GoldCost: 55
+      FoodCost: 0
+      BuildDays: 2
+      GoldPerDay: 10
+      FoodPerDay: 0
+      CommonsPerDay: 1
+      CourtPerDay: 0
+      LordEffects:
+      - Trait: 1
+        Invert: 0
+        Opinion: -3
+      SiegeDefence: 0
+  - Id: 1
+    EmptyLabel: "\u0421\u0442\u0430\u0440\u044B\u0439 \u0432\u0430\u043B"
+    Description: "\u0415\u0434\u0438\u043D\u0441\u0442\u0432\u0435\u043D\u043D\u043E\u0435,
+      \u0447\u0442\u043E \u0431\u0443\u0434\u0435\u0442 \u0438\u043C\u0435\u0442\u044C
+      \u0437\u043D\u0430\u0447\u0435\u043D\u0438\u0435 \u043D\u0430 \u0434\u0432\u0435\u043D\u0430\u0434\u0446\u0430\u0442\u044B\u0439
+      \u0434\u0435\u043D\u044C."
+    Tiers:
+    - Title: "\u0427\u0430\u0441\u0442\u043E\u043A\u043E\u043B"
+      GoldCost: 15
+      FoodCost: 0
+      BuildDays: 0
+      GoldPerDay: 0
+      FoodPerDay: 0
+      CommonsPerDay: 0
+      CourtPerDay: 0
+      LordEffects: []
+      SiegeDefence: 8
+    - Title: "\u041A\u0430\u043C\u0435\u043D\u043D\u0430\u044F \u0441\u0442\u0435\u043D\u0430"
+      GoldCost: 30
+      FoodCost: 10
+      BuildDays: 1
+      GoldPerDay: 0
+      FoodPerDay: 0
+      CommonsPerDay: 0
+      CourtPerDay: 0
+      LordEffects: []
+      SiegeDefence: 18
+    - Title: "\u0421\u0442\u0435\u043D\u044B \u0438 \u0431\u0430\u0448\u043D\u0438"
+      GoldCost: 50
+      FoodCost: 20
+      BuildDays: 2
+      GoldPerDay: 0
+      FoodPerDay: 0
+      CommonsPerDay: 0
+      CourtPerDay: 0
+      LordEffects: []
+      SiegeDefence: 32
+  - Id: 2
+    EmptyLabel: "\u041C\u0435\u0441\u0442\u043E \u043F\u043E\u0434 \u0445\u0440\u0430\u043C"
+    Description: "\u041A\u0440\u0435\u0441\u0442\u044C\u044F\u043D\u0435 \u044D\u0442\u043E
+      \u0432\u0438\u0434\u044F\u0442. \u041D\u0430\u0431\u043E\u0436\u043D\u044B\u0435
+      \u043B\u043E\u0440\u0434\u044B \u2014 \u0442\u0435\u043C \u0431\u043E\u043B\u0435\u0435."
+    Tiers:
+    - Title: "\u0427\u0430\u0441\u043E\u0432\u043D\u044F"
+      GoldCost: 18
+      FoodCost: 0
+      BuildDays: 0
+      GoldPerDay: 0
+      FoodPerDay: 0
+      CommonsPerDay: 2
+      CourtPerDay: 0
+      LordEffects:
+      - Trait: 3
+        Invert: 0
+        Opinion: 2
+      SiegeDefence: 0
+    - Title: "\u0426\u0435\u0440\u043A\u043E\u0432\u044C"
+      GoldCost: 32
+      FoodCost: 0
+      BuildDays: 1
+      GoldPerDay: 0
+      FoodPerDay: 0
+      CommonsPerDay: 4
+      CourtPerDay: 0
+      LordEffects:
+      - Trait: 3
+        Invert: 0
+        Opinion: 3
+      SiegeDefence: 0
+    - Title: "\u0421\u043E\u0431\u043E\u0440"
+      GoldCost: 55
+      FoodCost: 0
+      BuildDays: 2
+      GoldPerDay: 0
+      FoodPerDay: 0
+      CommonsPerDay: 6
+      CourtPerDay: 0
+      LordEffects:
+      - Trait: 3
+        Invert: 0
+        Opinion: 4
+      SiegeDefence: 0
+  - Id: 3
+    EmptyLabel: "\u041F\u0443\u0441\u0442\u044B\u0435 \u0441\u043A\u043B\u0430\u0434\u044B"
+    Description: "\u0414\u0432\u043E\u0440 \u0434\u043E\u0432\u043E\u043B\u0435\u043D.
+      \u041F\u0440\u0438\u0445\u043E\u0434 \u2014 \u043D\u0435\u0442."
+    Tiers:
+    - Title: "\u0412\u0435\u0441\u0451\u043B\u044B\u0439 \u0434\u0432\u043E\u0440"
+      GoldCost: 15
+      FoodCost: 0
+      BuildDays: 0
+      GoldPerDay: 0
+      FoodPerDay: 0
+      CommonsPerDay: 0
+      CourtPerDay: 1
+      LordEffects:
+      - Trait: 3
+        Invert: 0
+        Opinion: -3
+      - Trait: 7
+        Invert: 0
+        Opinion: 1
+      - Trait: 6
+        Invert: 0
+        Opinion: 1
+      SiegeDefence: 0
+    - Title: "\u041F\u0443\u0431\u043B\u0438\u0447\u043D\u044B\u0435 \u0434\u043E\u043C\u0430"
+      GoldCost: 28
+      FoodCost: 0
+      BuildDays: 1
+      GoldPerDay: 0
+      FoodPerDay: 0
+      CommonsPerDay: 0
+      CourtPerDay: 2
+      LordEffects:
+      - Trait: 3
+        Invert: 0
+        Opinion: -5
+      - Trait: 7
+        Invert: 0
+        Opinion: 2
+      - Trait: 6
+        Invert: 0
+        Opinion: 2
+      SiegeDefence: 0
+    - Title: "\u041A\u0432\u0430\u0440\u0442\u0430\u043B \u0443\u0442\u0435\u0445"
+      GoldCost: 45
+      FoodCost: 0
+      BuildDays: 2
+      GoldPerDay: 0
+      FoodPerDay: 0
+      CommonsPerDay: -1
+      CourtPerDay: 3
+      LordEffects:
+      - Trait: 3
+        Invert: 0
+        Opinion: -8
+      - Trait: 7
+        Invert: 0
+        Opinion: 3
+      - Trait: 6
+        Invert: 0
+        Opinion: 3
+      SiegeDefence: 0
+  Actions:
+  - Id: 0
+    Title: "\u041E\u0431\u044A\u044F\u0432\u0438\u0442\u044C \u043F\u0438\u0440"
+    Description: "\u0421\u0442\u043E\u043B\u044B \u0432\u044B\u043D\u0435\u0441\u0443\u0442
+      \u0437\u0430\u0432\u0442\u0440\u0430 \u0432\u0435\u0447\u0435\u0440\u043E\u043C.
+      \u0412\u043E \u0447\u0442\u043E \u044D\u0442\u043E \u043E\u0431\u043E\u0439\u0434\u0451\u0442\u0441\u044F
+      \u2014 \u0443\u0432\u0438\u0434\u0438\u0448\u044C \u0442\u043E\u0433\u0434\u0430
+      \u0436\u0435."
+    Effect:
+      Label: "\u041E\u0431\u044A\u044F\u0432\u0438\u0442\u044C \u043F\u0438\u0440"
+      Result: "\u0413\u043E\u043D\u0446\u044B \u043F\u043E\u0435\u0445\u0430\u043B\u0438
+        \u0437\u0432\u0430\u0442\u044C \u0433\u043E\u0441\u0442\u0435\u0439."
+      Gold: 0
+      Food: 0
+      Garrison: 0
+      CommonsOpinion: 0
+      CourtOpinion: 0
+      LordOpinion: 0
+      Consequence: 0
+      ConsequenceChance: 0
+    SiegeBonus: 0
+    QueuesFeast: 1
+    CooldownDays: 2
+    NeedsBuilding: 0
+    RequiredBuilding: 0
+    RequiredLevel: 1
+  - Id: 1
+    Title: "\u0421\u043B\u0443\u0436\u0431\u0430 \u0432 \u0445\u0440\u0430\u043C\u0435"
+    Description: "\u041C\u043E\u043B\u0435\u0431\u0435\u043D \u0437\u0430 \u0437\u0434\u0440\u0430\u0432\u0438\u0435
+      \u0433\u043E\u0441\u0443\u0434\u0430\u0440\u044F. \u0421\u043B\u044B\u0448\u043D\u043E
+      \u0434\u0430\u043B\u0435\u043A\u043E."
+    Effect:
+      Label: "\u041E\u0442\u0441\u043B\u0443\u0436\u0438\u0442\u044C"
+      Result: "\u041F\u0435\u043B\u0438 \u0434\u043E\u043B\u0433\u043E. \u041A\u0440\u0435\u0441\u0442\u044C\u044F\u043D\u0435
+        \u043E\u0441\u0442\u0430\u043B\u0438\u0441\u044C \u0434\u043E \u043A\u043E\u043D\u0446\u0430,
+        \u043B\u043E\u0440\u0434\u044B \u2014 \u043F\u043E\u0447\u0442\u0438 \u0432\u0441\u0435."
+      Gold: -8
+      Food: 0
+      Garrison: 0
+      CommonsOpinion: 10
+      CourtOpinion: 4
+      LordOpinion: 0
+      Consequence: 0
+      ConsequenceChance: 0
+    SiegeBonus: 6
+    QueuesFeast: 0
+    CooldownDays: 2
+    NeedsBuilding: 1
+    RequiredBuilding: 2
+    RequiredLevel: 1
+  - Id: 2
+    Title: "\u0412\u0435\u0440\u0431\u043E\u0432\u043A\u0430 \u043D\u0430\u0451\u043C\u043D\u0438\u043A\u043E\u0432"
+    Description: "\u0427\u0443\u0436\u0438\u0435 \u043A\u043E\u043F\u044C\u044F \u043D\u0430
+      \u0441\u0442\u0435\u043D\u0430\u0445. \u041B\u043E\u0440\u0434\u044B \u0441\u0447\u0438\u0442\u0430\u044E\u0442
+      \u044D\u0442\u043E \u043E\u0441\u043A\u043E\u0440\u0431\u043B\u0435\u043D\u0438\u0435\u043C,
+      \u043D\u043E \u043A\u043E\u043F\u044C\u044F \u0435\u0441\u0442\u044C \u043A\u043E\u043F\u044C\u044F."
+    Effect:
+      Label: "\u041D\u0430\u043D\u044F\u0442\u044C"
+      Result: "\u0414\u0435\u0441\u044F\u0442\u044C \u0447\u0443\u0436\u0438\u0445
+        \u043B\u044E\u0434\u0435\u0439 \u0432\u0441\u0442\u0430\u043B\u0438 \u043D\u0430
+        \u0441\u0442\u0435\u043D\u044B \u0438 \u043F\u043E\u0442\u0440\u0435\u0431\u043E\u0432\u0430\u043B\u0438
+        \u0443\u0436\u0438\u043D."
+      Gold: -30
+      Food: 0
+      Garrison: 10
+      CommonsOpinion: 0
+      CourtOpinion: -4
+      LordOpinion: 0
+      Consequence: 0
+      ConsequenceChance: 0
+    SiegeBonus: 0
+    QueuesFeast: 0
+    CooldownDays: 1
+    NeedsBuilding: 0
+    RequiredBuilding: 0
+    RequiredLevel: 1

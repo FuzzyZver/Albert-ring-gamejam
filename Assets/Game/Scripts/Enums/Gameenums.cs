@@ -19,12 +19,21 @@ public enum ScreenId
     Epilogue
 }
 
-/// <summary>Булавки внутри замка. Стройка — постоянные улучшения,
-/// сборы — то, что выстрелит завтра вечером (пир, молебен, суд).</summary>
-public enum CastleSlotId
+/// <summary>Постройки в замке. Новые дописывать только в конец.</summary>
+public enum BuildingId
 {
-    Construction,
-    Gathering
+    Market,    // рыночная площадь
+    Walls,     // стены и башни
+    Temple,    // храм
+    Brothel    // публичные дома
+}
+
+/// <summary>Что можно устроить с булавки действий.</summary>
+public enum CastleActionId
+{
+    Feast,           // пир
+    TempleService,   // служба в храме
+    HireMercenaries  // вербовка наёмников
 }
 
 /// <summary>Кто пришёл к трону утром. Новые дописывать только в конец.</summary>

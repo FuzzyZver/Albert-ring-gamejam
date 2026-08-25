@@ -12,6 +12,8 @@ public class RunSetupSystem : Injects, IEcsRunSystem
     private EcsFilter<NewRunEvent> _requests;
     private EcsFilter<RunFlag> _runs;
     private EcsFilter<PersonAttribute> _persons;   // лорды и игрок
+    private EcsFilter<BuildingAttribute> _buildings;
+    private EcsFilter<CastleActionsFlag> _castlePins;
 
     public void Run()
     {
@@ -27,6 +29,8 @@ public class RunSetupSystem : Injects, IEcsRunSystem
     {
         foreach (var i in _runs) _runs.GetEntity(i).Destroy();
         foreach (var i in _persons) _persons.GetEntity(i).Destroy();
+        foreach (var i in _buildings) _buildings.GetEntity(i).Destroy();
+        foreach (var i in _castlePins) _castlePins.GetEntity(i).Destroy();
     }
 
     private void Build(int seed)
@@ -36,6 +40,7 @@ public class RunSetupSystem : Injects, IEcsRunSystem
 
         CreateRun(court);
         SpawnLords(court);
+        SpawnCastle();
 
         _world.NewEntity().Get<CourtReadyEvent>();
     }
@@ -67,6 +72,8 @@ public class RunSetupSystem : Injects, IEcsRunSystem
         entity.Get<VerbOffersAttribute>().Value = new System.Collections.Generic.List<VerbOutcome>();
         entity.Get<PlanAttribute>();
         entity.Get<StarvingAttribute>();
+        entity.Get<SiegeBonusAttribute>();
+        entity.Get<CastleHistoryAttribute>().Value = new System.Collections.Generic.List<CastleActionUse>();
         entity.Get<CommonsMemoryAttribute>();
         entity.Get<RunEndAttribute>();
         entity.Get<DuelAttribute>().LordId = -1;
@@ -84,6 +91,18 @@ public class RunSetupSystem : Injects, IEcsRunSystem
         ref var rng = ref entity.Get<RngAttribute>();
         rng.Seed = court.Seed;
         rng.Value = new System.Random(court.Seed);
+    }
+
+    /// <summary>Булавки замка. Уровни начинаются с нуля, потому что сущности новые.</summary>
+    private void SpawnCastle()
+    {
+        var pins = SceneData.BuildingPins;
+
+        if (pins != null)
+            for (int i = 0; i < pins.Length; i++)
+                if (pins[i] != null) pins[i].Init(_world);
+
+        if (SceneData.ActionsPin != null) SceneData.ActionsPin.Init(_world);
     }
 
     private void SpawnLords(CourtData court)

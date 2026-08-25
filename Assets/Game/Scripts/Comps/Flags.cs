@@ -27,6 +27,8 @@ public struct PhaseLockFlag { }
 /// Обычный флаг переживает кадр — DuelSystem снимает его сам.</summary>
 public struct DuelAcceptedFlag { }
 
+public struct CastleActionsFlag { }   // булавка действий в замке
+
 // состояние забега
 public struct StarvingFlag { }             // пища на нуле
 public struct RunOverFlag { }

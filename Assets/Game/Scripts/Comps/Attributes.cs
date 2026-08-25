@@ -183,13 +183,40 @@ public struct RunEndAttribute
     public int SiegeStrength;
 }
 
-/// <summary>Что заготовлено в замке на завтрашний вечер.</summary>
+/// <summary>Пир, назначенный на завтрашний вечер.</summary>
 public struct PlanAttribute
 {
     public bool HasPlan;
-    public CastleSlotId Slot;
     public int PlannedOnDay;
 }
+
+/// <summary>Одна постройка. TargetLevel выше Level значит, что стройка идёт
+/// и закончится на рассвете дня ReadyOnDay.</summary>
+public struct BuildingAttribute
+{
+    public BuildingId Id;
+    public int Level;
+    public int TargetLevel;
+    public int ReadyOnDay;
+
+    public bool IsBuilding => TargetLevel > Level;
+}
+
+/// <summary>Одно проведённое действие в замке — для кулдаунов.</summary>
+public struct CastleActionUse
+{
+    public CastleActionId Id;
+    public int Day;
+}
+
+public struct CastleHistoryAttribute
+{
+    public System.Collections.Generic.List<CastleActionUse> Value;
+}
+
+/// <summary>Разовые прибавки к обороне: служба в храме, будущие ритуалы.
+/// Стены считаются отдельно, прямо по уровню постройки.</summary>
+public struct SiegeBonusAttribute { public int Value; }
 
 /// <summary>Предварительный ночной счёт. Считается заново на каждое движение ползунка
 /// и применяется только когда игрок ляжет спать — в этом весь смысл ночного окна.</summary>
@@ -199,6 +226,8 @@ public struct NightReportAttribute
     public int GoldUpkeep;
     public int FoodIncome;
     public int FoodUpkeep;
+    public int BuildingGold;      // сколько из дохода дали постройки
+    public int BuildingFood;
     public int LordOpinionDelta;
     public int CommonsOpinionDelta;
     public int MemoryPenalty;      // сколько из CommonsOpinionDelta — это старые обиды

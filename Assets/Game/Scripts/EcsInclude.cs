@@ -26,6 +26,7 @@ public class EcsInclude : MonoBehaviour
             .Add(new NightSystem())
             .Add(new DeathWatchSystem())    // сразу после ночного счёта, до последствий
             .Add(new SiegeSystem())         // после смертей: голод важнее армии у ворот
+            .Add(new BuildingSystem())
             .Add(new CastleActionSystem())
 
             .Add(new SelectionSystem())
@@ -59,7 +60,11 @@ public class EcsInclude : MonoBehaviour
             .OneFrame<PhaseChangedEvent>()
 
             .OneFrame<ChangeScreenEvent>()
-            .OneFrame<CastleSlotClickedEvent>()
+            .OneFrame<BuildingPinClickedEvent>()
+            .OneFrame<BuildRequestEvent>()
+            .OneFrame<CastleActionsPinClickedEvent>()
+            .OneFrame<CastleActionRequestEvent>()
+            .OneFrame<CloseCastleCardEvent>()
             .OneFrame<SetTaxEvent>()
 
             .OneFrame<VerbEvent>()

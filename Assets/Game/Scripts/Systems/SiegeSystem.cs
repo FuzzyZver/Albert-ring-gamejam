@@ -12,6 +12,7 @@ public class SiegeSystem : Injects, IEcsRunSystem
     private EcsFilter<PhaseEndedEvent> _phaseEnds;
     private EcsFilter<RunFlag, TreasuryAttribute>.Exclude<RunOverFlag> _runs;
     private EcsFilter<LordFlag, OpinionAttribute, TroopsAttribute>.Exclude<DeadFlag, LeftCourtFlag> _lords;
+    private EcsFilter<BuildingAttribute> _buildings;
 
     public void Run()
     {
@@ -31,7 +32,8 @@ public class SiegeSystem : Injects, IEcsRunSystem
     {
         foreach (var r in _runs)
         {
-            int defence = _runs.Get2(r).Garrison + Rallied(balance);
+            int defence = _runs.Get2(r).Garrison + Rallied(balance) + Walls()
+                + _runs.GetEntity(r).Get<SiegeBonusAttribute>().Value;
 
             if (defence >= balance.SiegeStrength)
             {
@@ -45,6 +47,24 @@ public class SiegeSystem : Injects, IEcsRunSystem
                 death.Detail = string.Empty;
             }
         }
+    }
+
+    /// <summary>Стены и всё, что к ним пристроено.</summary>
+    private int Walls()
+    {
+        int total = 0;
+
+        foreach (var b in _buildings)
+        {
+            ref var building = ref _buildings.Get1(b);
+            if (building.Level <= 0) continue;
+
+            var definition = GameConfig.BuildingsConfig.GetBuilding(building.Id);
+            var tier = definition != null ? definition.Tier(building.Level) : null;
+            if (tier != null) total += tier.SiegeDefence;
+        }
+
+        return total;
     }
 
     /// <summary>Любовник приходит на более мягких условиях: ему хватает меньшего мнения.</summary>

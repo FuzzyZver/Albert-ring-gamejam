@@ -136,7 +136,6 @@ public class VerbActionSystem : Injects, IEcsRunSystem
                     ref var calendar = ref _runs.Get4(runIndex);
                     ref var plan = ref _runs.GetEntity(runIndex).Get<PlanAttribute>();
                     plan.HasPlan = true;
-                    plan.Slot = CastleSlotId.Gathering;
                     plan.PlannedOnDay = calendar.Day;
                     Chronicle("Охота назначена на завтрашний вечер.");
                     break;
