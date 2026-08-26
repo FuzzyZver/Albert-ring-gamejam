@@ -13,4 +13,7 @@ public class SceneData : MonoBehaviour
     [Header("Булавки в замке")]
     public BuildingActor[] BuildingPins;   // по одной на BuildingId
     public CastleActionsActor ActionsPin;
+
+    [Header("Точки боя вокруг замка")]
+    public BattleActor[] BattlePoints;   // сколько расставишь, столько стычек и уместится
 }

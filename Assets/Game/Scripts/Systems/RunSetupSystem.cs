@@ -14,6 +14,7 @@ public class RunSetupSystem : Injects, IEcsRunSystem
     private EcsFilter<PersonAttribute> _persons;   // лорды и игрок
     private EcsFilter<BuildingAttribute> _buildings;
     private EcsFilter<CastleActionsFlag> _castlePins;
+    private EcsFilter<BattlePointAttribute> _battlePoints;
 
     public void Run()
     {
@@ -31,6 +32,7 @@ public class RunSetupSystem : Injects, IEcsRunSystem
         foreach (var i in _persons) _persons.GetEntity(i).Destroy();
         foreach (var i in _buildings) _buildings.GetEntity(i).Destroy();
         foreach (var i in _castlePins) _castlePins.GetEntity(i).Destroy();
+        foreach (var i in _battlePoints) _battlePoints.GetEntity(i).Destroy();
     }
 
     private void Build(int seed)
@@ -73,6 +75,7 @@ public class RunSetupSystem : Injects, IEcsRunSystem
         entity.Get<PlanAttribute>();
         entity.Get<StarvingAttribute>();
         entity.Get<SiegeBonusAttribute>();
+        entity.Get<SiegeAttribute>();
         entity.Get<CastleHistoryAttribute>().Value = new System.Collections.Generic.List<CastleActionUse>();
         entity.Get<CommonsMemoryAttribute>();
         entity.Get<RunEndAttribute>();
@@ -103,6 +106,16 @@ public class RunSetupSystem : Injects, IEcsRunSystem
                 if (pins[i] != null) pins[i].Init(_world);
 
         if (SceneData.ActionsPin != null) SceneData.ActionsPin.Init(_world);
+
+        var points = SceneData.BattlePoints;
+        if (points == null) return;
+
+        for (int i = 0; i < points.Length; i++)
+        {
+            if (points[i] == null) continue;
+            points[i].Bind(i);
+            points[i].Init(_world);
+        }
     }
 
     private void SpawnLords(CourtData court)

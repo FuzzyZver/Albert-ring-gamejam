@@ -30,6 +30,10 @@ public class UI : MonoBehaviour
     public CastleActionsView CastleActions;
     public NightView Night;
 
+    [Header("Осада")]
+    public SiegeView Siege;
+    public BattleView Battle;
+
     [Header("Летопись и эпилог")]
     public ChronicleView Chronicle;
     public EpilogueView Epilogue;

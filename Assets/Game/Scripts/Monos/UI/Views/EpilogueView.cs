@@ -13,6 +13,7 @@ public class EpilogueView : MonoBehaviour
     [SerializeField] private TMP_Text _summary;
     [SerializeField] private TMP_Text _court;
     [SerializeField] private TMP_Text _seed;
+    [SerializeField] private TMP_Text _endings;   // «Открыто концовок: 4 из 14»
 
     [Header("Цвета заголовка")]
     [SerializeField] private Color _defeat = new Color(0.90f, 0.35f, 0.35f);
@@ -27,6 +28,14 @@ public class EpilogueView : MonoBehaviour
 
     /// <summary>Только заполняет. Показывает и прячет ScreenSystem — иначе окно
     /// оказывается с двумя хозяевами и однажды не закрывается.</summary>
+    public void SetEndings(int unlocked, int total, bool firstTime)
+    {
+        if (_endings == null) return;
+        _endings.text = firstTime
+            ? $"Новая концовка! Открыто {unlocked} из {total}"
+            : $"Открыто концовок: {unlocked} из {total}";
+    }
+
     public void Show(bool victory, string title, string chronicle, string summary, string court, int seed)
     {
         if (_title != null)

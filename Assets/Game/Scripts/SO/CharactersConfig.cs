@@ -28,13 +28,11 @@ public class CharactersConfig : ScriptableObject
     public VerbDefinition[] Verbs = DefaultVerbs();
     public AmbitionDefinition[] Ambitions = DefaultAmbitions();
     public ConsequenceDefinition[] Consequences = DefaultConsequences();
-    public DeathDefinition[] Deaths = DefaultDeaths();
 
     public TraitDefinition GetTrait(TraitId id) => Array.Find(Traits, t => t.Id == id);
     public VerbDefinition GetVerb(VerbId id) => Array.Find(Verbs, v => v.Id == id);
     public AmbitionDefinition GetAmbition(AmbitionId id) => Array.Find(Ambitions, a => a.Id == id);
     public ConsequenceDefinition GetConsequence(ConsequenceId id) => Array.Find(Consequences, c => c.Id == id);
-    public DeathDefinition GetDeath(DeathCause cause) => Array.Find(Deaths, d => d.Cause == cause);
 
     public string[] Titles(Gender gender) => gender == Gender.Male ? MaleTitles : FemaleTitles;
     public string[] Epithets(Gender gender) => gender == Gender.Male ? MaleEpithets : FemaleEpithets;
@@ -328,29 +326,6 @@ public class CharactersConfig : ScriptableObject
         C(ConsequenceId.ConfessDrunkenly,        "ты рассказал всё", "Ты рассказал всё. Всем.",                court: -12),
     };
 
-    private static DeathDefinition[] DefaultDeaths() => new[]
-    {
-        D(DeathCause.Riot,          "Бунт",
-            "Толпа не стала слушать. Ворота открыли изнутри."),
-        D(DeathCause.Famine,        "Голод",
-            "Амбары стояли пустыми не первую ночь. Голод не спрашивает титула."),
-        D(DeathCause.Assassination, "Нож в спину",
-            "{lord} вошёл без стука. Это всё, что известно летописцу."),
-        D(DeathCause.Overthrow,     "Свержение",
-            "Лорды сговорились. Кольцо сняли с ещё тёплой руки."),
-        D(DeathCause.Duel,          "Поединок",
-            "Ты принял вызов {lord}. Летописец отметил, что держался ты достойно ровно два удара."),
-        D(DeathCause.Accident,      "Нелепость",
-            "{detail}"),
-        D(DeathCause.Siege,         "Осада",
-            "Стены выдержали дольше, чем гарнизон."),
-        D(DeathCause.None,          "Ты дожил",
-            "Осада снята. Кольцо всё ещё на твоей руке — и это, отмечает летописец, удивительно."),
-    };
-
-    private static DeathDefinition D(DeathCause cause, string title, string line) =>
-        new DeathDefinition { Cause = cause, Title = title, ChronicleLine = line };
-
     private static VerbReaction R(VerbId verb, int opinion, int chance, ConsequenceId consequence, string note,
         int consequenceChance = 100) =>
         new VerbReaction
@@ -429,7 +404,6 @@ public class CharactersConfig : ScriptableObject
         Verbs = DefaultVerbs();
         Ambitions = DefaultAmbitions();
         Consequences = DefaultConsequences();
-        Deaths = DefaultDeaths();
 
         Debug.LogWarning($"{name}: матрица перезаписана значениями из кода.", this);
 #if UNITY_EDITOR
@@ -445,7 +419,6 @@ public class CharactersConfig : ScriptableObject
         Verbs = Merge(Verbs, DefaultVerbs(), v => (int)v.Id, ref added);
         Ambitions = Merge(Ambitions, DefaultAmbitions(), a => (int)a.Id, ref added);
         Consequences = Merge(Consequences, DefaultConsequences(), c => (int)c.Id, ref added);
-        Deaths = Merge(Deaths, DefaultDeaths(), d => (int)d.Cause, ref added);
 
         Debug.Log(added > 0 ? $"{name}: дописано записей — {added}" : $"{name}: всё на месте", this);
 
@@ -589,19 +562,6 @@ public class AmbitionDefinition
     public int CommonsOpinion;
     public int CourtOpinion;
     public bool ClosesRomance;
-}
-
-/// <summary>
-/// Смерть — не последствие. Последствие это то, что случилось; смерть проверяется
-/// отдельными условиями и лишь цитирует последствие в графе «причина».
-/// {lord} — виновник, {detail} — строка последствия, если оно было.
-/// </summary>
-[Serializable]
-public class DeathDefinition
-{
-    public DeathCause Cause;
-    public string Title;
-    [TextArea(2, 3)] public string ChronicleLine;
 }
 
 [Serializable]

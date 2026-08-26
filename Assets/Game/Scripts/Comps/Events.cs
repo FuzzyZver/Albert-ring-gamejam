@@ -76,6 +76,9 @@ public struct DeathEvent
 }
 
 public struct VictoryEvent { public int Defence; }
+public struct SiegeStartedEvent { }
+public struct BattlePinClickedEvent { public int Point; }
+public struct CloseBattleCardEvent { }
 
 public struct EveningChoiceEvent { public int Index; }
 public struct PetitionChoiceEvent { public int Index; }

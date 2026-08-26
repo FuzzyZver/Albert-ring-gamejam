@@ -13,6 +13,7 @@ public class HudSystem : Injects, IEcsInitSystem, IEcsRunSystem, IEcsDestroySyst
     private EcsFilter<RunFlag, CalendarAttribute, TreasuryAttribute> _runs;
     private EcsFilter<RunFlag, RunOverFlag> _finished;
     private EcsFilter<RunFlag, PhaseLockFlag> _locked;
+    private EcsFilter<RunFlag, SiegeAttribute> _sieges;
 
     private int _day = int.MinValue;
     private int _phase = int.MinValue;
@@ -43,6 +44,10 @@ public class HudSystem : Injects, IEcsInitSystem, IEcsRunSystem, IEcsDestroySyst
         }
 
         foreach (var _ in _runReady) UI.Hud.SetVisible(true);
+
+        // На осаде интерфейс управления не нужен: решать уже нечего.
+        foreach (var s in _sieges)
+            if (_sieges.Get2(s).Running) UI.Hud.SetVisible(false);
 
         foreach (var r in _runs) Refresh(r);
 

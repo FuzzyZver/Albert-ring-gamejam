@@ -171,6 +171,45 @@ public struct EveningAttribute
     public bool ShowingResult;  // выбор сделан, показываем итог — очередь стоит
 }
 
+/// <summary>Осада. Считается один раз на старте, дальше только тают силы.
+/// Morale — суммарный модификатор от лордов, пищи, стен и крестьян: он двигает
+/// и кубик, и размер отряда, и порог бегства.</summary>
+public struct SiegeAttribute
+{
+    public bool Running;
+    public int OurForce;
+    public int EnemyForce;
+    public int OurStart;
+    public int EnemyStart;
+    public int Morale;
+    public int LordsPresent;
+    public int OurRoutAt;
+    public int EnemyRoutAt;
+    public float NextSpawn;
+    public string Summary;
+}
+
+/// <summary>Точка боя вокруг замка. Сущность заводит BattleActor и живёт она всю осаду;
+/// стычка — это BattleAttribute, который на точке появляется и исчезает.</summary>
+public struct BattlePointAttribute { public int Index; }
+
+/// <summary>Стычка под стенами. Исход решается сразу, а полоска ползёт к нему
+/// четыре секунды — иначе смотреть не на что.</summary>
+public struct BattleAttribute
+{
+    public int OurSquad;
+    public int EnemySquad;
+    public int CommanderLordId;   // -1 игрок, int.MinValue никто
+    public int OurRoll;
+    public int EnemyRoll;
+    public bool OurWin;
+    public float StartedAt;
+    public float EndsAt;
+
+    public const int NoCommander = int.MinValue;
+    public const int PlayerCommander = -1;
+}
+
 /// <summary>Чем всё кончилось. Заполняется один раз, читается эпилогом.</summary>
 public struct RunEndAttribute
 {
@@ -181,6 +220,8 @@ public struct RunEndAttribute
     public int Day;
     public int Defence;
     public int SiegeStrength;
+    public EndingId Ending;
+    public bool FirstTime;
 }
 
 /// <summary>Пир, назначенный на завтрашний вечер.</summary>

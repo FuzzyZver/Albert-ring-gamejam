@@ -1,4 +1,5 @@
 using System.Text;
+using UnityEngine;
 using Leopotam.Ecs;
 
 /// <summary>
@@ -14,6 +15,7 @@ public class RunEndSystem : Injects, IEcsRunSystem
 
     private EcsFilter<RunFlag, CalendarAttribute, TreasuryAttribute>.Exclude<RunOverFlag> _runs;
     private EcsFilter<LordFlag, LordIdAttribute, PersonAttribute, OpinionAttribute> _lords;
+    private EcsFilter<LordFlag, LoverFlag> _lovers;
 
     private readonly StringBuilder _text = new StringBuilder();
 
@@ -35,7 +37,6 @@ public class RunEndSystem : Injects, IEcsRunSystem
 
     private void End(bool victory, DeathCause cause, int killerLordId, string detail, int defence)
     {
-        var chars = GameConfig.CharactersConfig;
         var balance = GameConfig.BalanceConfig;
 
         foreach (var r in _runs)
@@ -53,11 +54,16 @@ public class RunEndSystem : Injects, IEcsRunSystem
             end.Detail = detail;
             end.Day = calendar.Day;
             end.Defence = defence;
-            end.SiegeStrength = balance.SiegeStrength;
+            end.SiegeStrength = balance.SiegeEnemyForce;
 
             entity.Get<RunOverFlag>();
 
-            var definition = chars.GetDeath(cause);
+            ref var siege = ref entity.Get<SiegeAttribute>();
+            var definition = GameConfig.EndingsConfig.Select(Context(cause, victory, calendar.Day, siege, entity));
+
+            end.Ending = definition != null ? definition.Id : default;
+            end.FirstTime = definition != null && RealtimeData.Unlock(definition.Id);
+
             string title = definition != null ? definition.Title : cause.ToString();
             string line = definition != null ? definition.ChronicleLine : string.Empty;
 
@@ -66,6 +72,7 @@ public class RunEndSystem : Injects, IEcsRunSystem
                 .Replace("{detail}", detail ?? string.Empty)
                 .Replace("{day}", calendar.Day.ToString());
 
+            UI.Epilogue.SetEndings(RealtimeData.UnlockedCount, GameConfig.EndingsConfig.Total, end.FirstTime);
             UI.Epilogue.Show(victory, title, line,
                 Summary(calendar.Day, balance, treasury, defence, victory),
                 CourtLines(balance),
@@ -76,6 +83,42 @@ public class RunEndSystem : Injects, IEcsRunSystem
         }
     }
 
+    /// <summary>Всё, по чему EndingsConfig выберет концовку. Проценты считаются
+    /// от начала осады, поэтому «выстоял чудом» и «выстоял не заметив» — разные концовки.</summary>
+    private EndingContext Context(DeathCause cause, bool victory, int day, SiegeAttribute siege, EcsEntity run)
+    {
+        int ourStart = Mathf.Max(1, siege.OurStart);
+        int enemyStart = Mathf.Max(1, siege.EnemyStart);
+
+        bool hasLover = false;
+        foreach (var _ in _lovers) hasLover = true;
+
+        return new EndingContext
+        {
+            Cause = cause,
+            Victory = victory,
+            Day = day,
+            ForceLeftPercent = siege.OurForce * 100 / ourStart,
+            EnemyLeftPercent = siege.EnemyForce * 100 / enemyStart,
+            LordsPresent = siege.LordsPresent,
+            Commons = run.Get<CommonsAttribute>().Opinion,
+            HasLover = hasLover,
+            LoverDead = LoverDied(),
+        };
+    }
+
+    /// <summary>Любовник был, но до осады не дожил — отдельная концовка.</summary>
+    private bool LoverDied()
+    {
+        foreach (var i in _lords)
+        {
+            var lord = _lords.GetEntity(i);
+            if (lord.Has<LoverFlag>() && lord.Has<DeadFlag>()) return true;
+        }
+
+        return false;
+    }
+
     private string Summary(int day, BalanceConfig balance, TreasuryAttribute treasury, int defence, bool victory)
     {
         _text.Length = 0;
@@ -84,7 +127,7 @@ public class RunEndSystem : Injects, IEcsRunSystem
              .Append(treasury.Food).Append(" пищи, ").Append(treasury.Garrison).AppendLine(" копий гарнизона.");
 
         if (defence > 0 || victory)
-            _text.Append("Стены защищали ").Append(defence).Append(" против ").Append(balance.SiegeStrength).Append('.');
+            _text.Append("Стены защищали ").Append(defence).Append(" против ").Append(balance.SiegeEnemyForce).Append('.');
 
         return _text.ToString();
     }

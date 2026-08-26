@@ -7,4 +7,5 @@ public class GameConfig : ScriptableObject
     public BalanceConfig BalanceConfig;
     public EventsConfig EventsConfig;
     public BuildingsConfig BuildingsConfig;
+    public EndingsConfig EndingsConfig;
 }

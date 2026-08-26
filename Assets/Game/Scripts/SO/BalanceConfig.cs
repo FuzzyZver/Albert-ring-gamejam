@@ -3,13 +3,15 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "BalanceConfig", menuName = "Configs/BalanceConfig")]
 public class BalanceConfig : ScriptableObject
 {
+    [Header("Сложность")]
+    [Range(0, 5)] public int Difficulty = 1;   // 0 = лёгкая, 1 = нормальная, 2 = жёсткая
+
     [Header("Забег")]
     public int DaysUntilSiege = 12;
     public int LordsCount = 5;
     public int CandidatesCount = 3;   // из скольких выбираешь себя
     public int ActionsPerDay = 2;
     public int PetitionersPerMorning = 3;
-    public int SiegeStrength = 110;
 
     [Header("Старт")]
     public int StartGold = 30;
@@ -52,9 +54,30 @@ public class BalanceConfig : ScriptableObject
     public int OpinionMin = -100;
     public int OpinionMax = 100;
 
-    [Header("Осада. Стены и амбар — задел под постройки, этап 6")]
-    public int WallsStrength = 15;
-    public int GranaryStrength = 10;
+    [Header("Осада")]
+    public int SiegeEnemyForce = 95;
+
+    /// <summary>Модификатор по числу приехавших лордов: без них плохо, впятером страшно.
+    /// Лорды приезжают командирами, войска остаются при их замках.</summary>
+    public int[] LordCountBonus = { -15, 0, 8, 18, 30, 45 };
+
+    public int FoodComfort = 30;        // запас, который считается хорошим
+    public int FoodBonusMax = 15;
+    public int FoodPenaltyMax = -20;
+    public int CommonsDivider = 4;      // мнение крестьян делится на это
+
+    [Header("Осада: стычки")]
+    public float BattleSpawnInterval = 2f;
+    public float BattleDuration = 4f;
+    public int SquadMin = 6;
+    public int SquadMax = 13;
+    public int MoraleToSquad = 12;      // сколько морали даёт +1 к отряду
+    public int MoraleToRoll = 8;        // сколько морали даёт +1 к кубику
+    public int LordCommanderBonus = 4;
+    public int PlayerCommanderBonus = 6;
+    public int EnemyRoutPercent = 25;
+    public int OurRoutPercent = 25;
+    public int MoraleToRoutRelief = 3;  // сколько морали снижает порог бегства на 1
 
     [Header("Просьба о войске")]
     [Range(0, 100)] public int TroopsPercentOnRequest = 50;   // сколько копий лорд отдаёт сразу

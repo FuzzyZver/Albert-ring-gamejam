@@ -16,6 +16,7 @@ public enum ScreenId
     Castle,
     Evening,
     Night,
+    Siege,
     Epilogue
 }
 
@@ -74,6 +75,27 @@ public enum TaxKind
 {
     Peasants,   // подать пищей
     Lords       // пошлина золотом
+}
+
+/// <summary>Концовки. Дописывать только в конец — по ним считается «открыто N из M».</summary>
+public enum EndingId
+{
+    RiotEnding,
+    FamineEnding,
+    AssassinationEnding,
+    OverthrowEnding,
+    DuelEnding,
+    AccidentEnding,
+
+    SiegeCrushing,     // выстоял почти без потерь
+    SiegeHeld,         // выстоял
+    SiegePyrrhic,      // выстоял, но некому праздновать
+    SiegeFallen,       // не выстоял, но дорого продался
+    SiegeMassacre,     // не выстоял вовсе
+
+    LonelyCrown,       // победа без единого лорда
+    SaintKing,         // победа при обожающих крестьянах
+    WidowedCrown       // победа, но любовник до неё не дожил
 }
 
 public enum DeathCause

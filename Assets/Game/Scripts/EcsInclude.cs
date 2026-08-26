@@ -17,6 +17,10 @@ public class EcsInclude : MonoBehaviour
 
         _systems
             //Add (new ...
+            // Порядок здесь — не вкусовщина. Одно-кадровые события живут до конца кадра,
+            // поэтому система, которая событие СОЗДАЁТ, обязана стоять раньше той,
+            // которая его читает. Иначе оно молча исчезнет, не дожив до следующего кадра.
+            // Исключение — события из колбэков кнопок: они рождаются между кадрами.
             .Add(new InitSystem())
             .Add(new RunSetupSystem())
             .Add(new PlayerSpawnSystem())
@@ -25,7 +29,8 @@ public class EcsInclude : MonoBehaviour
             .Add(new PhaseSystem())
             .Add(new NightSystem())
             .Add(new DeathWatchSystem())    // сразу после ночного счёта, до последствий
-            .Add(new SiegeSystem())         // после смертей: голод важнее армии у ворот
+            .Add(new SiegeSystem())
+            .Add(new BattleSystem())         // после смертей: голод важнее армии у ворот
             .Add(new BuildingSystem())
             .Add(new CastleActionSystem())
 
@@ -81,6 +86,9 @@ public class EcsInclude : MonoBehaviour
             .OneFrame<ApplyChoiceEvent>()
             .OneFrame<DeathEvent>()
             .OneFrame<VictoryEvent>()
+            .OneFrame<SiegeStartedEvent>()
+            .OneFrame<BattlePinClickedEvent>()
+            .OneFrame<CloseBattleCardEvent>()
 
             .OneFrame<PinClickedEvent>()
             .OneFrame<CloseCardEvent>()
@@ -90,6 +98,7 @@ public class EcsInclude : MonoBehaviour
             .Inject(_gameConfig)
             .Inject(_ui)
             .Inject(_sceneData)
+            .Inject(new RealtimeData())
 
 
             .Init();

@@ -28,6 +28,8 @@ public struct PhaseLockFlag { }
 public struct DuelAcceptedFlag { }
 
 public struct CastleActionsFlag { }   // булавка действий в замке
+public struct CameToSiegeFlag { }     // лорд приехал командовать
+public struct CommandingFlag { }      // и прямо сейчас занят стычкой
 
 // состояние забега
 public struct StarvingFlag { }             // пища на нуле
