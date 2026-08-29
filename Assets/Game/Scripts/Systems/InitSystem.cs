@@ -21,6 +21,11 @@ public class InitSystem : Injects, IEcsInitSystem
         UI.Battle.SetVisible(false);
         UI.Hud.SetVisible(false);
 
+        foreach(VerbRowView view in UI.VerbPanel.Rows)
+        {
+            view.Init(EcsWorld);
+        }
+
         EcsWorld.NewEntity().Get<NewRunEvent>().Seed = GameConfig.BalanceConfig.NextSeed();
     }
 }

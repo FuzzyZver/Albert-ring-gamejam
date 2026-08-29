@@ -1,3 +1,4 @@
+using UnityEngine;
 // ═══ ATTRIBUTE ═══ свойства сущности, живут весь забег
 
 // ─────────── персонаж ───────────
@@ -276,4 +277,17 @@ public struct NightReportAttribute
 
     public int GoldNet => GoldIncome - GoldUpkeep;
     public int FoodNet => FoodIncome - FoodUpkeep;
+}
+
+/// <summary>
+/// Атрибут для мета текста
+/// </summary>
+public struct MetaTextAttribute
+{
+    public IMetaText Source;
+    public MonoBehaviour Behaviour;
+    public bool Shown;
+    public float HoverTime;
+    public string ShownTitle;
+    public string ShownBody;
 }

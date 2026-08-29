@@ -102,3 +102,9 @@ public struct ApplyChoiceEvent
     public int LordId;
     public string Result;
 }
+
+/// <summary>
+/// Евенты для мета-текста
+/// </summary>
+public struct MetaTextEnterEvent { public IMetaText Source; }
+public struct MetaTextExitEvent { public IMetaText Source; }

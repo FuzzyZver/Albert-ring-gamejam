@@ -11,3 +11,5 @@ public struct PinRef { public Transform Value; }
 public struct BuildingRef { public BuildingActor Value; }
 
 public struct BattleRef { public BattleActor Value; }   // булавка лорда на карте
+
+public struct MetaTextViewRef { public MetaTextView View; }

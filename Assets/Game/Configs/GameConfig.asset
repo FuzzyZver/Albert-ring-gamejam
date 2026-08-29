@@ -17,3 +17,5 @@ MonoBehaviour:
   EventsConfig: {fileID: 11400000, guid: 64b87adfaea017b4a9c5ae2e9235f7e9, type: 2}
   BuildingsConfig: {fileID: 11400000, guid: bc68577e79840d049a8fb0383631eea7, type: 2}
   EndingsConfig: {fileID: 11400000, guid: 7377aaf4e0998b949ae77b970a8c638e, type: 2}
+  PrefabsConfig: {fileID: 11400000, guid: 5739449d0f767a94c8d5ea68bf45ed40, type: 2}
+  SettingsConfig: {fileID: 11400000, guid: 05196c0fed1097a4dabadba8cac95f77, type: 2}

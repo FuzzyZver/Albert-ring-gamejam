@@ -1,17 +1,20 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
+using Leopotam.Ecs;
 
 /// <summary>
 /// Строка глагола. Цвет выбирает сама — система не должна знать про палитру.
 /// Строки лежат в сцене готовым пулом, ничего не инстанциируется в рантайме.
 /// </summary>
-public class VerbRowView : MonoBehaviour
+public class VerbRowView : MonoBehaviour, IMetaText
 {
+    private EcsWorld _world;
+    private MetaText _meta;
     [SerializeField] private Button _button;
     [SerializeField] private TMP_Text _title;
     [SerializeField] private TMP_Text _cost;
-    [SerializeField] private TMP_Text _breakdown;
     [SerializeField] private TMP_Text _result;
 
     [Header("Цвета результата")]
@@ -23,6 +26,10 @@ public class VerbRowView : MonoBehaviour
     public Button Button => _button;
     public VerbId Verb { get; private set; }
 
+    public MetaText Meta => _meta;
+
+    public void Init(EcsWorld world) => _world = world;
+
     public void Set(VerbOutcome outcome)
     {
         gameObject.SetActive(true);
@@ -31,12 +38,10 @@ public class VerbRowView : MonoBehaviour
         if (_title != null) _title.text = outcome.Title;
         if (_cost != null) _cost.text = outcome.CostLine;
 
-        if (_breakdown != null)
-        {
-            _breakdown.text = outcome.Available || string.IsNullOrEmpty(outcome.Blocked)
+        _meta.Title = "Описание";
+        _meta.Body = outcome.Available || string.IsNullOrEmpty(outcome.Blocked)
                 ? outcome.Breakdown
                 : outcome.Blocked;
-        }
 
         if (_result != null)
         {
@@ -60,5 +65,15 @@ public class VerbRowView : MonoBehaviour
         if (!outcome.Available) return _blocked;
         if (outcome.IsChanceBased) return _chance;
         return outcome.Opinion >= 0 ? _positive : _negative;
+    }
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        if (_world != null) _world.NewEntity().Get<MetaTextEnterEvent>().Source = this;
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        if (_world != null) _world.NewEntity().Get<MetaTextExitEvent>().Source = this;
     }
 }

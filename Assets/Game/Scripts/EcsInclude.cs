@@ -24,6 +24,7 @@ public class EcsInclude : MonoBehaviour
             .Add(new InitSystem())
             .Add(new RunSetupSystem())
             .Add(new PlayerSpawnSystem())
+            .Add(new MetaTextSystem())
             .Add(new CandidateScreenSystem())   // после PlayerSpawn: ловит RunReadyEvent
 
             .Add(new PhaseSystem())
@@ -93,6 +94,8 @@ public class EcsInclude : MonoBehaviour
             .OneFrame<PinClickedEvent>()
             .OneFrame<CloseCardEvent>()
             .OneFrame<SelectionChangedFlag>()   // снимается здесь, когда вьюхи уже перерисовались
+            .OneFrame<MetaTextEnterEvent>()
+            .OneFrame<MetaTextExitEvent>()
 
             .Inject(_world)
             .Inject(_gameConfig)

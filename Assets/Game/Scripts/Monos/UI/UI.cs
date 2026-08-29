@@ -7,6 +7,7 @@ using UnityEngine.UI;
 /// </summary>
 public class UI : MonoBehaviour
 {
+    public RectTransform InstantiateParent;
     [Header("Экраны")]
     public ScreensView Screens;          // Map / Court / Castle / Evening / Night
     public CharacterSelectView CharacterSelect;

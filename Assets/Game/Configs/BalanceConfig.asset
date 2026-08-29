@@ -13,14 +13,14 @@ MonoBehaviour:
   m_Name: BalanceConfig
   m_EditorClassIdentifier: Assembly-CSharp::BalanceConfig
   Difficulty: 5
-  DaysUntilSiege: 0
+  DaysUntilSiege: 12
   LordsCount: 5
   CandidatesCount: 3
   ActionsPerDay: 2
   PetitionersPerMorning: 3
   StartGold: 40
   StartFood: 60
-  StartGarrison: 100
+  StartGarrison: 10
   StartLordOpinion: 0
   StartCommonsOpinion: 0
   LordTroopsMin: 15
@@ -59,8 +59,8 @@ MonoBehaviour:
   SquadMax: 13
   MoraleToSquad: 16
   MoraleToRoll: 12
-  LordCommanderBonus: 4
-  PlayerCommanderBonus: 6
+  LordCommanderBonus: 2
+  PlayerCommanderBonus: 3
   EnemyRoutPercent: 25
   OurRoutPercent: 25
   MoraleToRoutRelief: 3

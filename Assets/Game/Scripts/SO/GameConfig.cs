@@ -8,4 +8,6 @@ public class GameConfig : ScriptableObject
     public EventsConfig EventsConfig;
     public BuildingsConfig BuildingsConfig;
     public EndingsConfig EndingsConfig;
+    public PrefabsConfig PrefabsConfig;
+    public SettingsConfig SettingsConfig;
 }
